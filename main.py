@@ -1,16 +1,23 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+import mysql.connector
+import geopy
+from geopy import distance
+def sqlhaku(query):
+    kursori = yhteys.cursor()
+    kursori.execute(query)
+    tulos = kursori.fetchone()
+    return tulos
+def valimatka(icao1, icao2):
+    location1 = sqlhaku(f"SELECT latitude_deg, longitude_deg FROM airport WHERE ident='{icao1}'")
+    location2 = sqlhaku(f"SELECT latitude_deg, longitude_deg FROM airport WHERE ident='{icao2}'")
+    return geopy.distance.distance(location1, location2)
+yhteys = mysql.connector.connect(
+    host='localhost',
+    port='3306',
+    database='flight_game',
+    user='Lieto',
+    password='test',
+    autocommit=True
+)
+#firstICAO = input("Enter the ICAO code of the first airport: ")
+#secondICAO = input("Enter the ICAO code of the second airport: ")
+#print(f"Distance between {firstICAO} and {secondICAO}: {valimatka(firstICAO, secondICAO)}")
