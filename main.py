@@ -4,7 +4,7 @@ from geopy import distance
 def sqlquery(query):
     cursor = sqlconnection.cursor()
     cursor.execute(query)
-    result = cursor.fetchone()
+    result = cursor.fetchall()
     return result
 def valimatka(icao1, icao2):
     location1 = sqlquery(f"SELECT latitude_deg, longitude_deg FROM airport WHERE ident='{icao1}'")
