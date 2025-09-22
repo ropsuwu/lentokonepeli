@@ -6,3 +6,6 @@ Peli on kirjoitettu pythonilla ja käyttää mySQL tietokantaa. Peli toimii term
 Nimi-ideat:
 Sausage Flight Fest '25, 
 Nakit ympäri maailman
+Nakkien pyhiinvaellus
+Etsi lempi nakkisi!
+Nakki Conquest 2000
