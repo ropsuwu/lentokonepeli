@@ -9,3 +9,4 @@ Nakit ympäri maailman
 Nakkien pyhiinvaellus
 Etsi lempi nakkisi!
 Nakki Conquest 2000
+Around the world in 80 sausages
