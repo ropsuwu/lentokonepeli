@@ -4,6 +4,8 @@ import EnsiMaa
 def game():
     sausagesFound = []
     currentCountry = EnsiMaa
+    #this could choose a random large airport from the selected country?
+    currentAirport = ""
     difficulty = input("Choose a difficulty. Vegan (1), Bland (2), Deep Fried (3): ")
     if difficulty.lower() == 1 or 'vegan':
         difficulty = "vegan"
@@ -26,4 +28,6 @@ def game():
                 print(f"You ate a {difficulty} {nakki}")
         #this checks if the player input an icao code or airport name.
         elif main.sqlquery(f"SELECT name FROM airport WHERE name='{command}' OR ident='{command}'"):
-            currentCountry = main.sqlquery(f"SELECT country.name FROM country, airport WHERE country.iso_country = airport.iso_country AND (airport.name='{command}' OR ident='{command}')")
+            newAirportName = main.sqlquery(f"SELECT name FROM airport WHERE name='{command}' OR ident='{command}'")
+            distanceTravelled = main.valimatka(main.sqlquery(f"SELECT ident FROM airport WHERE name='{newAirportName}'"), main.sqlquery(f"SELECT ident FROM airport WHERE name='{currentAirport}'"))
+            currentCountry = main.sqlquery(f"SELECT country.name FROM country, airport WHERE country.iso_country = airport.iso_country AND airport.name = '{newAirportName}'")
