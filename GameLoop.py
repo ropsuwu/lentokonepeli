@@ -1,33 +1,54 @@
 import main
 import EnsiMaa
+import DifficultySelect
+import FlightCalculator
+import math
 
 def game():
     sausagesFound = []
-    currentCountry = EnsiMaa
+    currentCountry = EnsiMaa.ensimatka()
     #this could choose a random large airport from the selected country?
     currentAirport = ""
-    difficulty = input("Choose a difficulty. Vegan (1), Bland (2), Deep Fried (3): ")
-    if difficulty.lower() == 1 or 'vegan':
-        difficulty = "vegan"
-    elif difficulty.lower() == 2 or 'bland':
-        difficulty = "bland"
-    elif difficulty.lower() == 3 or 'deep fried':
-        difficulty = "deep fried"
+    diff = DifficultySelect.choosedifficulty()
+    difficultyName = diff[0]
+    difficultyValue = diff[1]
+    totalDistanceTravelled = 0
     while True:
         print(f"You are currently located in {currentCountry}.")
         print("The available actions are:")
         #available commands should be listed for the player here
         command = input("test: ").lower()
-        #this adds the current countries sausage to the players list
+        #this adds the current country to the list of sausages eaten
         if command == "find sausage":
             nakki = main.sqlquery(f"SELECT sosig FROM country WHERE name='{currentCountry}'")
-            if sausagesFound.__contains__(nakki):
+            if sausagesFound.__contains__(currentCountry):
                 print("You have already eaten a sausage from this country!! :(")
             else:
-                sausagesFound.append(nakki)
-                print(f"You ate a {difficulty} {nakki}")
+                sausagesFound.append(currentCountry)
+                print(f"You ate a {difficultyName} {nakki}!")
         #this checks if the player input an icao code or airport name.
         elif main.sqlquery(f"SELECT name FROM airport WHERE name='{command}' OR ident='{command}'"):
             newAirportName = main.sqlquery(f"SELECT name FROM airport WHERE name='{command}' OR ident='{command}'")
             distanceTravelled = main.valimatka(main.sqlquery(f"SELECT ident FROM airport WHERE name='{newAirportName}'"), main.sqlquery(f"SELECT ident FROM airport WHERE name='{currentAirport}'"))
-            currentCountry = main.sqlquery(f"SELECT country.name FROM country, airport WHERE country.iso_country = airport.iso_country AND airport.name = '{newAirportName}'")
+            result = FlightCalculator.flytoplace(distanceTravelled, difficultyValue, sausagesFound.__len__())
+            if result == "success":
+                currentCountry = main.sqlquery(f"SELECT country.name FROM country, airport WHERE country.iso_country = airport.iso_country AND airport.name = '{newAirportName}'")
+                currentAirport = newAirportName
+                totalDistanceTravelled += distanceTravelled
+                print(f"You have arrived at {currentAirport} in {currentCountry}.")
+            elif result == "cancelled":
+                print(f"Flight to {newAirportName} cancelled.")
+            elif result == "death":
+                print(f"While on a plane to {newAirportName} you entered cardiac arrest and subsequently perished after eating a total of {sausagesFound.__len__()} sausages!")
+                #some sort of ascii art could work here?
+
+                #The players score is greatly influenced by difficulty, more so than the chance of death when travelling.
+                # This means a higher difficulty will usually result in a greater score, even with worse performance.
+                #Finding sausages is the primary objective in the game, which is why it is the most important component in calculating score
+                #Travelling more distance during the game will slightly lower the players score,
+                # though it is always better to get more sausages than to keep distance travelled low
+                score = int(((difficultyValue^2)*sausagesFound*100)/math.log10(totalDistanceTravelled))
+                scoreName = input("Enter name: ")
+                idCount = main.sqlquery("SELECT COUNT(*) FROM game")
+                main.sqlquery(f"INSERT INTO game VALUES ({idCount+1}, '{difficultyName}', '{score}', '{scoreName}', '{currentAirport}, {currentCountry}')")
+                break
