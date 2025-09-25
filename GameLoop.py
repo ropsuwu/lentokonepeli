@@ -36,12 +36,12 @@ def game():
         #this checks if the player input an icao code or airport name.
         elif main.sqlquery(f"SELECT name FROM airport WHERE name='{command}' OR ident='{command}'"):
             newAirportName = main.sqlquery(f"SELECT name FROM airport WHERE name='{command}' OR ident='{command}'")
-            newAirportName = removeshittis(newAirportName)
+            newAirportName = removeshittis(str(newAirportName))
             distanceTravelled = main.valimatka(main.sqlquery(f"SELECT ident FROM airport WHERE name='{newAirportName}' OR ident='{newAirportName}'"), main.sqlquery(f"SELECT ident FROM airport WHERE name='{currentAirport}'"))
             result = FlightCalculator.flytoplace(distanceTravelled, difficultyValue, sausagesFound.__len__())
             if result == "success":
                 currentCountry = main.sqlquery(f"SELECT country.name FROM country, airport WHERE country.iso_country = airport.iso_country AND airport.name = '{newAirportName}'")
-                currentAirport = newAirportName[0]
+                currentAirport = newAirportName
                 totalDistanceTravelled += distanceTravelled
                 print(f"You have arrived at {currentAirport} in {currentCountry}.")
             elif result == "cancelled":
