@@ -22,13 +22,13 @@ def game():
     currentAirport = "Helsinki Vantaa Airport"
     totalDistanceTravelled = 0
     while True:
-        print(f"You are currently located in {currentCountry}.")
+        print(f"You are currently located in {removeshittis(currentCountry)}.")
         print("The available actions are:")
         #available commands should be listed for the player here
         command = input("test: ").lower()
         #this adds the current country to the list of sausages eaten
         if command == "find sausage":
-            nakki = main.sqlquery(f"SELECT sausage FROM country WHERE name='{currentCountry}'")
+            nakki = main.sqlquery(f"SELECT sausage FROM country WHERE name='{currentCountry}'")[0][0]
             if sausagesFound.__contains__(currentCountry):
                 print("You have already eaten a sausage from this country!! :(")
             else:
