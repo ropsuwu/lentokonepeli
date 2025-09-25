@@ -20,7 +20,7 @@ def game():
         command = input("test: ").lower()
         #this adds the current country to the list of sausages eaten
         if command == "find sausage":
-            nakki = main.sqlquery(f"SELECT sosig FROM country WHERE name='{currentCountry}'")
+            nakki = main.sqlquery(f"SELECT sausage FROM country WHERE name='{currentCountry}'")
             if sausagesFound.__contains__(currentCountry):
                 print("You have already eaten a sausage from this country!! :(")
             else:
