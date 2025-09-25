@@ -13,12 +13,12 @@ def removeshittis(string):
     return string
 def game():
     sausagesFound = []
-    currentCountry = EnsiMaa.ensimatka()
-    #this could choose a random large airport from the selected country?
-    currentAirport = ""
     diff = DifficultySelect.choosedifficulty()
     difficultyName = diff[0]
     difficultyValue = diff[1]
+    currentCountry = EnsiMaa.ensimatka()
+    #this could choose a random large airport from the selected country?
+    currentAirport = ""
     totalDistanceTravelled = 0
     while True:
         print(f"You are currently located in {currentCountry}.")
@@ -36,7 +36,7 @@ def game():
         #this checks if the player input an icao code or airport name.
         elif main.sqlquery(f"SELECT name FROM airport WHERE name='{command}' OR ident='{command}'"):
             newAirportName = main.sqlquery(f"SELECT name FROM airport WHERE name='{command}' OR ident='{command}'")
-            newAirportName = removeshittis(str(newAirportName))
+            newAirportName = newAirportName[0][0]
             distanceTravelled = main.valimatka(main.sqlquery(f"SELECT ident FROM airport WHERE name='{newAirportName}' OR ident='{newAirportName}'"), main.sqlquery(f"SELECT ident FROM airport WHERE name='{currentAirport}'"))
             result = FlightCalculator.flytoplace(distanceTravelled, difficultyValue, sausagesFound.__len__())
             if result == "success":

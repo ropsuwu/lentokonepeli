@@ -17,6 +17,6 @@ def ensimatka():
         kursori.execute(location1)
         rivi = kursori.fetchone()
         if rivi:
-            return rivi[0]
+            return rivi[0][0]
         else:
             print("Maata ei löytynyt")
