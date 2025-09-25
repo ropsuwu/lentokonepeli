@@ -16,9 +16,10 @@ def game():
     diff = DifficultySelect.choosedifficulty()
     difficultyName = diff[0]
     difficultyValue = diff[1]
-    currentCountry = EnsiMaa.ensimatka()
+    #currentCountry = EnsiMaa.ensimatka()
+    currentCountry = "Finland"
     #this could choose a random large airport from the selected country?
-    currentAirport = ""
+    currentAirport = "Helsinki Vantaa Airport"
     totalDistanceTravelled = 0
     while True:
         print(f"You are currently located in {currentCountry}.")
@@ -38,7 +39,7 @@ def game():
             newAirportName = main.sqlquery(f"SELECT name FROM airport WHERE name='{command}' OR ident='{command}'")
             newAirportName = newAirportName[0][0]
             icao1 = main.sqlquery(f"SELECT ident FROM airport WHERE name='{command}' OR ident='{command}'")[0][0]
-            icao2 = main.sqlquery(f"SELECT ident FROM airport WHERE name='{currentAirport}'")
+            icao2 = main.sqlquery(f"SELECT ident FROM airport WHERE name='{currentAirport}'")[0][0]
             distanceTravelled = float(main.valimatka(icao1, icao2))
             result = FlightCalculator.flytoplace(distanceTravelled, difficultyValue, sausagesFound.__len__())
             if result == "success":
