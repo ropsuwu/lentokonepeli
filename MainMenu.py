@@ -11,7 +11,7 @@ menuState = "main"
 
 while True:
     if menuState == "main":
-        ans = input("Please input '1' to start a new game, '2' to view highscores, or '3' to exit the game")
+        ans = input("Please input '1' to start a new game, '2' to view highscores, or '3' to exit the game: ")
         if ans == "1":
             #start the game
             GameLoop.game()

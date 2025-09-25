@@ -61,5 +61,12 @@ def game():
                 score = int(((pow(difficultyValue,2))*sausagesFound.__len__()*100)/math.log10(totalDistanceTravelled))
                 scoreName = input("Enter name: ")
                 idCount = main.sqlquery("SELECT COUNT(*) FROM game")[0][0]
-                main.sqlquery(f"INSERT INTO game VALUES ({idCount+1}, '{difficultyName}', '{score}', '{scoreName}', '{currentAirport}, {currentCountry}')")
+
+
+
+
+
+
+                
+                main.sqlquery(f"INSERT INTO game VALUES ({idCount+1}, '{difficultyName}', {sausagesFound.__len__()},'{score}', '{scoreName}', '{currentAirport}, {currentCountry}')")
                 break
