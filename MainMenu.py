@@ -2,7 +2,7 @@ import main
 import GameLoop
 
 def printscores():
-    sqlresult = main.sqlquery(f"SELECT screen_name, difficulty, highscore FROM game")
+    sqlresult = main.sqlquery(f"SELECT screen_name, difficulty, high_score, location FROM game")
     for i in range(0, sqlresult.__len__(), 1):
         print(f"{sqlresult[i]}")
 
