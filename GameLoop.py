@@ -37,7 +37,7 @@ def game():
         elif main.sqlquery(f"SELECT name FROM airport WHERE name='{command}' OR ident='{command}'"):
             newAirportName = main.sqlquery(f"SELECT name FROM airport WHERE name='{command}' OR ident='{command}'")
             newAirportName = newAirportName[0][0]
-            distanceTravelled = main.valimatka(main.sqlquery(f"SELECT ident FROM airport WHERE name='{newAirportName}' OR ident='{newAirportName}'")[0][0], main.sqlquery(f"SELECT ident FROM airport WHERE name='{currentAirport}'")[0][0])
+            distanceTravelled = main.valimatka(main.sqlquery(f"SELECT ident FROM airport WHERE name='{newAirportName}' OR ident='{newAirportName}'")[0], main.sqlquery(f"SELECT ident FROM airport WHERE name='{currentAirport}'")[0])
             result = FlightCalculator.flytoplace(distanceTravelled, difficultyValue, sausagesFound.__len__())
             if result == "success":
                 currentCountry = main.sqlquery(f"SELECT country.name FROM country, airport WHERE country.iso_country = airport.iso_country AND airport.name = '{newAirportName}'")
