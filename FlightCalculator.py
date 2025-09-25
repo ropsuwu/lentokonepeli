@@ -8,7 +8,7 @@ def flytoplace(distance, difficultyValue, nroOfSosigs):
     # and to simulate having a heart attack on the plane but recieving medical attention due to landing fast enough
     chance = (difficultyValue * pow(distance * (nroOfSosigs/50), 0.8)) - 50
     #if the chance to die is over 20%, the player is asked for further confirmation
-    if chance >= 200:
+    if chance >= 0:
         confirm = input(f"Flying to this airport has a {chance/10}% chance of resulting in death, are you sure you want to continue? (y/n): ").lower()
     else:
         confirm = "y"
