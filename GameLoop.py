@@ -41,7 +41,7 @@ def game():
             result = FlightCalculator.flytoplace(distanceTravelled, difficultyValue, sausagesFound.__len__())
             if result == "success":
                 currentCountry = main.sqlquery(f"SELECT country.name FROM country, airport WHERE country.iso_country = airport.iso_country AND airport.name = '{newAirportName}'")
-                currentAirport = newAirportName
+                currentAirport = newAirportName[0]
                 totalDistanceTravelled += distanceTravelled
                 print(f"You have arrived at {currentAirport} in {currentCountry}.")
             elif result == "cancelled":

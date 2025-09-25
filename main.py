@@ -17,8 +17,8 @@ sqlconnection = mysql.connector.connect(
     host='localhost',
     port='3306',
     database='flight_game',
-    user='',
-    password='',
+    user='roope',
+    password='nakki',
     autocommit=True
 )
 #firstICAO = input("Enter the ICAO code of the first airport: ")
