@@ -22,7 +22,7 @@ def game():
     currentAirport = "Helsinki Vantaa Airport"
     totalDistanceTravelled = 0
     while True:
-        print(f"You are currently located in {removeshittis(currentCountry)}.")
+        print(f"You are currently located in {currentCountry}.")
         print("The available actions are:")
         #available commands should be listed for the player here
         command = input("test: ").lower()
@@ -43,7 +43,7 @@ def game():
             distanceTravelled = float(main.valimatka(icao1, icao2))
             result = FlightCalculator.flytoplace(distanceTravelled, difficultyValue, sausagesFound.__len__())
             if result == "success":
-                currentCountry = main.sqlquery(f"SELECT country.name FROM country, airport WHERE country.iso_country = airport.iso_country AND airport.name = '{newAirportName}'")
+                currentCountry = main.sqlquery(f"SELECT country.name FROM country, airport WHERE country.iso_country = airport.iso_country AND airport.name = '{newAirportName}'")[0][0]
                 currentAirport = newAirportName
                 totalDistanceTravelled += distanceTravelled
                 print(f"You have arrived at {currentAirport} in {currentCountry}.")
