@@ -24,7 +24,7 @@ while True:
         else:
             "ERROR; Not a valid input."
     elif menuState == "scores":
-        ans = input(f"input '1' to return to the mainmenu")
+        ans = input(f"input '1' to return to the main-menu")
         if ans == "1":
             menuState = "main"
         else:
