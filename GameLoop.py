@@ -41,11 +41,11 @@ def game():
             icao1 = main.sqlquery(f"SELECT ident FROM airport WHERE name='{command}' OR ident='{command}'")[0][0]
             icao2 = main.sqlquery(f"SELECT ident FROM airport WHERE name='{currentAirport}'")[0][0]
             distanceTravelled = float(main.valimatka(icao1, icao2))
+            totalDistanceTravelled += distanceTravelled
             result = FlightCalculator.flytoplace(distanceTravelled, difficultyValue, sausagesFound.__len__())
             if result == "success":
                 currentCountry = main.sqlquery(f"SELECT country.name FROM country, airport WHERE country.iso_country = airport.iso_country AND airport.name = '{newAirportName}'")[0][0]
                 currentAirport = newAirportName
-                totalDistanceTravelled += distanceTravelled
                 print(f"You have arrived at {currentAirport} in {currentCountry}.")
             elif result == "cancelled":
                 print(f"Flight to {newAirportName} cancelled.")
