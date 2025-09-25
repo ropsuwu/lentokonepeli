@@ -12,6 +12,7 @@ def valimatka(icao1, icao2):
     location1 = sqlquery(f"SELECT latitude_deg, longitude_deg FROM airport WHERE ident='{icao1}'")
     location2 = sqlquery(f"SELECT latitude_deg, longitude_deg FROM airport WHERE ident='{icao2}'")
     text = str(geopy.distance.distance(location1, location2))
+    text.replace(" km","")
     num = float(text)
     return num
 
