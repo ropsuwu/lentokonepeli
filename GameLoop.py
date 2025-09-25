@@ -67,6 +67,6 @@ def game():
 
 
 
-                
+
                 main.sqlquery(f"INSERT INTO game VALUES ({idCount+1}, '{difficultyName}', {sausagesFound.__len__()},'{score}', '{scoreName}', '{currentAirport}, {currentCountry}')")
                 break
