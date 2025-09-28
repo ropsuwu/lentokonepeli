@@ -9,7 +9,7 @@ def flytoplace(distance, difficultyValue, nroOfSosigs):
     chance = (difficultyValue * pow(distance * (nroOfSosigs/50), 0.8)) - 50
     #if the chance to die is over 20%, the player is asked for further confirmation
     if chance >= 0:
-        confirm = input(f"Flying to this airport has a {chance/10:02f}% chance of resulting in death, are you sure you want to continue? (y/n): ").lower()
+        confirm = input(f"Flying to this airport has a {(chance/10):.2f}% chance of resulting in death, are you sure you want to continue? (y/n): ").lower()
     else:
         confirm = "y"
     if confirm == "y":
