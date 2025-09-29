@@ -25,7 +25,7 @@ def pelaajan_sijainti(currentAirport):
 # Hakee kaikki suuret lentokentät ja niiden maat. Palauttaa listan: (kentän nimi, maan nimi, lat, lon).
 def get_large_airports():
     kursori = yhteys.cursor()
-    sql = "SELECT a.name, c.name AS country_name, a.latitude_deg, a.longitude_deg FROM airport a JOIN country c ON a.iso_country = c.iso_country WHERE a.type = 'large_airport'"
+    sql = "SELECT a.name, c.name AS country_name, a.latitude_deg, a.longitude_deg, a.ident FROM airport a JOIN country c ON a.iso_country = c.iso_country WHERE a.type = 'large_airport'"
     kursori.execute(sql)
     return kursori.fetchall()
 
@@ -39,7 +39,7 @@ def find_nearest_large_airports(currentAirport, sausagesFound, limit=3):
     airports = get_large_airports()
     results = []
 
-    for name, country, lat, lon in airports:
+    for name, country, lat, lon, icao in airports:
         airport_pos = (lat, lon)
         dist_km = distance.distance(player_pos, airport_pos).kilometers
 
@@ -50,7 +50,7 @@ def find_nearest_large_airports(currentAirport, sausagesFound, limit=3):
         if sausagesFound.__contains__(country):
             continue
 
-        results.append((name, country, dist_km))
+        results.append((name, country, dist_km, icao))
 
     results.sort(key=lambda x: x[2])
     return results[:limit]
@@ -61,8 +61,8 @@ def run_nearest_airports(currentAirport, sausagesFound):
     nearest = find_nearest_large_airports(currentAirport, sausagesFound)
     if nearest:
         print("Closest 3 airports with sausages:")
-        for name, country, dist in nearest:
-            print(f"{name} ({country}) - {dist:.2f} km")
+        for name, country, dist, icao in nearest:
+            print(f"{name}({icao}) in {country} - {dist:.2f} km")
 
 
 #run_nearest_airports(player_id)
