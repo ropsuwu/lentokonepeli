@@ -22,7 +22,7 @@ def game():
         command = input("Enter command: ").lower()
         if command == "h" or command == "help":
             print("Available actions:\n\"find sausage\"\nEnter airport name or ICAO code.\nType \"help\" or h to see available actions.\n> ")
-        elif command == "find sausage" or command == "find" or command == "1":
+        elif command == "find sausage" or command == "find":
             nakki = main.sqlquery(f"SELECT sausage FROM country WHERE name='{currentCountry}'")[0][0]
             if sausagesFound.__contains__(currentCountry):
                 print("You have already eaten this country's sausage! :(")
@@ -57,10 +57,13 @@ def game():
                 score = int(((pow(difficultyValue,2))*sausagesFound.__len__()*100)/math.log10(totalDistanceTravelled))
                 scoreName = input("Enter name: ")
                 idCount = main.sqlquery("SELECT COUNT(*) FROM game")[0][0]
+                print(idCount)
                 while True:
                     exists = main.sqlquery(f"SELECT id FROM game WHERE id = {idCount}")
                     if exists:
+                        print("+1")
                         idCount+=1
+                        print(idCount)
                     else:
                         break
                 main.sqlquery(f"INSERT INTO game VALUES ({idCount+1}, '{difficultyName}', {sausagesFound.__len__()},'{score}', '{scoreName}', '{currentAirport}, {currentCountry}')")
