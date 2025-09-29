@@ -17,7 +17,7 @@ yhteys = mysql.connector.connect(
 
 def pelaajan_sijainti(currentAirport):
     kursori = yhteys.cursor()
-    sql = "SELECT latitude_deg, longitude_deg FROM airport WHERE a.name = %s"
+    sql = "SELECT latitude_deg, longitude_deg FROM airport WHERE name = %s"
     kursori.execute(sql, (currentAirport,))
     return kursori.fetchone()
 
