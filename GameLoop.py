@@ -22,6 +22,8 @@ def game():
         command = input("Enter command: ").lower()
         if command == "h" or command == "help":
             print("Available actions:\n\"find sausage\"\nEnter airport name or ICAO code.\nType \"help\" or h to see available actions.\n> ")
+        #TESTCOMMANDS
+        #///
         elif command == "find sausage" or command == "find":
             nakki = main.sqlquery(f"SELECT sausage FROM country WHERE name='{currentCountry}'")[0][0]
             if sausagesFound.__contains__(currentCountry):
@@ -56,7 +58,7 @@ def game():
                 # though it is always better to get more sausages than to keep distance travelled low
                 score = int(((pow(difficultyValue,2))*sausagesFound.__len__()*100)/math.log10(totalDistanceTravelled))
                 scoreName = input("Enter name: ")
-                idCount = main.sqlquery("SELECT COUNT(*) FROM game")[0][0]
+                idCount = main.sqlquery("SELECT COUNT(*) FROM game")[0][0]+1
                 print(idCount)
                 while True:
                     exists = main.sqlquery(f"SELECT id FROM game WHERE id = {idCount}")
@@ -66,5 +68,5 @@ def game():
                         print(idCount)
                     else:
                         break
-                main.sqlquery(f"INSERT INTO game VALUES ({idCount+1}, '{difficultyName}', {sausagesFound.__len__()},'{score}', '{scoreName}', '{currentAirport}, {currentCountry}')")
+                main.sqlquery(f"INSERT INTO game VALUES ({idCount}, '{difficultyName}', {sausagesFound.__len__()},'{score}', '{scoreName}', '{currentAirport}, {currentCountry}')")
                 break
