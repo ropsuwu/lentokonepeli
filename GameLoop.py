@@ -19,7 +19,6 @@ def game():
     while True:
         print(f"You are currently located in {currentCountry}.")
         command = input("Enter command: ").lower()
-        Blentokenttahaku.run_nearest_airports(currentAirport, sausagesFound)
         #available commands should be listed for the player here
         #this adds the current country to the list of sausages eaten
         if command == "h" or "help":
@@ -43,6 +42,7 @@ def game():
                 currentCountry = main.sqlquery(f"SELECT country.name FROM country, airport WHERE country.iso_country = airport.iso_country AND airport.name = '{newAirportName}'")[0][0]
                 currentAirport = newAirportName
                 print(f"You have arrived at {currentAirport} in {currentCountry}.")
+                Blentokenttahaku.run_nearest_airports(currentAirport, sausagesFound)
             elif result == "cancelled":
                 print(f"Flight to {newAirportName} cancelled.")
             elif result == "death":
