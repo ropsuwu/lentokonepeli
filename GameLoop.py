@@ -57,6 +57,7 @@ def game():
                 #Travelling more distance during the game will slightly lower the players score,
                 # though it is always better to get more sausages than to keep distance travelled low
                 score = int(((pow(difficultyValue,2))*sausagesFound.__len__()*100)/math.log10(totalDistanceTravelled))
+                print(f"Your final score was {score}")
                 scoreName = input("Enter name: ")
                 idCount = main.sqlquery("SELECT COUNT(*) FROM game")[0][0]+1
                 while True:
