@@ -16,6 +16,7 @@ def game():
     currentAirport = "Helsinki Vantaa Airport"
     totalDistanceTravelled = 0
     print("Enter 'h' or 'help' for list of available commands")
+
     while True:
         print(f"You are currently located in {currentCountry}.")
         command = input("Enter command: ").lower()
@@ -23,7 +24,7 @@ def game():
         #this adds the current country to the list of sausages eaten
         if command == "h" or "help":
             command = input("Available actions:\n\"find sausage\"\nEnter airport name or ICAO code.\nType \"help\" or h to see available actions.\n> ").lower()
-        if command == "find sausage" or "find" or 1:
+        elif command == "find sausage" or "find" or "1":
             nakki = main.sqlquery(f"SELECT sausage FROM country WHERE name='{currentCountry}'")[0][0]
             if sausagesFound.__contains__(currentCountry):
                 print("You have already eaten this country's sausage! :(")
