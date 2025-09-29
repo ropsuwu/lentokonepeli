@@ -62,7 +62,7 @@ def run_nearest_airports(currentAirport, sausagesFound):
     if nearest:
         print("Closest 3 airports with sausages:")
         for name, country, dist, icao in nearest:
-            print(f"{name}({icao}) in {country} - {dist:.2f} km")
+            print(f"{name} ({icao}) in {country} - {dist:.2f} km")
 
 
 #run_nearest_airports(player_id)
