@@ -21,7 +21,7 @@ def game():
         print(f"You are currently located in {currentCountry}.")
         command = input("Enter command: ").lower()
         if command == "h" or command == "help":
-            print("Available actions:\n\"find sausage\"\nEnter airport name or ICAO code.\nType \"help\" or h to see available actions.\n> ").lower()
+            print("Available actions:\n\"find sausage\"\nEnter airport name or ICAO code.\nType \"help\" or h to see available actions.\n> ")
         elif command == "find sausage" or command == "find" or command == "1":
             nakki = main.sqlquery(f"SELECT sausage FROM country WHERE name='{currentCountry}'")[0][0]
             if sausagesFound.__contains__(currentCountry):
