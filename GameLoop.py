@@ -23,7 +23,7 @@ def game():
         #available commands should be listed for the player here
         #this adds the current country to the list of sausages eaten
         if command == "h" or "help":
-            command = input("Available actions:\n\"find sausage\"\nEnter airport name or ICAO code.\nType \"help\" or h to see available actions.\n> ").lower()
+            print("Available actions:\n\"find sausage\"\nEnter airport name or ICAO code.\nType \"help\" or h to see available actions.\n> ").lower()
         elif command == "find sausage" or "find" or "1":
             nakki = main.sqlquery(f"SELECT sausage FROM country WHERE name='{currentCountry}'")[0][0]
             if sausagesFound.__contains__(currentCountry):
