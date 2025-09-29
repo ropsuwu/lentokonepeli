@@ -56,5 +56,11 @@ def game():
                 score = int(((pow(difficultyValue,2))*sausagesFound.__len__()*100)/math.log10(totalDistanceTravelled))
                 scoreName = input("Enter name: ")
                 idCount = main.sqlquery("SELECT COUNT(*) FROM game")[0][0]
+                while True:
+                    exists = main.sqlquery(f"SELECT id FROM game WHERE id = {idCount}")
+                    if exists:
+                        idCount+=1
+                    else:
+                        break
                 main.sqlquery(f"INSERT INTO game VALUES ({idCount+1}, '{difficultyName}', {sausagesFound.__len__()},'{score}', '{scoreName}', '{currentAirport}, {currentCountry}')")
                 break
