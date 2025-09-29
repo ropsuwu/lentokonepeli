@@ -13,7 +13,7 @@ def game():
     #currentCountry = EnsiMaa.ensimatka()
     currentCountry = "Finland"
     #this could choose a random large airport from the selected country?
-    currentAirport = "Helsinki Vantaa Airport"
+    currentAirport = "Helsinki-Vantaa Airport"
     totalDistanceTravelled = 0
     command = input("Available actions:\n\"find sausage\"\nEnter airport name or ICAO code.\nType \"help\" or h to see available actions.\n> ").lower()
     while True:
