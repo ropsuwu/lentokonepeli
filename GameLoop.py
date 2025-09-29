@@ -12,7 +12,7 @@ def game():
     difficultyValue = diff[1]
     #currentCountry = EnsiMaa.ensimatka()
     currentCountry = "Finland"
-    #this could choose a random large airport from the selected country?
+    #this could choose a random airport from the selected country?
     currentAirport = "Helsinki Vantaa Airport"
     totalDistanceTravelled = 0
     print("Enter 'h' or 'help' for list of available commands")
