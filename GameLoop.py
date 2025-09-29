@@ -15,9 +15,10 @@ def game():
     #this could choose a random large airport from the selected country?
     currentAirport = "Helsinki-Vantaa Airport"
     totalDistanceTravelled = 0
-    command = input("Available actions:\n\"find sausage\"\nEnter airport name or ICAO code.\nType \"help\" or h to see available actions.\n> ").lower()
+    print("Enter 'h' or 'help' for list of available commands")
     while True:
         print(f"You are currently located in {currentCountry}.")
+        command = input("Enter command: ").lower()
         Blentokenttahaku.run_nearest_airports(currentAirport, sausagesFound)
         #available commands should be listed for the player here
         #this adds the current country to the list of sausages eaten
