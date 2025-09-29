@@ -20,15 +20,14 @@ def game():
     while True:
         print(f"You are currently located in {currentCountry}.")
         command = input("Enter command: ").lower()
-        #available commands should be listed for the player here
-        #this adds the current country to the list of sausages eaten
-        if command == "h" or "help":
+        if command == "h" or command == "help":
             print("Available actions:\n\"find sausage\"\nEnter airport name or ICAO code.\nType \"help\" or h to see available actions.\n> ").lower()
-        elif command == "find sausage" or "find" or "1":
+        elif command == "find sausage" or command == "find" or command == "1":
             nakki = main.sqlquery(f"SELECT sausage FROM country WHERE name='{currentCountry}'")[0][0]
             if sausagesFound.__contains__(currentCountry):
                 print("You have already eaten this country's sausage! :(")
             else:
+                # this adds the current country to the list of sausages eaten
                 sausagesFound.append(currentCountry)
                 print(f"You ate a {difficultyName} {nakki}!")
         #this checks if the player input an icao code or airport name.
