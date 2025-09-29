@@ -55,7 +55,7 @@ def game():
                 scoreName = input("Enter name: ")
                 idCount = main.sqlquery("SELECT COUNT(*) FROM game")[0][0]
                 while True:
-                    exists = main.sqlquery(f"SELECT id FROM game WHERE id = {idCount}")[0][0]
+                    exists = main.sqlquery(f"SELECT id FROM game WHERE id = {idCount}")
                     if exists:
                         idCount+=1
                     else:
