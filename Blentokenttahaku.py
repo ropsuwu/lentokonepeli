@@ -1,68 +1,67 @@
-import mysql.connector
-from geopy import distance
+from flask import Flask, request, jsonify
 
-yhteys = mysql.connector.connect(
-    host='127.0.0.1',
-    port=3306,
-    database='flight_game',
-    user='roope',
-    password='nakki',
-    autocommit=True
-)
+app = Flask(__name__)
 
-# Hakee pelaajan nykyisen sijainnin tietokannasta.
-# Funktio etsii pelaajan sijainnin game:sta, yhdistää sen airport:iin ja palauttaa sijainnin pituus- ja leveysasteet.
+@app.route("/player/location")
+def api_get_player_location():
 
-#player_id = 1
+    airport = request.args.get("airport")
 
-def pelaajan_sijainti(currentAirport):
-    kursori = yhteys.cursor()
-    sql = "SELECT latitude_deg, longitude_deg FROM airport WHERE name = %s"
-    kursori.execute(sql, (currentAirport,))
-    return kursori.fetchone()
+    if not airport:
+        return jsonify({"error": "Missing ?airport=<airport_name> parameter"}), 400
 
+    location = pelaajan_sijainti(airport)
 
-# Hakee kaikki suuret lentokentät ja niiden maat. Palauttaa listan: (kentän nimi, maan nimi, lat, lon).
-def get_large_airports():
-    kursori = yhteys.cursor()
-    sql = "SELECT a.name, c.name AS country_name, a.latitude_deg, a.longitude_deg, a.ident FROM airport a JOIN country c ON a.iso_country = c.iso_country WHERE a.type = 'large_airport'"
-    kursori.execute(sql)
-    return kursori.fetchall()
+    if not location:
+        return jsonify({"error": "Airport not found"}), 404
 
+    return jsonify({
+        "airport": airport,
+        "latitude": location[0],
+        "longitude": location[1]
+    })
 
-# Laskee ja palauttaa lähimmät suuret lentokentät pelaajan sijainnista.
-def find_nearest_large_airports(currentAirport, sausagesFound, limit=3):
-    player_coords = pelaajan_sijainti(currentAirport)
+@app.route("/airports/nearest", methods=["POST"])
+def api_get_nearest_airports():
 
-    player_pos = (player_coords[0], player_coords[1])
+    data = request.json or {}
 
-    airports = get_large_airports()
-    results = []
+    current_airport = data.get("currentAirport")
+    sausages_found = data.get("sausagesFound", [])
 
-    for name, country, lat, lon, icao in airports:
-        airport_pos = (lat, lon)
-        dist_km = distance.distance(player_pos, airport_pos).kilometers
+    if not current_airport:
+        return jsonify({"error": "currentAirport missing"}), 400
 
-        # Pelaajan oma kenttä ohitetaan
-        if dist_km == 0:
-            continue
+    nearest = find_nearest_large_airports(current_airport, sausages_found)
 
-        if sausagesFound.__contains__(country):
-            continue
+    if nearest is None:
+        return jsonify({"error": "Airport not found"}), 404
 
-        results.append((name, country, dist_km, icao))
+    return jsonify({"nearest_airports": nearest})
 
-    results.sort(key=lambda x: x[2])
-    return results[:limit]
+@app.route("/")
+def index():
+    return "Flask API for Game Running!"
 
+import json
+from flask import Response
 
-# Tulostaa pelaajalle lähimmät suuret lentokentät.
-def run_nearest_airports(currentAirport, sausagesFound):
-    nearest = find_nearest_large_airports(currentAirport, sausagesFound)
-    if nearest:
-        print("Closest 3 airports with sausages:")
-        for name, country, dist, icao in nearest:
-            print(f"{name} ({icao}) in {country} - {dist:.2f} km")
+@app.after_request
+def pretty_json(response):
+    if response.content_type != "application/json":
+        return response
+
+    try:
+        data = json.loads(response.get_data())
+        pretty = json.dumps(data, indent=4, ensure_ascii=False)
+        return Response(pretty, status=response.status_code, mimetype="application/json")
+    except Exception:
+        return response
 
 
-#run_nearest_airports(player_id)
+# -------------------------------
+# MAIN
+# -------------------------------
+if __name__ == "__main__":
+    app.run(debug=True, host="127.0.0.1", port=5000)
+

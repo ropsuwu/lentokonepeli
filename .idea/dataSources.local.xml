@@ -3,7 +3,7 @@
   <component name="dataSourceStorageLocal" created-in="PY-252.23892.515">
     <data-source name="flight_game@localhost" uuid="9c2d1c38-6c4b-4824-b44e-c3ff0a45337b">
       <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" dbms="MARIADB" />
-      <user-name>root</user-name>
+      <user-name>roope</user-name>
       <schema-mapping />
     </data-source>
   </component>
