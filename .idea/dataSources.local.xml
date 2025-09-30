@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="dataSourceStorageLocal" created-in="PY-252.23892.515">
+  <component name="dataSourceStorageLocal" created-in="PY-252.25557.178">
     <data-source name="flight_game@localhost" uuid="9c2d1c38-6c4b-4824-b44e-c3ff0a45337b">
-      <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" dbms="MARIADB" />
+      <database-info product="MariaDB" version="12.0.2-MariaDB" jdbc-version="4.2" driver-name="MariaDB Connector/J" driver-version="3.3.3" dbms="MARIADB" exact-version="12.0.2" exact-driver-version="3.3">
+        <extra-name-characters>#@</extra-name-characters>
+        <identifier-quote-string>`</identifier-quote-string>
+      </database-info>
+      <case-sensitivity plain-identifiers="lower" quoted-identifiers="lower" />
+      <secret-storage>master_key</secret-storage>
       <user-name>roope</user-name>
-      <schema-mapping />
+      <schema-mapping>
+        <introspection-scope>
+          <node kind="schema" qname="@" />
+        </introspection-scope>
+      </schema-mapping>
     </data-source>
   </component>
 </project>
