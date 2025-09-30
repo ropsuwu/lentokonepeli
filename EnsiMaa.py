@@ -20,3 +20,20 @@ def ensimatka():
             return rivi[0][0]
         else:
             print("Maata ei löytynyt")
+        if rivi:
+            iso_code = rivi[0]
+
+            # Haetaan ensimmäinen large_airport tästä maasta
+            sql_airport = f"SELECT airport.name FROM airport WHERE airport.iso_country = '{iso_code}' AND airport.type = 'large_airport'"
+            kursori.execute(sql_airport)
+            kentta = kursori.fetchone()
+
+            if kentta:
+                return kentta[0], nimi  # palautetaan (lentokentän nimi, maan nimi)
+            else:
+                print("Tästä maasta ei löytynyt large_airport -tyyppisiä kenttiä.")
+
+
+
+
+
