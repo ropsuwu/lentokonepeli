@@ -32,12 +32,12 @@ def game(mods):
         command = input("Enter command: ").lower()
         if command == "h" or command == "help":
             printtext(f"You are currently located at {currentAirport} in {currentCountry}.", mods)
+            Blentokenttahaku.run_nearest_airports(currentAirport, sausagesFound, mods)
             printtext("Available actions:\n\""
                       "find sausage\"\n"
                       "Enter airport name or ICAO code.\n"
                       "Type 'help' or h to see available actions.\n"
                       "> ", mods)
-            Blentokenttahaku.run_nearest_airports(currentAirport, sausagesFound, mods)
         #TESTCOMMANDS
         #///
         elif command == "find sausage" or command == "find":
