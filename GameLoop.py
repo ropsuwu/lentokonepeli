@@ -37,6 +37,7 @@ def game(mods):
                       "Enter airport name or ICAO code.\n"
                       "Type 'help' or h to see available actions.\n"
                       "> ", mods)
+            Blentokenttahaku.run_nearest_airports(currentAirport, sausagesFound, mods)
         #TESTCOMMANDS
         #///
         elif command == "find sausage" or command == "find":
