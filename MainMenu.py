@@ -1,14 +1,27 @@
 import main
 import GameLoop
 def printscores():
-    sqlresult = main.sqlquery(f"SELECT screen_name, difficulty, sausagenum, high_score, location FROM game ORDER BY sausagenum DESC")
+    sqlresult = main.sqlquery(f"SELECT screen_name, difficulty, sausagenum, high_score, location FROM game ORDER BY high_score DESC")
+    print(f"|Name".ljust(20) +
+          f"|Difficulty".ljust(20) +
+          f"|Sosigs".ljust(10) +
+          f"|Score".ljust(10) +
+          f"|Location at time of death".ljust(50) +
+          "|")
+    print("".ljust(111, "-"))
     for i in range(0, sqlresult.__len__(), 1):
-        print(f"{sqlresult[i]}")
+        print(  f"|{sqlresult[i][0]}".ljust(20) +
+                f"|{sqlresult[i][1]}".ljust(20) +
+                f"|{sqlresult[i][2]}".ljust(10) +
+                f"|{sqlresult[i][3]}".ljust(10) +
+                f"|{sqlresult[i][4]}".ljust(50) +
+                "|")
 
 menuState = "main"
 mods = {
     "2hearted": False,
     "estart": False,
+    "norandom": False,
     "colourblind": "Off",
     "dyslexia": False,
 }
@@ -37,6 +50,7 @@ while True:
     elif menuState == "mods":
         ans = input(f"(1) Two hearts: {mods['2hearted']}\n"
                     f"(2) Extreme start: {mods['estart']}\n"
+                    f"(3) No Randomness: {mods['norandom']}\n"
                     #a 'daily run' type modifier could work here
                     f"(8) Colour Blind Mode: {mods['colourblind']}\n"
                     f"(9) Dyslexia: {mods['dyslexia']}\n"
@@ -48,6 +62,8 @@ while True:
             mods["2hearted"] = not mods["2hearted"]
         elif ans == "2":
             mods["estart"] = not mods["estart"]
+        elif ans == "3":
+            mods["norandom"] = not mods["norandom"]
         elif ans == "8":
             mods["colourblind"] = cbmodes[(cbmodes.index(mods["colourblind"])+1)%4]
         elif ans == "9":
