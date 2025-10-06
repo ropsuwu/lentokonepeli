@@ -26,9 +26,9 @@ def ensimatka():
             if kentta:
                 return kentta[0], rivi[0]  # palautetaan (lentokentän nimi, maan nimi)
             else:
-                print("Tästä maasta ei löytynyt large_airport -tyyppisiä kenttiä.")
+                print("This country doesn't have a large airport.")
         else:
-            print("Maata ei löytynyt")
+            print("Country not found")
 
 
 
