@@ -22,10 +22,9 @@ def game(mods):
             sausagesFound.append(f"sosig{i}")
         printtext("Good luck.", mods)
     else:
-        #currentCountry = EnsiMaa.ensimatka()
-        currentCountry = "Finland"
+        currentAirport, currentCountry = EnsiMaa.ensimatka()
+        #currentCountry = "Finland"
         #this could choose a random airport from the selected country?
-        currentAirport = "Helsinki Vantaa Airport"
     totalDistanceTravelled = 0
     printtext(f"You are currently located in {currentCountry}.", mods)
     print("")
