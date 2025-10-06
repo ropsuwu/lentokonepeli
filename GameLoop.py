@@ -10,9 +10,11 @@ def game(mods):
     lives = 1
     sausagesFound = []
     diff = DifficultySelect.choosedifficulty()
+    print("")
     difficultyName = diff[0]
     difficultyValue = diff[1]
     printtext("Enter 'h' or 'help' for list of available commands", mods)
+    print("")
     if mods["estart"]:
         currentAirport = main.sqlquery("SELECT name FROM airport WHERE ident ='AT13'")[0][0]
         currentCountry = "Antarctica"
@@ -26,12 +28,14 @@ def game(mods):
         currentAirport = "Helsinki Vantaa Airport"
     totalDistanceTravelled = 0
     printtext(f"You are currently located in {currentCountry}.", mods)
+    print("")
     Blentokenttahaku.run_nearest_airports(currentAirport, sausagesFound, mods)
     while True:
-
+        print("")
         command = input("Enter command: ").lower()
         if command == "h" or command == "help":
             printtext(f"You are currently located at {currentAirport} in {currentCountry}.", mods)
+            print("")
             Blentokenttahaku.run_nearest_airports(currentAirport, sausagesFound, mods)
             printtext("Available actions:\n\""
                       "find sausage\"\n"
@@ -62,18 +66,21 @@ def game(mods):
                 currentCountry = main.sqlquery(f"SELECT country.name FROM country, airport WHERE country.iso_country = airport.iso_country AND airport.name = '{newAirportName}'")[0][0]
                 currentAirport = newAirportName
                 printtext(f"You have arrived at {currentAirport} in {currentCountry}.", mods)
+                print("")
                 Blentokenttahaku.run_nearest_airports(currentAirport, sausagesFound, mods)
             elif result == "cancelled":
                 printtext(f"Flight to {newAirportName} cancelled.", mods)
             elif result == "death":
                 if mods["2hearted"] and lives==1:
                     input(f"While on a plane to {newAirportName} you entered cardiac arrest. One of your hearts is now unusable! (continue)")
+                    print("")
                     lives=0
                     currentCountry = main.sqlquery(f"SELECT country.name FROM country, airport WHERE country.iso_country = airport.iso_country AND airport.name = '{newAirportName}'")[0][0]
                     currentAirport = newAirportName
                     printtext(f"You have arrived at {currentAirport} in {currentCountry}.", mods)
                     Blentokenttahaku.run_nearest_airports(currentAirport, sausagesFound, mods)
                 else:
+                    print("")
                     printtext(f"While on a plane to {newAirportName} you entered cardiac arrest and subsequently perished after eating a total of {sausagesFound.__len__()} sausages!", mods)
                     #some sort of ascii art could work here?
 
@@ -83,6 +90,7 @@ def game(mods):
                     #Travelling more distance during the game will slightly lower the players score,
                     # though it is always better to get more sausages than to keep distance travelled low
                     score = int(((pow(difficultyValue,2))*sausagesFound.__len__()*100)/math.log10(totalDistanceTravelled))
+                    print("")
                     printtext(f"Your final SAUSAGE FEST score was {score}", mods)
                     scoreName = input("Enter name: ")
                     idCount = main.sqlquery("SELECT COUNT(*) FROM game")[0][0]+1
