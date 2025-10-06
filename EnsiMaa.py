@@ -10,7 +10,7 @@ sqlconnection = mysql.connector.connect(
 
 def ensimatka():
     while True:
-        nimi = input("Valitse aloitus maa antamalla maan nimi: ").lower()
+        nimi = input("Valitse aloitus maa antamalla maan nimi englanniksi: ").lower()
         location1 = f"SELECT name, iso_country FROM country WHERE name = '{nimi}'"
         kursori = sqlconnection.cursor()
         kursori.execute(location1)
