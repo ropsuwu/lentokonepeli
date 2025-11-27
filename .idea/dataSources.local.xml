@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="dataSourceStorageLocal" created-in="PY-252.23892.515">
+  <component name="dataSourceStorageLocal" created-in="PY-252.25557.130">
     <data-source name="@localhost" uuid="9c2d1c38-6c4b-4824-b44e-c3ff0a45337b">
-      <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" dbms="MARIADB" />
+      <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" dbms="MARIADB">
+        <extra-name-characters>#@</extra-name-characters>
+        <identifier-quote-string>`</identifier-quote-string>
+      </database-info>
+      <case-sensitivity plain-identifiers="exact" quoted-identifiers="exact" />
+      <secret-storage>master_key</secret-storage>
+      <user-name>jeret</user-name>
       <schema-mapping />
     </data-source>
   </component>
