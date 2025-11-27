@@ -10,13 +10,27 @@ sqlconnection = mysql.connector.connect(
 
 def ensimatka():
     while True:
-        nimi = input("Valitse aloitus maa antamalla maan nimi: ").lower()
-        location1 = f"SELECT name FROM country WHERE name = '{nimi}'"
-        print(location1)
+        nimi = input("Enter the name of your starting country: ").lower()
+        location1 = f"SELECT name, iso_country FROM country WHERE name = '{nimi}'"
         kursori = sqlconnection.cursor()
         kursori.execute(location1)
         rivi = kursori.fetchone()
         if rivi:
-            return rivi[0][0]
+            iso_code = rivi[1]
+
+            # Haetaan ensimmäinen large_airport tästä maasta
+            sql_airport = f"SELECT airport.name FROM airport WHERE airport.iso_country = '{iso_code}' AND airport.type = 'large_airport'"
+            kursori.execute(sql_airport)
+            kentta = kursori.fetchone()
+
+            if kentta:
+                return kentta[0], rivi[0]  # palautetaan (lentokentän nimi, maan nimi)
+            else:
+                print("This country doesn't have a large airport.")
         else:
-            print("Maata ei löytynyt")
+            print("Country not found")
+
+
+
+
+
