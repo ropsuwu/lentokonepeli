@@ -19,11 +19,12 @@ var currentCountry;
 
 map = L.map('map').setView([0,0],1); //makes a leaflet map
 
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
     noWrap: true,
     maxBounds: [[90,180],[-90,-180]],
     minZoom: 1,
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    maxZoom: 5,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attribution">CARTO</a>'
 }).addTo(map); //adds the GeoJSON data to the leaflet map
 
 var sosigStyle = {

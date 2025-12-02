@@ -1,3 +1,13 @@
+html {
+    min-height: 100%;
+    background-image: linear-gradient(to bottom, #da9362, #c65a31);
+}
+
+h1 {
+    padding-top: 20px;
+    text-align: center;
+}
+
 #map {
     height: 512px;
     width: 512px;
@@ -6,7 +16,7 @@
 
 }
 
-/*Nappi styling*/
+/*Button styling*/
 #sosigButton {
     text-align: center;
     padding: 15px;
