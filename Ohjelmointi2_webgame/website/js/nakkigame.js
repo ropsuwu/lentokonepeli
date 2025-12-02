@@ -3,11 +3,13 @@
 function FlytoCountry() { // player flies to country
     //this should do stuff on the map and call death chance and other stuff
     currentCountry = selectedCountry
+    console.log("Flying!!")
 }
 
 function GetSosig() { //player obtains sausage
     //get sausage and do stuff
     currentCountry.setStyle(noSosigStyle)
+    console.log('Sosig!!');
 }
 
 var map;
@@ -38,14 +40,26 @@ var noSosigStyle = {
 L.geoJSON(globeGeojsonLayer, { style: sosigStyle }).bindPopup(function (layer) {
     if (layer.options.color == "#008000") { //if there is a sausage in the country
         selectedCountry = layer
-        //DEBUG
-        FlytoCountry()
-        GetSosig()
-        //
-        return layer.feature.properties.name
+
+        const div = document.createElement("div");
+        div.innerHTML = '<b>' + layer.feature.properties.name +'</b>';
+
+        const button = document.createElement("button");
+        button.innerHTML = "Fly to country";
+
+        button.onclick = function () {
+            FlytoCountry()
+        }
+
+        div.appendChild(button);
+
+        return div
     }
     else if (layer.options.color == "#FF0000") { //if country doesnt contain a sausage anymore
         return "You have already eaten a sausage in "+layer.feature.properties.name+"."
     }
 }).addTo(map);
-//globeGeojsonLayer.addTo(map);
+
+document.getElementById('sosigButton').addEventListener('click', (e) => { //this is for the sausage search button
+    GetSosig();
+});
