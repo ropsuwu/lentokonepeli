@@ -67,12 +67,12 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 let sosigStyle = {
     "color": "#008000",//green
-    "weight": 5,
+    "weight": 2,
     "opacity": 0.9
 };
 let noSosigStyle = {
     "color": "#FF0000",//red
-    "weight": 5,
+    "weight": 2,
     "opacity": 0.9
 };
 
