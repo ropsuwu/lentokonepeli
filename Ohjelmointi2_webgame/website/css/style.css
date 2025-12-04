@@ -26,10 +26,10 @@
     opacity: 0.9;
 }
 .Left {
-    background-image: url("https://media02.stockfood.com/largepreviews/MzQ5OTI3Mjg3/11287977-A-stereotypical-German-man-wearing-lederhosen-and-eating-white-sausage-with-a-beer.jpg");
+    background-image: url("../images/leftad.webp")
 }
 .Right {
-    background-image: url("../images/rightad.png");
+    background-image: url("../images/rightad.webp");
     background-size: cover;
     background-position: 25% center;
     background-repeat: no-repeat;

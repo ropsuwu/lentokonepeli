@@ -141,7 +141,7 @@ L.geoJSON(globeGeojsonLayer, { style: sosigStyle }).bindPopup(function (layer) {
     }
 }).addTo(map);
 
-let planeImg = L.imageOverlay("images/test.png", currentLatLng).addTo(map)
+let planeImg = L.imageOverlay("images/test.webp", currentLatLng).addTo(map)
 
 document.getElementById('sosigButton').addEventListener('click', (e) => { //this is for the sausage search button
     GetSosig();
