@@ -1,17 +1,46 @@
+.MapAd-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 70px;
+    margin: 0 auto;
+    position: relative;
+    width: fit-content;
+}
 #map {
     height: 512px;
     width: 512px;
-    margin: 0 auto;
     display: block;
 
+}
+.advert {
+    width: 250px;
+    height: 520px;
+    background-color: #bea8a8;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.Left {
+    background-image: url("https://media02.stockfood.com/largepreviews/MzQ5OTI3Mjg3/11287977-A-stereotypical-German-man-wearing-lederhosen-and-eating-white-sausage-with-a-beer.jpg");
+}
+.Right {
+    background-image: url("../images/rightad.png");
+    background-size: cover;
+    background-position: 25% center;
+    background-repeat: no-repeat;
 }
 
 /*Nappi styling*/
 .button-container {
-    position: relative;
+    position: absolute;
+    left: 50%;
+    bottom: -80px;
     width: 200px;
     height: 80px;
-    margin: 20px auto 0;
+    margin: 0;
+    clear: both;
+    transform: translateX(-50%);
 }
 .button-text{
     position: absolute;
@@ -39,6 +68,7 @@
 #sosigButton:hover {
     transform: rotate(0deg) scale(1.05);
 }
+
 #sosigButton:active {
     transform: rotate(720deg) scale(0.98);
 }
