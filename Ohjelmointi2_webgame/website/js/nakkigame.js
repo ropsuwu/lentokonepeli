@@ -146,3 +146,13 @@ let planeImg = L.imageOverlay("images/test.png", currentLatLng).addTo(map)
 document.getElementById('sosigButton').addEventListener('click', (e) => { //this is for the sausage search button
     GetSosig();
 });
+
+document.querySelectorAll('.advert').forEach(ad => {
+    ad.addEventListener('click',function () {
+        const adUrl = this.getAttribute('data-ad-url');
+        if (adUrl) {
+            window.open(adUrl, '_blank');
+        }
+        }
+    );
+});
