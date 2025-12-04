@@ -17,7 +17,7 @@ def choosedifficulty(difficulty):
     return None
 
 
-@app.route("/difficulty")
+@app.route('/difficulty')
 def api_choose_difficulty():
     #data = request.json
     data = {"difficulty":"1"}
