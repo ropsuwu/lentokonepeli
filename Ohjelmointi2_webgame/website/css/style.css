@@ -1,31 +1,54 @@
-html {
-    min-height: 100%;
-    background-image: linear-gradient(to bottom, #da9362, #c65a31);
+.MapAd-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 70px;
+    margin: 0 auto;
+    position: relative;
+    width: fit-content;
 }
-
-h1 {
-    padding-top: 20px;
-    text-align: center;
-}
-
 #map {
     height: 512px;
     width: 512px;
-    margin: 0 auto;
     display: block;
 
 }
+.advert {
+    width: 250px;
+    height: 520px;
+    background-color: #bea8a8;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+.advert:hover {
+    opacity: 0.9;
+}
+.Left {
+    background-image: url("../images/leftad.webp")
+}
+.Right {
+    background-image: url("../images/rightad.webp");
+    background-size: cover;
+    background-position: 25% center;
+    background-repeat: no-repeat;
+}
 
-/*Button styling*/
+/*Nappi styling*/
 .button-container {
-    position: relative;
+    position: absolute;
+    left: 50%;
+    bottom: -80px;
     width: 200px;
     height: 80px;
-    margin: 20px auto 0;
+    margin: 0;
+    clear: both;
+    transform: translateX(-50%);
 }
 .button-text{
     position: absolute;
-    top:60%;
+    top:70%;
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 25px;
@@ -49,6 +72,7 @@ h1 {
 #sosigButton:hover {
     transform: rotate(0deg) scale(1.05);
 }
+
 #sosigButton:active {
     transform: rotate(720deg) scale(0.98);
 }
