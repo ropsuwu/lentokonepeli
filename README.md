@@ -1,12 +1,7 @@
-# Ryhmän 4 lentokonepeli
+# Sausage Flight Fest '25
+
 
 Pelin tavoitteena on kerätä käydä mahdollisimman monessa maassa ja kerätä mahdollisimman monta makkaraa/nakkia. 
-Peli on kirjoitettu pythonilla ja käyttää mySQL tietokantaa. Peli toimii terminaalissa.
+Itse peli on kirjoitettu pythonilla ja käyttää mySQL tietokantaa. 
 
-Nimi-ideat:
-Sausage Flight Fest '25, 
-Nakit ympäri maailman
-Nakkien pyhiinvaellus
-Etsi lempi nakkisi!
-Nakki Conquest 2000
-Around the world in 80 sausages
+Peliä pelataan verkkoselaimessa, jossa localhost sivu kutsuu flaskilla luotua API pelin pelaamiseksi.

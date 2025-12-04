@@ -1,31 +1,74 @@
 import main
 import GameLoop
-
 def printscores():
-    sqlresult = main.sqlquery(f"SELECT screen_name, difficulty, sausagenum, high_score, location FROM game")
+    sqlresult = main.sqlquery(f"SELECT screen_name, difficulty, sausagenum, high_score, location FROM game ORDER BY high_score DESC")
+    print(f"|Name".ljust(20) +
+          f"|Difficulty".ljust(20) +
+          f"|Sosigs".ljust(10) +
+          f"|Score".ljust(10) +
+          f"|Location at time of death".ljust(50) +
+          "|")
+    print("".ljust(111, "-"))
     for i in range(0, sqlresult.__len__(), 1):
-        print(f"{sqlresult[i]}")
+        print(  f"|{sqlresult[i][0]}".ljust(20) +
+                f"|{sqlresult[i][1]}".ljust(20) +
+                f"|{sqlresult[i][2]}".ljust(10) +
+                f"|{sqlresult[i][3]}".ljust(10) +
+                f"|{sqlresult[i][4]}".ljust(50) +
+                "|")
 
 menuState = "main"
-#expected values for 'menuState' are 'main', and 'scores'
+mods = {
+    "2hearted": False,
+    "estart": False,
+    "norandom": False,
+    "colourblind": "Off",
+    "dyslexia": False,
+}
+cbmodes = ["Off", "Protanopia", "Deuteranopia", "Tritanopia"]
+#expected values for 'menuState' are 'main', 'scores', and 'mods'
 
 while True:
     if menuState == "main":
-        ans = input("Please input '1' to start a new game, '2' to view highscores, or '3' to exit the game: ")
+        ans = input("(1) Start a new game\n"
+                    "(2) Change game modifiers\n"
+                    "(3) View highscores\n"
+                    "(4) Exit the game\n>")
         if ans == "1":
             #start the game
-            GameLoop.game()
+            GameLoop.game(mods)
         elif ans == "2":
-            #switch to highscore menu
-            printscores()
-            menuState = "scores"
+            #switch to modifiers menu
+            menuState = "mods"
         elif ans == "3":
+            #switch to highscore menu
+            menuState = "scores"
+        elif ans == "4":
             quit()
         else:
-            "ERROR; Not a valid input."
-    elif menuState == "scores":
-        ans = input(f"input '1' to return to the main-menu")
-        if ans == "1":
+            print("ERROR; Not a valid input.")
+    elif menuState == "mods":
+        ans = input(f"(1) Two hearts: {mods['2hearted']}\n"
+                    f"(2) Extreme start: {mods['estart']}\n"
+                    f"(3) No Randomness: {mods['norandom']}\n"
+                    #a 'daily run' type modifier could work here
+                    f"(8) Colour Blind Mode: {mods['colourblind']}\n"
+                    f"(9) Dyslexia: {mods['dyslexia']}\n"
+                    f"(0/enter) Return to the main-menu\n"
+                    f"> ")
+        if ans == "0" or ans == "":
             menuState = "main"
-        else:
-            "ERROR; Not a valid input."
+        elif ans == "1":
+            mods["2hearted"] = not mods["2hearted"]
+        elif ans == "2":
+            mods["estart"] = not mods["estart"]
+        elif ans == "3":
+            mods["norandom"] = not mods["norandom"]
+        elif ans == "8":
+            mods["colourblind"] = cbmodes[(cbmodes.index(mods["colourblind"])+1)%4]
+        elif ans == "9":
+            mods["dyslexia"] = not mods["dyslexia"]
+    elif menuState == "scores":
+        printscores()
+        ans = input(f"Return to the main-menu by pressing enter")
+        menuState = "main"
