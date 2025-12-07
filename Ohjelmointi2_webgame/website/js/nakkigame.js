@@ -76,7 +76,7 @@ function FlytoCountry() { // player flies to country
     console.log("Flying!!")
 }
 
-function GetSosig() { //player obtains sausage
+function GetSosig() { //player obtains a sausage
     //get sausage and do stuff
     if (!inPlaneAnim) {
         currentCountry.setStyle(noSosigStyle)
@@ -137,23 +137,15 @@ L.geoJSON(globeGeojsonLayer, { style: sosigStyle }).bindPopup(function (layer) {
 
         return div
     }
-    else if (layer.options.color == "#FF0000") { //if country doesnt contain a sausage anymore
+     //change the color if country doesn't contain a sausage
+    else if (layer.options.color == "#FF0000") {
         return "You have already eaten a sausage in "+layer.feature.properties.name+"."
     }
 }).addTo(map);
 
 let planeImg = L.imageOverlay("images/test.webp", currentLatLng).addTo(map)
 
-document.getElementById('sosigButton').addEventListener('click', (e) => { //this is for the sausage search button
+//Event listener for the button
+document.getElementById('button-main').addEventListener('click', (e) => {
     GetSosig();
-});
-
-document.querySelectorAll('.advert').forEach(ad => {
-    ad.addEventListener('click',function () {
-        const adUrl = this.getAttribute('data-ad-url');
-        if (adUrl) {
-            window.open(adUrl, '_blank');
-        }
-        }
-    );
 });
