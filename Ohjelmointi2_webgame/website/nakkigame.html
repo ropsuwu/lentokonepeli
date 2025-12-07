@@ -8,28 +8,29 @@
     <title>Nakkipeli</title>
     <link rel="stylesheet" href="css/leaflet.css" />
     <link rel="stylesheet" href="css/style.css" />
-    <script src="js/leaflet/leaflet.js"></script>
-    <script src="js/polyline.encoded.js"></script>
-    <script src="js/leaflet/leaflet.ajax.js"></script>
-    <script src="js/globalGeoJSON.js"></script>
+    <script src="js/leaflet/leaflet.js" defer></script>
+    <script src="js/leaflet/leaflet.ajax.js" defer></script>
+    <script src="js/polyline.encoded.js" defer></script>
+    <script src="js/globalGeoJSON.js" defer></script>
     <script src="js/nakkigame.js" defer></script>
+    <script src="js/audio.js" defer></script>
 </head>
 
 <body>
-    <div class="MapAd-container">
-    <div class="advert Left" data-ad-url="https://youtu.be/J-us8coco3Q"></div>
-    <div id="map"></div>
-    <div class="advert Right" data-ad-url="https://youtu.be/wl-HPIu5kcs?list=RDwl-HPIu5kcs"></div>
-    <div class="button-container">
-        <input
-            type="image"
-            src="images/sausagebutt.webp"
-            alt="button"
-            id="sosigButton"
-        >
-        <span class="button-text">Find Sausage</span>
-</div>
-</div>
+    <div class="main-container">
+        <a class="advert Left" href="https://youtu.be/J-us8coco3Q" target="_blank"></a>
+        <div id="map"></div>
+        <a class="advert Right" href="https://youtu.be/wl-HPIu5kcs" target="_blank"></a>
+        <div class="button-container">
+            <input
+                type="image"
+                src="images/sausagebutt.webp"
+                alt="button"
+                id="button-main"
+            >
+            <span class="button-text">Find Sausage</span>
+    </div>
+    </div>
+<audio src="audio/bgm.ogg" autoplay></audio>
 </body>
-
 </html>

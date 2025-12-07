@@ -4,21 +4,22 @@ class Overlap {
     this.path = path;
   }
 
-
+  /*Creates an audio object when the button is clicked*/
   play() {
     const audio = new Audio(this.path)
     audio.play().catch(e => console.error("Audio playback failed", e));
 
     audio.addEventListener("ended", () => {
+      /*remove object after playing to prevent possible, although unlikely, memory leak*/
+      audio.remove();
     });
   };
 }
 
-const clickSound = new Overlap("../audio/click.ogg")
-const button = document.querySelector("button")
+const clickSound = new Overlap("audio/click.ogg")
+const button = document.getElementById("button-main")
 
-if (button) {
-  button.addEventListener("click", () => {
-    clickSound.play();
-  });
-}
+/*Runs the play method when clicking*/
+button.addEventListener("click", () => {
+  clickSound.play();
+});
