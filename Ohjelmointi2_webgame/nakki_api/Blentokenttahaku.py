@@ -1,7 +1,9 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from geopy import distance
 import main
 app = Flask(__name__)
+CORS(app)
 
 def pelaajan_sijainti(currentAirport):
     return main.sqlquery(f"SELECT latitude_deg, longitude_deg FROM airport WHERE name = '{currentAirport}'")[0]

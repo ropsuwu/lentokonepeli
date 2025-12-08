@@ -1,9 +1,11 @@
 from flask import Flask, request, jsonify, Response
+from flask_cors import CORS
 import mysql.connector
 from geopy import distance
 import json
 
 app = Flask(__name__)
+CORS(app)
 
 sqlconnection = mysql.connector.connect(
     host='localhost',
@@ -14,10 +16,19 @@ sqlconnection = mysql.connector.connect(
     autocommit=True
 )
 
-def sqlquery(query):
+@app.route("/query")
+def sqlquery():
+    query = request.args.get("query")
+    if not query:
+        return jsonify({"error": "Missing ?query=<mysql_query> parameter"}), 400
+
     cursor = sqlconnection.cursor()
     cursor.execute(query)
-    return cursor.fetchall()
+
+    result=cursor.fetchall()
+    if not result:
+        return jsonify({"error": "Result not found"}), 404
+    return result
 
 def valimatka(icao1, icao2):
     loc1 = sqlquery(f"SELECT latitude_deg, longitude_deg FROM airport WHERE ident='{icao1}'")

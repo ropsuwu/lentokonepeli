@@ -11,6 +11,7 @@ let lines = [];
 let dash;
 let dashTimer = 10;
 let curDashTimer;
+let sausagesFound = [];
 function PlaneAnim() {
     if (!inPlaneAnim) {
         curPlaneSpeed = planeSpeed
@@ -34,18 +35,31 @@ function PlaneAnim() {
         let newBounds = L.latLngBounds([newCenter[0] + (planeSize / (sMercatorLng * 1)), newCenter[1] + planeSize], [newCenter[0] - (planeSize / (sMercatorLng * 1)), newCenter[1] - planeSize])
         //console.log(newBounds)
         planeImg.setBounds(newBounds)
-        console.log(sMercatorLng)
+        //console.log(sMercatorLng)
         curPlaneSpeed = (planeSpeed / Math.max(2, sMercatorLng*1))*3
 
         if (!dash) {
             bPos = planeImg.getCenter()
             let newLine = L.polyline([aPos, bPos], { color: "#FF0000" })
-            lines.push[newLine]
+            lines.push(newLine)
+            //console.log(lines)
             newLine.addTo(map)
             aPos = bPos
         }
         else if (dash) {
-
+            bPos = planeImg.getCenter()
+            let newLine = L.polyline([aPos, bPos], { color: "#FF0000" , opacity: 0})
+            lines.push(newLine)
+            //console.log(lines)
+            newLine.addTo(map)
+            aPos = bPos
+        }
+        console.log(lines.length)
+        if (lines.length > 300) {
+            for (let i = 0; lines.length > 300; i++) {
+                map.removeLayer(lines[i])
+                lines.splice(i,1)
+            }
         }
         curDashTimer -= 1 
         if (curDashTimer <= 0) {
@@ -68,21 +82,43 @@ function PlaneAnim() {
     }
 }
 
-function FlytoCountry() { // player flies to country
+async function FlytoCountry() { // player flies to country
     //this should do stuff on the map and call death chance and other stuff
     currentCountry = selectedCountry
-    targetLatLng = selectedLatLng
+    const targetAirport = await fetch("http://127.0.0.1:5000/query?query=SELECT a.name, a.latitude_deg, a.longitude_deg, a.ident FROM airport a JOIN country c ON a.iso_country = c.iso_country WHERE a.type = 'large_airport' AND c.name='" + currentCountry.feature.properties.name + "'"); //this doesnt work right now, i will fix it tomorrow
+    const json = await targetAirport.json();
+    console.log(json)
+    //targetLatLng = selectedLatLng
+
     planeAnimation = setInterval(PlaneAnim, 16.6666666)
     console.log("Flying!!")
 }
 
-function GetSosig() { //player obtains a sausage
+async function GetSosig() { //player obtains a sausage
     //get sausage and do stuff
-    console.log("inPlaneAnim is "+inPlaneAnim)
-    if (!inPlaneAnim) {
-        currentCountry.setStyle(noSosigStyle)
-        console.log('Sosig!!')
+    const nakki = await fetch("http://127.0.0.1:5000/query?query=SELECT sausage FROM country WHERE name='" + currentCountry.feature.properties.name +"'");
+    //console.log(nakki)
+    const json = await nakki.json();
+
+    if (json[0][0] == undefined || json[0][0] == null) {
+        console.log("ei nakkia")
+        //ei nakkia
     }
+    else {
+        if (!inPlaneAnim) {
+            console.log(json[0][0])
+            sausagesFound.push(currentCountry)
+            currentCountry.setStyle(noSosigStyle)
+            console.log('Sosig!!')
+            //joo nakkia
+        }
+    }
+
+    //console.log("inPlaneAnim is "+inPlaneAnim)
+    //if (!inPlaneAnim) {
+    //    currentCountry.setStyle(noSosigStyle)
+    //    console.log('Sosig!!')
+    //}
 }
 
 let map;
@@ -138,15 +174,18 @@ L.geoJSON(globeGeojsonLayer, { style: sosigStyle }).bindPopup(function (layer) {
 
         return div
     }
-     //change the color if country doesn't contain a sausage
-    else if (layer.options.color == "#FF0000") {
-        return "You have already eaten a sausage in "+layer.feature.properties.name+"."
+        //change the color if country doesn't contain a sausage
+    if (sausagesFound.includes(currentCountry)) {
+        return "You have already eaten a sausage in " + layer.feature.properties.name + "."
     }
+    //else if (layer.options.color == "#FF0000") {
+    //    return "You have already eaten a sausage in "+layer.feature.properties.name+"."
+    //}
 }).addTo(map);
 
 let planeImg = L.imageOverlay("images/test.webp", currentLatLng).addTo(map)
 
 //Event listener for the button
-document.getElementById('button-main').addEventListener('click', (e) => {
+document.getElementById('button-main').addEventListener('click', async(e) => {
     GetSosig();
 });
