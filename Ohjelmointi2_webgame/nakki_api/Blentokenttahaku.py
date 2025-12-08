@@ -1,6 +1,37 @@
 from flask import Flask, request, jsonify
-
+from geopy import distance
+import main
 app = Flask(__name__)
+
+def pelaajan_sijainti(currentAirport):
+    return main.sqlquery(f"SELECT latitude_deg, longitude_deg FROM airport WHERE name = '{currentAirport}'")[0]
+
+def get_large_airports():
+    return main.sqlquery("SELECT a.name, c.name AS country_name, a.latitude_deg, a.longitude_deg, a.ident FROM airport a JOIN country c ON a.iso_country = c.iso_country WHERE a.type = 'large_airport'")
+
+def find_nearest_large_airports(currentAirport, sausagesFound, limit=3):
+    player_coords = pelaajan_sijainti(currentAirport)
+
+    player_pos = (player_coords[0], player_coords[1])
+
+    airports = get_large_airports()
+    results = []
+
+    for name, country, lat, lon, icao in airports:
+        airport_pos = (lat, lon)
+        dist_km = distance.distance(player_pos, airport_pos).kilometers
+
+        # Pelaajan oma kenttä ohitetaan
+        if dist_km == 0:
+            continue
+
+        if sausagesFound.__contains__(country):
+            continue
+
+        results.append((name, country, dist_km, icao))
+
+    results.sort(key=lambda x: x[2])
+    return results[:limit]
 
 @app.route("/player/location")
 def api_get_player_location():
