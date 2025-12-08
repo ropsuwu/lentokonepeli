@@ -49,6 +49,7 @@ main::before {
     background-position: center;
     background-repeat: no-repeat;
     cursor: pointer;
+    z-index: 2;
 }
 
 .advert:hover {
