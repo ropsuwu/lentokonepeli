@@ -111,5 +111,5 @@ main::before {
 }
 
 #button-main:active {
-    transform: rotate(720deg) scale(0.98);
+    transform: rotate(15deg) scale(0.98);
 }
