@@ -78,6 +78,7 @@ function FlytoCountry() { // player flies to country
 
 function GetSosig() { //player obtains a sausage
     //get sausage and do stuff
+    console.log("inPlaneAnim is "+inPlaneAnim)
     if (!inPlaneAnim) {
         currentCountry.setStyle(noSosigStyle)
         console.log('Sosig!!')

@@ -1,64 +1,74 @@
-from flask import Flask, jsonify, Response
-import mysql.connector
-import json
+import main
+import GameLoop
+def printscores():
+    sqlresult = main.sqlquery(f"SELECT screen_name, difficulty, sausagenum, high_score, location FROM game ORDER BY high_score DESC")
+    print(f"|Name".ljust(20) +
+          f"|Difficulty".ljust(20) +
+          f"|Sosigs".ljust(10) +
+          f"|Score".ljust(10) +
+          f"|Location at time of death".ljust(50) +
+          "|")
+    print("".ljust(111, "-"))
+    for i in range(0, sqlresult.__len__(), 1):
+        print(  f"|{sqlresult[i][0]}".ljust(20) +
+                f"|{sqlresult[i][1]}".ljust(20) +
+                f"|{sqlresult[i][2]}".ljust(10) +
+                f"|{sqlresult[i][3]}".ljust(10) +
+                f"|{sqlresult[i][4]}".ljust(50) +
+                "|")
 
-app = Flask(__name__)
+menuState = "main"
+mods = {
+    "2hearted": False,
+    "estart": False,
+    "norandom": False,
+    "colourblind": "Off",
+    "dyslexia": False,
+}
+cbmodes = ["Off", "Protanopia", "Deuteranopia", "Tritanopia"]
+#expected values for 'menuState' are 'main', 'scores', and 'mods'
 
-sqlconnection = mysql.connector.connect(
-    host='localhost',
-    port=3306,
-    database='flight_game',
-    user='roope',
-    password='nakki',
-    autocommit=True
-)
-
-
-def sqlquery(query):
-    cursor = sqlconnection.cursor()
-    cursor.execute(query)
-    return cursor.fetchall()
-
-def get_scores():
-    sqlresult = sqlquery("""
-                         SELECT screen_name, difficulty, sausagenum, high_score, location
-                         FROM game
-                         ORDER BY high_score DESC
-                         """)
-
-    results = []
-    for row in sqlresult:
-        results.append({
-            "screen_name": row[0],
-            "difficulty": row[1],
-            "sausagenum": row[2],
-            "high_score": row[3],
-            "location_at_death": row[4]
-        })
-    return results
-
-@app.route("/scores")
-def api_scores():
-    scores = get_scores()
-    return jsonify({"highscores": scores})
-
-
-@app.after_request
-def pretty_json(response):
-    if response.content_type != "application/json":
-        return response
-    try:
-        data = json.loads(response.get_data())
-        pretty = json.dumps(data, indent=4, ensure_ascii=False)
-        return Response(pretty, status=response.status_code, mimetype="application/json")
-    except:
-        return response
-
-
-@app.route("/")
-def index():
-    return "Flight Game API running!"
-
-
-if __name__ == "__main__":
-    app.run(debug=True, host="127.0.0.1", port=5000)
+while True:
+    if menuState == "main":
+        ans = input("(1) Start a new game\n"
+                    "(2) Change game modifiers\n"
+                    "(3) View highscores\n"
+                    "(4) Exit the game\n>")
+        if ans == "1":
+            #start the game
+            GameLoop.game(mods)
+        elif ans == "2":
+            #switch to modifiers menu
+            menuState = "mods"
+        elif ans == "3":
+            #switch to highscore menu
+            menuState = "scores"
+        elif ans == "4":
+            quit()
+        else:
+            print("ERROR; Not a valid input.")
+    elif menuState == "mods":
+        ans = input(f"(1) Two hearts: {mods['2hearted']}\n"
+                    f"(2) Extreme start: {mods['estart']}\n"
+                    f"(3) No Randomness: {mods['norandom']}\n"
+                    #a 'daily run' type modifier could work here
+                    f"(8) Colour Blind Mode: {mods['colourblind']}\n"
+                    f"(9) Dyslexia: {mods['dyslexia']}\n"
+                    f"(0/enter) Return to the main-menu\n"
+                    f"> ")
+        if ans == "0" or ans == "":
+            menuState = "main"
+        elif ans == "1":
+            mods["2hearted"] = not mods["2hearted"]
+        elif ans == "2":
+            mods["estart"] = not mods["estart"]
+        elif ans == "3":
+            mods["norandom"] = not mods["norandom"]
+        elif ans == "8":
+            mods["colourblind"] = cbmodes[(cbmodes.index(mods["colourblind"])+1)%4]
+        elif ans == "9":
+            mods["dyslexia"] = not mods["dyslexia"]
+    elif menuState == "scores":
+        printscores()
+        ans = input(f"Return to the main-menu by pressing enter")
+        menuState = "main"
