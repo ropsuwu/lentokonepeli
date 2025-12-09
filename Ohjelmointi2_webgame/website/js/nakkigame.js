@@ -21,7 +21,8 @@ function PlaneAnim() {
         inPlaneAnim = true
         dash = false
         curDashTimer = dashTimer
-    } else if (inPlaneAnim) {
+    }
+    else if (inPlaneAnim) {
         //console.log(planeImg.getCenter())
         let latDif = planeImg.getCenter().lat - targetLatLng[0]
         let lngDif = planeImg.getCenter().lng - targetLatLng[1]
@@ -36,7 +37,7 @@ function PlaneAnim() {
         //console.log(newBounds)
         planeImg.setBounds(newBounds)
         //console.log(sMercatorLng)
-        curPlaneSpeed = (planeSpeed / Math.max(2, sMercatorLng*1))*3
+        curPlaneSpeed = (planeSpeed / Math.max(2, sMercatorLng * 1)) * 3
 
         if (!dash) {
             bPos = planeImg.getCenter()
@@ -48,7 +49,7 @@ function PlaneAnim() {
         }
         else if (dash) {
             bPos = planeImg.getCenter()
-            let newLine = L.polyline([aPos, bPos], { color: "#FF0000" , opacity: 0})
+            let newLine = L.polyline([aPos, bPos], { color: "#FF0000", opacity: 0 })
             lines.push(newLine)
             //console.log(lines)
             newLine.addTo(map)
@@ -58,36 +59,37 @@ function PlaneAnim() {
         if (lines.length > 300) {
             for (let i = 0; lines.length > 300; i++) {
                 map.removeLayer(lines[i])
-                lines.splice(i,1)
+                lines.splice(i, 1)
             }
-        console.log(sMercatorLng)
-        curPlaneSpeed = (planeSpeed / Math.max(2, sMercatorLng * 1)) * 3
+            console.log(sMercatorLng)
+            curPlaneSpeed = (planeSpeed / Math.max(2, sMercatorLng * 1)) * 3
 
-        if (!dash) {
-            bPos = planeImg.getCenter()
-            let newLine = L.polyline([aPos, bPos], {color: "#FF0000"})
-            lines.push[newLine]
-            newLine.addTo(map)
-            aPos = bPos
-        } else if (dash) {
+            if (!dash) {
+                bPos = planeImg.getCenter()
+                let newLine = L.polyline([aPos, bPos], { color: "#FF0000" })
+                lines.push[newLine]
+                newLine.addTo(map)
+                aPos = bPos
+            } else if (dash) {
 
-        }
-        curDashTimer -= 1
-        if (curDashTimer <= 0) {
-            dash = !dash
-            curDashTimer = dashTimer
-        }
-        if (!dash && curDashTimer == dashTimer) {
-            aPos = planeImg.getCenter()
-        }
+            }
+            curDashTimer -= 1
+            if (curDashTimer <= 0) {
+                dash = !dash
+                curDashTimer = dashTimer
+            }
+            if (!dash && curDashTimer == dashTimer) {
+                aPos = planeImg.getCenter()
+            }
 
 
-        if (Math.abs(newCenter[0] - targetLatLng[0]) < 1.5 && Math.abs(newCenter[1] - targetLatLng[1]) < 1.5) {
-            //console.log(newCenter[0] - selectedLatLng.getCenter().lat, newCenter[1] - selectedLatLng.getCenter().lng)
-            inPlaneAnim = false
-            clearInterval(planeAnimation)
-        } else {
-            //console.log(newCenter[0] - selectedLatLng.getCenter().lat, newCenter[1] - selectedLatLng.getCenter().lng)
+            if (Math.abs(newCenter[0] - targetLatLng[0]) < 1.5 && Math.abs(newCenter[1] - targetLatLng[1]) < 1.5) {
+                //console.log(newCenter[0] - selectedLatLng.getCenter().lat, newCenter[1] - selectedLatLng.getCenter().lng)
+                inPlaneAnim = false
+                clearInterval(planeAnimation)
+            } else {
+                //console.log(newCenter[0] - selectedLatLng.getCenter().lat, newCenter[1] - selectedLatLng.getCenter().lng)
+            }
         }
     }
 }
