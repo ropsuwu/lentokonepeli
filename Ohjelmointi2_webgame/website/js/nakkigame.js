@@ -116,6 +116,7 @@ async function GetSosig() { //player obtains a sausage
 
     if (json[0][0] == undefined || json[0][0] == null) {
         console.log("ei nakkia")
+        currentCountry.setStyle(nofoundsosig)
         //ei nakkia
     } else {
         if (!inPlaneAnim) {
@@ -162,6 +163,11 @@ let noSosigStyle = {
     "weight": 2,
     "opacity": 0.9
 };
+let nofoundsosig = {
+    "color": "#a3a3a3",
+    "weight": 2,
+    "opacity": 0.9
+}
 
 L.geoJSON(globeGeojsonLayer, {style: sosigStyle}).bindPopup(function (layer) {
     if (layer.options.color == "#008000") { //if there is a sausage in the country
