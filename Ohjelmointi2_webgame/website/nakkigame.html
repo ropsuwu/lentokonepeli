@@ -6,8 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">  <!-- Tarvitaanko tätä edes? -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nakkipeli</title>
-    <link rel="stylesheet" href="css/leaflet.css" />
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/leaflet.css"/>
+    <link rel="stylesheet" href="css/style.css"/>
     <script src="js/leaflet/leaflet.js" defer></script>
     <script src="js/leaflet/leaflet.ajax.js" defer></script>
     <script src="js/polyline.encoded.js" defer></script>
@@ -15,8 +15,8 @@
     <script src="js/nakkigame.js" defer></script>
     <script src="js/audio.js" defer></script>
 </head>
-
 <body>
+<div id="game-container">
     <img id="background" src="images/background.webp" alt="plane in clouds">
     <main class="main-container">
         <a class="advert Left" href="https://youtu.be/J-us8coco3Q" target="_blank"></a>
@@ -24,14 +24,49 @@
         <a class="advert Right" href="https://youtu.be/wl-HPIu5kcs" target="_blank"></a>
         <div class="button-container">
             <input
-                type="image"
-                src="images/sausagebutt.webp"
-                alt="button"
-                id="button-main"
+                    type="image"
+                    src="images/sausagebutt.webp"
+                    alt="button"
+                    id="button-main"
             >
             <span class="button-text">Find Sausage</span>
-    </div>
+        </div>
     </main>
-<audio src="audio/bgm.ogg" autoplay></audio>
+<div id="menu-overlay">
+    <div id="mainmenu" class="menu">
+        <h1>Sausage Fest '25</h1>
+        <button id="newgame-btn">New Game</button>
+        <button id="settings-btn">Settings</button>
+        <button id="modifiers-btn">Modifiers</button>
+    </div>
+
+    <div id="difficulty-select" class="menu-screen hidden">
+        <h1>Select difficulty</h1>
+        <select id="difficulty">
+            <option value="easy">Vegan</option>
+            <option value="medium">Bland</option>
+            <option value="hard">Deep fried</option>
+        </select>
+        <h2>Enter Starting Country</h2>
+        <input type="text" id="starting-country" placeholder="e.g.Finland, Brazil, Uganda, Urugay, etc.">
+        <button id="startgame-btn">Start Game</button>
+        <button class="back-btn">Back</button>
+    </div>
+
+    <div id="settings" class="menu-screen hidden">
+        <h1>Settings</h1>
+        <label for="volume">Volume:</label>
+        <input type="range" id="volume" min="0" max="100" value="100">
+        <button id="savesettings-btn">Save</button>
+        <button class="back-btn">Back</button>
+    </div>
+
+    <div id="modifiers" class="menu-screen hidden">
+        <h1>Modifiers</h1>
+        <button class="back-btn">Back</button>
+    </div>
+</div>
+    <audio src="audio/bgm.ogg" autoplay></audio>
+</div>
 </body>
 </html>
