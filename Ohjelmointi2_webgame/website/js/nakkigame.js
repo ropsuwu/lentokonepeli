@@ -3,7 +3,7 @@ let fullLatLng = L.latLngBounds([-90, -180], [90, 180]);
 let planeAnimation;
 let inPlaneAnim = false;
 let planeSpeed = 50;
-let curPlaneSpeed
+let curPlaneSpeed;
 let planeSize = 5;
 let aPos;
 let bPos;
@@ -12,6 +12,9 @@ let dash;
 let dashTimer = 10;
 let curDashTimer;
 let sausagesFound = [];
+let difficulty;
+let difficultyValue;
+let difficultyName;
 
 function PlaneAnim() {
     if (!inPlaneAnim) {
@@ -21,35 +24,39 @@ function PlaneAnim() {
         inPlaneAnim = true
         dash = false
         curDashTimer = dashTimer
-    }
-    else if (inPlaneAnim) {
-        //console.log(planeImg.getCenter())
+    } else if (inPlaneAnim) {
+        console.log(planeImg.getCenter())
         let latDif = planeImg.getCenter().lat - targetLatLng[0]
+        console.log(latDif)
+        console.log(targetLatLng)
         let lngDif = planeImg.getCenter().lng - targetLatLng[1]
         let totalDif = Math.abs(latDif) + Math.abs(lngDif)
+        if (totalDif <= 0) {
+            totalDif = 1
+        }
+        console.log(totalDif)
         let planeDir = [latDif / totalDif, lngDif / totalDif]
         let newCenter = [planeImg.getCenter().lat - (planeDir[0] * (curPlaneSpeed / 60)), planeImg.getCenter().lng - (planeDir[1] * (curPlaneSpeed / 60))]
 
-        //console.log(newCenter)
+        console.log(newCenter)
         let sMercatorLng = (Math.tan((Math.PI / 4) + (((Math.abs(newCenter[0] + planeSize) * Math.PI) / 180) / 2)))
-        //console.log(newCenter[0] + ", " + (newCenter[0]*sMercatorLng))
+        console.log(newCenter[0] + ", " + (newCenter[0] * sMercatorLng))
         let newBounds = L.latLngBounds([newCenter[0] + (planeSize / (sMercatorLng * 1)), newCenter[1] + planeSize], [newCenter[0] - (planeSize / (sMercatorLng * 1)), newCenter[1] - planeSize])
         //console.log(newBounds)
         planeImg.setBounds(newBounds)
-        //console.log(sMercatorLng)
+        console.log(sMercatorLng)
         curPlaneSpeed = (planeSpeed / Math.max(2, sMercatorLng * 1)) * 3
 
         if (!dash) {
             bPos = planeImg.getCenter()
-            let newLine = L.polyline([aPos, bPos], { color: "#FF0000" })
+            let newLine = L.polyline([aPos, bPos], {color: "#FF0000"})
             lines.push(newLine)
             //console.log(lines)
             newLine.addTo(map)
             aPos = bPos
-        }
-        else if (dash) {
+        } else if (dash) {
             bPos = planeImg.getCenter()
-            let newLine = L.polyline([aPos, bPos], { color: "#FF0000", opacity: 0 })
+            let newLine = L.polyline([aPos, bPos], {color: "#FF0000", opacity: 0})
             lines.push(newLine)
             //console.log(lines)
             newLine.addTo(map)
@@ -62,26 +69,26 @@ function PlaneAnim() {
                 lines.splice(i, 1)
             }
         }
-            //console.log(sMercatorLng)
-            curPlaneSpeed = (planeSpeed / Math.max(2, sMercatorLng * 1)) * 3
-            curDashTimer -= 1
-            if (curDashTimer <= 0) {
-                dash = !dash
-                curDashTimer = dashTimer
-            }
-            if (!dash && curDashTimer == dashTimer) {
-                aPos = planeImg.getCenter()
-            }
-
-
-            if (Math.abs(newCenter[0] - targetLatLng[0]) < 1.5 && Math.abs(newCenter[1] - targetLatLng[1]) < 1.5) {
-                //console.log(newCenter[0] - selectedLatLng.getCenter().lat, newCenter[1] - selectedLatLng.getCenter().lng)
-                inPlaneAnim = false
-                clearInterval(planeAnimation)
-            } else {
-                //console.log(newCenter[0] - selectedLatLng.getCenter().lat, newCenter[1] - selectedLatLng.getCenter().lng)
+        //console.log(sMercatorLng)
+        curPlaneSpeed = (planeSpeed / Math.max(2, sMercatorLng * 1)) * 3
+        curDashTimer -= 1
+        if (curDashTimer <= 0) {
+            dash = !dash
+            curDashTimer = dashTimer
         }
-        
+        if (!dash && curDashTimer == dashTimer) {
+            aPos = planeImg.getCenter()
+        }
+
+
+        if (Math.abs(newCenter[0] - targetLatLng[0]) < 1.5 && Math.abs(newCenter[1] - targetLatLng[1]) < 1.5) {
+            //console.log(newCenter[0] - selectedLatLng.getCenter().lat, newCenter[1] - selectedLatLng.getCenter().lng)
+            inPlaneAnim = false
+            clearInterval(planeAnimation)
+        } else {
+            //console.log(newCenter[0] - selectedLatLng.getCenter().lat, newCenter[1] - selectedLatLng.getCenter().lng)
+        }
+
     }
 }
 
@@ -89,11 +96,12 @@ async function FlytoCountry() { // player flies to country
     //this should do stuff on the map and call death chance and other stuff
     currentCountry = selectedCountry
     console.log(currentCountry.feature.properties.name)
-    const targetAirport = await fetch("http://127.0.0.1:5000/query?query=SELECT a.name, a.latitude_deg, a.longitude_deg, a.ident FROM airport a JOIN country c ON a.iso_country = c.iso_country WHERE a.iso_country = '" + currentCountry.feature.properties.iso_a2 + "'")
+    const targetAirport = await fetch("http://127.0.0.1:5000/query?query=SELECT a.name, a.latitude_deg, a.longitude_deg, a.ident FROM airport a JOIN country c ON a.iso_country = c.iso_country WHERE a.iso_country = '" + currentCountry.feature.properties.iso_a2_eh + "'")
     const json = await targetAirport.json()
     console.log(json)
 
     targetLatLng = [json[0][1], json[0][2]]
+
     //targetLatLng = selectedLatLng
 
     planeAnimation = setInterval(PlaneAnim, 16.6666666)
@@ -102,15 +110,14 @@ async function FlytoCountry() { // player flies to country
 
 async function GetSosig() { //player obtains a sausage
     //get sausage and do stuff
-    const nakki = await fetch("http://127.0.0.1:5000/query?query=SELECT sausage FROM country WHERE name='" + currentCountry.feature.properties.name +"'");
+    const nakki = await fetch("http://127.0.0.1:5000/query?query=SELECT sausage FROM country WHERE iso_country='" + currentCountry.feature.properties.iso_a2_eh + "'");
     //console.log(nakki)
     const json = await nakki.json();
 
     if (json[0][0] == undefined || json[0][0] == null) {
         console.log("ei nakkia")
         //ei nakkia
-    }
-    else {
+    } else {
         if (!inPlaneAnim) {
             console.log(json[0][0])
             sausagesFound.push(currentCountry)
@@ -134,7 +141,6 @@ let selectedLatLng;
 let targetLatLng;
 let currentCountry;//these should be set according to the starting country which is picked
 let currentLatLng; //these should be set according to the starting country which is picked
-currentLatLng = L.latLngBounds([[0, 0], [0, 0]]);//debug
 
 map = L.map('map').setView([0, 0], 1); //makes a leaflet map
 
@@ -180,7 +186,7 @@ L.geoJSON(globeGeojsonLayer, {style: sosigStyle}).bindPopup(function (layer) {
 
         return div
     }
-        //change the color if country doesn't contain a sausage
+    //change the color if country doesn't contain a sausage
     if (sausagesFound.includes(currentCountry)) {
         return "You have already eaten a sausage in " + layer.feature.properties.name + "."
     }
@@ -189,10 +195,10 @@ L.geoJSON(globeGeojsonLayer, {style: sosigStyle}).bindPopup(function (layer) {
     //}
 }).addTo(map);
 
-let planeImg = L.imageOverlay("images/test.webp", currentLatLng).addTo(map)
+let planeImg;
 
 //Event listener for the button
-document.getElementById('button-main').addEventListener('click', async(e) => {
+document.getElementById('button-main').addEventListener('click', async (e) => {
     GetSosig();
 });
 document.addEventListener('DOMContentLoaded', function () {
@@ -212,16 +218,27 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('mainmenu').classList.add('hidden');
             document.getElementById('modifiers').classList.remove('hidden');
         });
+    document.getElementById('help-btn').addEventListener('click',
+        function () {
+            document.getElementById('mainmenu').classList.add('hidden');
+            document.getElementById('help').classList.remove('hidden');
+        });
 
     document.getElementById('startgame-btn').addEventListener('click',
-        function () {
-            const difficulty = document.getElementById('difficulty').value;
+        async function () {
+            difficulty = document.getElementById('difficulty').value;
+            console.log(difficulty)
             const startingCountry = document.getElementById('starting-country').value.trim();
-
+            const result = await fetch("http://127.0.0.1:5000/query?query=SELECT a.latitude_deg, a.longitude_deg FROM airport a JOIN country c ON a.iso_country = c.iso_country WHERE c.name = '" + startingCountry + "'")
+            if (result.status == 404) {
+                alert("Could not find country!");
+                return;
+            }
             if (!startingCountry) {
                 alert("Please enter the name of a country!");
                 return;
             }
+
             window.gameSettings = {
                 difficulty: difficulty,
                 startingCountry: startingCountry,
@@ -238,18 +255,34 @@ function startGameWithSettings() {
     const settings = window.gameSettings;
 
     switch (settings.difficulty) {
+        case 1:
+            difficultyName = "vegan"
+            difficultyValue = 0.3
+            break
+        case 2:
+            difficultyName = "bland"
+            difficultyValue = 1.0
+            break
+        case 3:
+            difficultyName = "deep fried"
+            difficultyValue = 2.0
+            break
     }
     initializeGameWithCountry(settings.startingCountry);
 }
 
-function initializeGameWithCountry(country) {
+async function initializeGameWithCountry(country) {
     console.log('Starting GAME with country:', country);
+    const result = await fetch("http://127.0.0.1:5000/query?query=SELECT a.latitude_deg, a.longitude_deg FROM airport a JOIN country c ON a.iso_country = c.iso_country WHERE c.name = '" + country + "'")
+    const json = await result.json()
+    currentLatLng = L.latLngBounds([[json[0][0] + 5, json[0][1] + 5], [json[0][0] - 5, json[0][1] - 5]])
+    planeImg = L.imageOverlay("images/test.webp", currentLatLng).addTo(map)
 }
 
 function setupBack() {
     const backButtons = document.querySelectorAll('.back-btn');
     backButtons.forEach(button => {
-        button.addEventListener('click',function () {
+        button.addEventListener('click', function () {
             document.querySelectorAll('.menu-screen').forEach(screen => {
                 screen.classList.add('hidden');
             });
