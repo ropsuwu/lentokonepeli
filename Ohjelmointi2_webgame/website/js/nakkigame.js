@@ -234,6 +234,17 @@ let GeoJSON = L.geoJSON(globeGeojsonLayer, {style: sosigStyle}).bindPopup(functi
 
         return div
     }
+    else if (layer.options.color == "#a3a3a3"){
+        const div = document.createElement("div");
+        div.innerHTML = '<b>' + layer.feature.properties.name + '</b>';
+
+        const p = document.createElement("p");
+        p.innerHTML = "There is no sausage to find here";
+
+        div.appendChild(p);
+
+        return div
+    }
     //change the color if country doesn't contain a sausage
     if (sausagesFound.includes(currentCountry)) {
         return "You have already eaten a sausage in " + layer.feature.properties.name + "."
@@ -325,6 +336,29 @@ async function initializeGameWithCountry(country) {
     const json = await result.json()
     currentLatLng = L.latLngBounds([[json[0][0] + 5, json[0][1] + 5], [json[0][0] - 5, json[0][1] - 5]])
     planeImg = L.imageOverlay("images/test.webp", currentLatLng).addTo(map)
+    const nakki = await fetch("http://127.0.0.1:5000/query?query=SELECT iso_country FROM country WHERE sausage IS NULL");
+    //console.log(nakki)
+    const json2 = await nakki.json();
+    let sosig
+    console.log(json2)
+    GeoJSON.eachLayer((layer) => {
+        //console.log(layer.feature.properties.iso_a2_eh)
+        sosig=true
+        for (let i = 0; i < json2.length; i++) {
+            if (json2[i]==layer.feature.properties.iso_a2_eh) {
+                sosig = false
+                //ei nakkia
+            }
+        }
+        if (!sosig) {
+            layer.setStyle(nofoundsosig)
+            //ei nakkia
+        }
+        else {
+            layer.setStyle(sosigStyle)
+            //joo nakkia
+        }
+    })
 }
 
 function setupBack() {
