@@ -24,8 +24,7 @@ function PlaneAnim() {
         inPlaneAnim = true
         dash = false
         curDashTimer = dashTimer
-    }
-    else if (inPlaneAnim) {
+    } else if (inPlaneAnim) {
         console.log(planeImg.getCenter())
         let latDif = planeImg.getCenter().lat - targetLatLng[0]
         console.log(latDif)
@@ -41,7 +40,7 @@ function PlaneAnim() {
 
         console.log(newCenter)
         let sMercatorLng = (Math.tan((Math.PI / 4) + (((Math.abs(newCenter[0] + planeSize) * Math.PI) / 180) / 2)))
-        console.log(newCenter[0] + ", " + (newCenter[0]*sMercatorLng))
+        console.log(newCenter[0] + ", " + (newCenter[0] * sMercatorLng))
         let newBounds = L.latLngBounds([newCenter[0] + (planeSize / (sMercatorLng * 1)), newCenter[1] + planeSize], [newCenter[0] - (planeSize / (sMercatorLng * 1)), newCenter[1] - planeSize])
         //console.log(newBounds)
         planeImg.setBounds(newBounds)
@@ -50,15 +49,14 @@ function PlaneAnim() {
 
         if (!dash) {
             bPos = planeImg.getCenter()
-            let newLine = L.polyline([aPos, bPos], { color: "#FF0000" })
+            let newLine = L.polyline([aPos, bPos], {color: "#FF0000"})
             lines.push(newLine)
             //console.log(lines)
             newLine.addTo(map)
             aPos = bPos
-        }
-        else if (dash) {
+        } else if (dash) {
             bPos = planeImg.getCenter()
-            let newLine = L.polyline([aPos, bPos], { color: "#FF0000", opacity: 0 })
+            let newLine = L.polyline([aPos, bPos], {color: "#FF0000", opacity: 0})
             lines.push(newLine)
             //console.log(lines)
             newLine.addTo(map)
@@ -71,26 +69,26 @@ function PlaneAnim() {
                 lines.splice(i, 1)
             }
         }
-            //console.log(sMercatorLng)
-            curPlaneSpeed = (planeSpeed / Math.max(2, sMercatorLng * 1)) * 3
-            curDashTimer -= 1
-            if (curDashTimer <= 0) {
-                dash = !dash
-                curDashTimer = dashTimer
-            }
-            if (!dash && curDashTimer == dashTimer) {
-                aPos = planeImg.getCenter()
-            }
-
-
-            if (Math.abs(newCenter[0] - targetLatLng[0]) < 1.5 && Math.abs(newCenter[1] - targetLatLng[1]) < 1.5) {
-                //console.log(newCenter[0] - selectedLatLng.getCenter().lat, newCenter[1] - selectedLatLng.getCenter().lng)
-                inPlaneAnim = false
-                clearInterval(planeAnimation)
-            } else {
-                //console.log(newCenter[0] - selectedLatLng.getCenter().lat, newCenter[1] - selectedLatLng.getCenter().lng)
+        //console.log(sMercatorLng)
+        curPlaneSpeed = (planeSpeed / Math.max(2, sMercatorLng * 1)) * 3
+        curDashTimer -= 1
+        if (curDashTimer <= 0) {
+            dash = !dash
+            curDashTimer = dashTimer
         }
-        
+        if (!dash && curDashTimer == dashTimer) {
+            aPos = planeImg.getCenter()
+        }
+
+
+        if (Math.abs(newCenter[0] - targetLatLng[0]) < 1.5 && Math.abs(newCenter[1] - targetLatLng[1]) < 1.5) {
+            //console.log(newCenter[0] - selectedLatLng.getCenter().lat, newCenter[1] - selectedLatLng.getCenter().lng)
+            inPlaneAnim = false
+            clearInterval(planeAnimation)
+        } else {
+            //console.log(newCenter[0] - selectedLatLng.getCenter().lat, newCenter[1] - selectedLatLng.getCenter().lng)
+        }
+
     }
 }
 
@@ -112,15 +110,14 @@ async function FlytoCountry() { // player flies to country
 
 async function GetSosig() { //player obtains a sausage
     //get sausage and do stuff
-    const nakki = await fetch("http://127.0.0.1:5000/query?query=SELECT sausage FROM country WHERE iso_country='" + currentCountry.feature.properties.iso_a2_eh +"'");
+    const nakki = await fetch("http://127.0.0.1:5000/query?query=SELECT sausage FROM country WHERE iso_country='" + currentCountry.feature.properties.iso_a2_eh + "'");
     //console.log(nakki)
     const json = await nakki.json();
 
     if (json[0][0] == undefined || json[0][0] == null) {
         console.log("ei nakkia")
         //ei nakkia
-    }
-    else {
+    } else {
         if (!inPlaneAnim) {
             console.log(json[0][0])
             sausagesFound.push(currentCountry)
@@ -189,7 +186,7 @@ L.geoJSON(globeGeojsonLayer, {style: sosigStyle}).bindPopup(function (layer) {
 
         return div
     }
-        //change the color if country doesn't contain a sausage
+    //change the color if country doesn't contain a sausage
     if (sausagesFound.includes(currentCountry)) {
         return "You have already eaten a sausage in " + layer.feature.properties.name + "."
     }
@@ -201,7 +198,7 @@ L.geoJSON(globeGeojsonLayer, {style: sosigStyle}).bindPopup(function (layer) {
 let planeImg;
 
 //Event listener for the button
-document.getElementById('button-main').addEventListener('click', async(e) => {
+document.getElementById('button-main').addEventListener('click', async (e) => {
     GetSosig();
 });
 document.addEventListener('DOMContentLoaded', function () {
@@ -220,6 +217,11 @@ document.addEventListener('DOMContentLoaded', function () {
         function () {
             document.getElementById('mainmenu').classList.add('hidden');
             document.getElementById('modifiers').classList.remove('hidden');
+        });
+    document.getElementById('help-btn').addEventListener('click',
+        function () {
+            document.getElementById('mainmenu').classList.add('hidden');
+            document.getElementById('help').classList.remove('hidden');
         });
 
     document.getElementById('startgame-btn').addEventListener('click',
@@ -289,7 +291,7 @@ async function initializeGameWithCountry(country) {
 function setupBack() {
     const backButtons = document.querySelectorAll('.back-btn');
     backButtons.forEach(button => {
-        button.addEventListener('click',function () {
+        button.addEventListener('click', function () {
             document.querySelectorAll('.menu-screen').forEach(screen => {
                 screen.classList.add('hidden');
             });
