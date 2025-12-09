@@ -12,6 +12,7 @@ let dash;
 let dashTimer = 10;
 let curDashTimer;
 let sausagesFound = [];
+
 function PlaneAnim() {
     if (!inPlaneAnim) {
         curPlaneSpeed = planeSpeed
@@ -20,8 +21,7 @@ function PlaneAnim() {
         inPlaneAnim = true
         dash = false
         curDashTimer = dashTimer
-    }
-    else if (inPlaneAnim) {
+    } else if (inPlaneAnim) {
         //console.log(planeImg.getCenter())
         let latDif = planeImg.getCenter().lat - targetLatLng[0]
         let lngDif = planeImg.getCenter().lng - targetLatLng[1]
@@ -30,7 +30,7 @@ function PlaneAnim() {
         let newCenter = [planeImg.getCenter().lat - (planeDir[0] * (curPlaneSpeed / 60)), planeImg.getCenter().lng - (planeDir[1] * (curPlaneSpeed / 60))]
 
         //console.log(newCenter)
-        let sMercatorLng = (Math.tan((Math.PI / 4) + (((Math.abs(newCenter[0]+planeSize) * Math.PI) / 180) / 2)))
+        let sMercatorLng = (Math.tan((Math.PI / 4) + (((Math.abs(newCenter[0] + planeSize) * Math.PI) / 180) / 2)))
         //console.log(newCenter[0] + ", " + (newCenter[0]*sMercatorLng))
         let newBounds = L.latLngBounds([newCenter[0] + (planeSize / (sMercatorLng * 1)), newCenter[1] + planeSize], [newCenter[0] - (planeSize / (sMercatorLng * 1)), newCenter[1] - planeSize])
         //console.log(newBounds)
@@ -60,23 +60,33 @@ function PlaneAnim() {
                 map.removeLayer(lines[i])
                 lines.splice(i,1)
             }
+        console.log(sMercatorLng)
+        curPlaneSpeed = (planeSpeed / Math.max(2, sMercatorLng * 1)) * 3
+
+        if (!dash) {
+            bPos = planeImg.getCenter()
+            let newLine = L.polyline([aPos, bPos], {color: "#FF0000"})
+            lines.push[newLine]
+            newLine.addTo(map)
+            aPos = bPos
+        } else if (dash) {
+
         }
-        curDashTimer -= 1 
+        curDashTimer -= 1
         if (curDashTimer <= 0) {
             dash = !dash
             curDashTimer = dashTimer
         }
-        if (!dash&&curDashTimer==dashTimer) {
+        if (!dash && curDashTimer == dashTimer) {
             aPos = planeImg.getCenter()
         }
 
 
         if (Math.abs(newCenter[0] - targetLatLng[0]) < 1.5 && Math.abs(newCenter[1] - targetLatLng[1]) < 1.5) {
             //console.log(newCenter[0] - selectedLatLng.getCenter().lat, newCenter[1] - selectedLatLng.getCenter().lng)
-            inPlaneAnim=false
+            inPlaneAnim = false
             clearInterval(planeAnimation)
-        }
-        else {
+        } else {
             //console.log(newCenter[0] - selectedLatLng.getCenter().lat, newCenter[1] - selectedLatLng.getCenter().lng)
         }
     }
@@ -126,13 +136,13 @@ async function GetSosig() { //player obtains a sausage
 let map;
 
 let selectedCountry;
-let selectedLatLng; 
+let selectedLatLng;
 let targetLatLng;
 let currentCountry;//these should be set according to the starting country which is picked
 let currentLatLng; //these should be set according to the starting country which is picked
 currentLatLng = L.latLngBounds([[0, 0], [0, 0]]);//debug
 
-map = L.map('map').setView([0,0],1); //makes a leaflet map
+map = L.map('map').setView([0, 0], 1); //makes a leaflet map
 
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
     noWrap: true,
@@ -153,23 +163,23 @@ let noSosigStyle = {
     "opacity": 0.9
 };
 
-L.geoJSON(globeGeojsonLayer, { style: sosigStyle }).bindPopup(function (layer) {
+L.geoJSON(globeGeojsonLayer, {style: sosigStyle}).bindPopup(function (layer) {
     if (layer.options.color == "#008000") { //if there is a sausage in the country
         selectedCountry = layer
         //console.log(selectedCountry)
         selectedLatLng = L.latLngBounds(layer._bounds._northEast, layer._bounds._southWest)// this should call flask to get the latLng of an airport in the country
         //console.log(selectedLatLng)
-        
+
 
         const div = document.createElement("div");
-        div.innerHTML = '<b>' + layer.feature.properties.name +'</b>';
+        div.innerHTML = '<b>' + layer.feature.properties.name + '</b>';
 
         const button = document.createElement("button");
         button.innerHTML = "Fly to country";
 
         button.onclick = function () {
             if (!inPlaneAnim)
-            FlytoCountry()
+                FlytoCountry()
         }
 
         div.appendChild(button);
@@ -191,3 +201,74 @@ let planeImg = L.imageOverlay("images/test.webp", currentLatLng).addTo(map)
 document.getElementById('button-main').addEventListener('click', async(e) => {
     GetSosig();
 });
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('newgame-btn').addEventListener('click',
+        function () {
+            document.getElementById('mainmenu').classList.add('hidden');
+            document.getElementById('difficulty-select').classList.remove('hidden');
+        });
+
+    document.getElementById('settings-btn').addEventListener('click',
+        function () {
+            document.getElementById('mainmenu').classList.add('hidden');
+            document.getElementById('settings').classList.remove('hidden');
+        });
+    document.getElementById('modifiers-btn').addEventListener('click',
+        function () {
+            document.getElementById('mainmenu').classList.add('hidden');
+            document.getElementById('modifiers').classList.remove('hidden');
+        });
+
+    document.getElementById('startgame-btn').addEventListener('click',
+        function () {
+            const difficulty = document.getElementById('difficulty').value;
+            const startingCountry = document.getElementById('starting-country').value.trim();
+
+            if (!startingCountry) {
+                alert("Please enter the name of a country!");
+                return;
+            }
+            window.gameSettings = {
+                difficulty: difficulty,
+                startingCountry: startingCountry,
+                modifier: window.selectedModifier || 'none'
+            };
+            startGameWithSettings();
+
+            document.getElementById('menu-overlay').style.display = 'none';
+        });
+    document.getElementById('savesettings-btn').addEventListener('click',
+        function () {
+            const volume = document.getElementById('volume').value;
+            document.getElementById('game-audio').volume = volume / 100;
+            console.log('Volume set to:', volume);
+
+            document.getElementById('settings').classList.add('hidden');
+            document.getElementById('mainmenu').classList.remove('hidden');
+        });
+    setupBack();
+});
+
+function startGameWithSettings() {
+    const settings = window.gameSettings;
+
+    switch (settings.difficulty) {
+    }
+    initializeGameWithCountry(settings.startingCountry);
+}
+
+function initializeGameWithCountry(country) {
+    console.log('Starting GAME with country:', country);
+}
+
+function setupBack() {
+    const backButtons = document.querySelectorAll('.back-btn');
+    backButtons.forEach(button => {
+        button.addEventListener('click',function () {
+            document.querySelectorAll('.menu-screen').forEach(screen => {
+                screen.classList.add('hidden');
+            });
+            document.getElementById('mainmenu').classList.remove('hidden');
+        });
+    });
+}

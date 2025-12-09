@@ -5,7 +5,7 @@
     width: 100vw;
     height: 100vh;
     object-fit: cover;
-    z-index: -1;
+    z-index: 0;
     background-color: black;
     background-size: cover;
     background-position: center;
@@ -31,12 +31,14 @@ main::before {
     margin: 0 auto;
     position: relative;
     width: fit-content;
+    height: 100vh;
 }
 
 #map {
     height: 512px;
     width: 512px;
     display: block;
+    z-index: 1;
 }
 
 /*Advertisement styling*/
@@ -112,4 +114,90 @@ main::before {
 
 #button-main:active {
     transform: rotate(15deg) scale(0.98);
+}
+
+#game-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+#menu-overlay {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 512px;
+    height: 512px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 1000;
+    background-color: rgba(0,0,0,0.7);
+
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    max-width: 500px;
+    padding: 20px;
+    background-color: rgba(30,30,30,0.9);
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    color: white;
+}
+
+.menu h1 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    color: white;
+    text-space: 2px 2px 4px rgba(0,0,0,0.5);
+    font-family: "Comic Sans MS";
+}
+
+.menu button {
+    padding: 12px 24px;
+    font-size: 1.2em;
+    margin: 10px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    background-color: #4caf50;
+    color: white;
+    transition: background-color 0.3s;
+    font-family: "Comic Sans MS";
+}
+
+.menu button:hover {
+    background-color: #2f6a33;
+}
+
+.menu select, .menu input[type="text"] {
+    padding: 10px;
+    font-size: 1em;
+    margin: 10px;
+    width: 100%;
+    max-width: 300px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.hidden {
+    display: none !important;
+}
+
+
+.menu-screen input,.menu-screen select {
+    color: black;
+    background-color: white;
+    border: 2px solid #ccc;
+}
+#difficulty-select h1, #difficulty-select h2, #settings h1, #settings label, #modifiers h1, #modifiers label {
+    color: white;
+    font-family: "Comic Sans MS";
 }
