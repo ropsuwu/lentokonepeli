@@ -169,7 +169,7 @@ let nofoundsosig = {
     "opacity": 0.9
 }
 
-L.geoJSON(globeGeojsonLayer, {style: sosigStyle}).bindPopup(function (layer) {
+let GeoJSON = L.geoJSON(globeGeojsonLayer, {style: sosigStyle}).bindPopup(function (layer) {
     if (layer.options.color == "#008000") { //if there is a sausage in the country
         selectedCountry = layer
         //console.log(selectedCountry)
