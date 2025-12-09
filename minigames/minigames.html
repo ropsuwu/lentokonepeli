@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <title>Mini Games</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin: 20px; }
+        h2 { margin-top: 40px; }
+        .game-box { border: 1px solid #ccc; padding: 20px; margin: 20px auto; max-width: 400px; border-radius: 10px; }
+        #reactionSignal { width: 150px; height: 150px; margin: 20px auto; background-color: gray; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: white; font-size: 20px; cursor: pointer; user-select: none; }
+        input[type="number"] { width: 50px; }
+    </style>
+</head>
+<body>
+<h1>Mini Games</h1>
+
+<!-- Reaction Game -->
+<div class="game-box">
+    <h2>Reaction Game</h2>
+    <p>Klikkaa ympyrää heti, kun se muuttuu vihreäksi!</p>
+    <div id="reactionSignal">Odota...</div>
+    <p id="reactionResult"></p>
+    <button id="reactionStartBtn">Aloita peli</button>
+</div>
+
+<!-- Quick Math Game -->
+<div class="game-box">
+    <h2>Quick Math Game</h2>
+    <p>Ratkaise mahdollisimman monta yksinkertaista yhteenlaskua!</p>
+    <div id="quickMathQuestion"></div>
+    <input type="number" id="quickMathAnswer" />
+    <button id="quickMathSubmit">Vastaa</button>
+    <p id="quickMathResult"></p>
+    <button id="quickMathStartBtn">Aloita peli</button>
+</div>
+
+<!-- Guessing Game -->
+<div class="game-box">
+    <h2>Guessing Game</h2>
+    <p>Arvaa numeroita 1–5 mahdollisimman monta kertaa!</p>
+    <input type="number" id="guessInput" min="1" max="5"/>
+    <button id="guessSubmit">Arvaa</button>
+    <p id="guessResult"></p>
+    <button id="guessStartBtn">Aloita peli</button>
+</div>
+
+<script>
+    // ---------------- Reaction Game ----------------
+    const reactionSignal = document.getElementById('reactionSignal');
+    const reactionResult = document.getElementById('reactionResult');
+    const reactionStartBtn = document.getElementById('reactionStartBtn');
+    let reactionStartTime = 0;
+    let reactionTimeout;
+    let reactionEndTimeout;
+
+    function startReactionGame() {
+        reactionResult.textContent = "";
+        reactionSignal.style.backgroundColor = 'gray';
+        reactionSignal.textContent = 'Odota...';
+
+        const duration = Math.floor(Math.random() * 6) + 15; // 15-20s
+        const changeDelay = Math.random() * 2000 + 1000; // 1-3s ennen vihreää
+
+        reactionTimeout = setTimeout(() => {
+            reactionSignal.style.backgroundColor = 'green';
+            reactionSignal.textContent = 'Klikkaa!';
+            reactionStartTime = Date.now();
+        }, changeDelay);
+
+        reactionEndTimeout = setTimeout(() => {
+            if (reactionStartTime === 0) { // Jos ei klikattu vihreää
+                reactionResult.textContent = `Hävisit! Et klikannut ajoissa.`;
+            } else {
+                const reactionTime = (Date.now() - reactionStartTime) / 1000;
+                const outcome = reactionTime < 0.35 ? "Voittaja!" : "Häviäjä!";
+                reactionResult.textContent = `Reaktioaikasi: ${reactionTime.toFixed(3)} sekuntia. ${outcome}`;
+            }
+            reactionSignal.style.backgroundColor = 'gray';
+            reactionSignal.textContent = 'Odota...';
+            clearTimeout(reactionTimeout);
+        }, duration * 1000);
+    }
+
+    reactionSignal.addEventListener('click', () => {
+        if (reactionSignal.style.backgroundColor === 'green') {
+            reactionStartTime = Date.now();
+        }
+    });
+
+    reactionStartBtn.addEventListener('click', startReactionGame);
+
+    // ---------------- Quick Math Game ----------------
+    const quickMathQuestion = document.getElementById('quickMathQuestion');
+    const quickMathAnswer = document.getElementById('quickMathAnswer');
+    const quickMathResult = document.getElementById('quickMathResult');
+    const quickMathSubmit = document.getElementById('quickMathSubmit');
+    const quickMathStartBtn = document.getElementById('quickMathStartBtn');
+
+    let quickMathScore = 0;
+    let quickMathEndTime = 0;
+    let currentAnswer = 0;
+
+    function startQuickMathGame() {
+        quickMathScore = 0;
+        quickMathResult.textContent = "";
+        const duration = Math.floor(Math.random() * 6) + 15; // 15-20s
+        quickMathEndTime = Date.now() + duration * 1000;
+        nextQuickMathQuestion();
+    }
+
+    function nextQuickMathQuestion() {
+        if (Date.now() > quickMathEndTime) {
+            const outcome = quickMathScore >= 10 ? "Voittaja!" : "Häviäjä!";
+            quickMathResult.textContent = `Pisteesi: ${quickMathScore}. ${outcome}`;
+            quickMathQuestion.textContent = "";
+            return;
+        }
+        const a = Math.floor(Math.random() * 10) + 1;
+        const b = Math.floor(Math.random() * 10) + 1;
+        currentAnswer = a + b;
+        quickMathQuestion.textContent = `${a} + ${b} = ?`;
+        quickMathAnswer.value = "";
+        quickMathAnswer.focus();
+    }
+
+    quickMathSubmit.addEventListener('click', () => {
+        if (parseInt(quickMathAnswer.value) === currentAnswer) quickMathScore++;
+        nextQuickMathQuestion();
+    });
+
+    quickMathStartBtn.addEventListener('click', startQuickMathGame);
+
+    // ---------------- Guessing Game ----------------
+    const guessInput = document.getElementById('guessInput');
+    const guessResult = document.getElementById('guessResult');
+    const guessSubmit = document.getElementById('guessSubmit');
+    const guessStartBtn = document.getElementById('guessStartBtn');
+
+    let guessWins = 0;
+    let guessAttempts = 0;
+    let guessEndTime = 0;
+
+    function startGuessingGame() {
+        guessWins = 0;
+        guessAttempts = 0;
+        guessResult.textContent = "";
+        const duration = Math.floor(Math.random() * 6) + 15; // 15-20s
+        guessEndTime = Date.now() + duration * 1000;
+    }
+
+    guessSubmit.addEventListener('click', () => {
+        if (Date.now() > guessEndTime) {
+            const outcome = guessWins >= 7 ? "Voittaja!" : "Häviäjä!";
+            guessResult.textContent = `Aikasi loppui! Voitot: ${guessWins}, yritykset: ${guessAttempts}. ${outcome}`;
+            return;
+        }
+        const target = Math.floor(Math.random() * 5) + 1;
+        const guess = parseInt(guessInput.value);
+        guessAttempts++;
+        if (guess === target) guessWins++;
+        guessResult.textContent = `Voitot: ${guessWins}, Yritykset: ${guessAttempts}`;
+        guessInput.value = "";
+        guessInput.focus();
+    });
+
+    guessStartBtn.addEventListener('click', startGuessingGame);
+</script>
+</body>
+</html>
