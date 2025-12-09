@@ -231,15 +231,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
             document.getElementById('menu-overlay').style.display = 'none';
         });
-    document.getElementById('savesettings-btn').addEventListener('click',
-        function () {
-            const volume = document.getElementById('volume').value;
-            document.getElementById('game-audio').volume = volume / 100;
-            console.log('Volume set to:', volume);
-
-            document.getElementById('settings').classList.add('hidden');
-            document.getElementById('mainmenu').classList.remove('hidden');
-        });
     setupBack();
 });
 

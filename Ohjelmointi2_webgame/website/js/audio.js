@@ -23,3 +23,14 @@ const button = document.getElementById("button-main")
 button.addEventListener("click", () => {
   clickSound.play();
 });
+
+/*Volume slider*/
+let audio = new Audio("audio/bgm.ogg");
+audio.volume = 1;
+audio.loop = true;
+audio.autoplay = true;
+
+let volume = document.querySelector("#volume");
+volume.addEventListener("input", function(e) {
+    audio.volume = e.currentTarget.value / 100;
+});
