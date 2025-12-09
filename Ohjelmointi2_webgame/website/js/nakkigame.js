@@ -8,6 +8,7 @@ let planeSize = 5;
 let aPos;
 let bPos;
 let lines = [];
+let linesList = [];
 let dash;
 let dashTimer = 10;
 let curDashTimer;
@@ -15,6 +16,7 @@ let sausagesFound = [];
 let difficulty;
 let difficultyValue;
 let difficultyName;
+let death
 
 function PlaneAnim() {
     if (!inPlaneAnim) {
@@ -63,12 +65,22 @@ function PlaneAnim() {
             aPos = bPos
         }
         //console.log(lines.length)
+
         if (lines.length > 300) {
             for (let i = 0; lines.length > 300; i++) {
                 map.removeLayer(lines[i])
                 lines.splice(i, 1)
             }
         }
+
+        if (lines.length > 300) {
+            for (let i = 0; lines.length > 300; i++) {
+                map.removeLayer(lines[i])
+                lines.splice(i, 1)
+            }
+        }
+
+
         //console.log(sMercatorLng)
         curPlaneSpeed = (planeSpeed / Math.max(2, sMercatorLng * 1)) * 3
         curDashTimer -= 1
@@ -84,6 +96,7 @@ function PlaneAnim() {
         if (Math.abs(newCenter[0] - targetLatLng[0]) < 1.5 && Math.abs(newCenter[1] - targetLatLng[1]) < 1.5) {
             //console.log(newCenter[0] - selectedLatLng.getCenter().lat, newCenter[1] - selectedLatLng.getCenter().lng)
             inPlaneAnim = false
+
             clearInterval(planeAnimation)
         } else {
             //console.log(newCenter[0] - selectedLatLng.getCenter().lat, newCenter[1] - selectedLatLng.getCenter().lng)
@@ -101,11 +114,40 @@ async function FlytoCountry() { // player flies to country
     console.log(json)
 
     targetLatLng = [json[0][1], json[0][2]]
-
     //targetLatLng = selectedLatLng
 
-    planeAnimation = setInterval(PlaneAnim, 16.6666666)
+    let latDif = planeImg.getCenter().lat - targetLatLng[0]
+    let lngDif = planeImg.getCenter().lng - targetLatLng[1]
+    let totalDif = Math.abs(latDif) + Math.abs(lngDif)
+
+    let conf
+    let chance = (difficultyValue * Math.pow(totalDif * (sausagesFound.length / 50), 0.8)) - 50
+
+    if (chance >= 0) {
+        //"this should add a confirmation prompt for the player"
+        conf = "y"//placeholder
+    }
+    else {
+        conf = "y"
+    }
+        
+    if (conf == "y") {
+        if (Math.random() * 1000 <= chance) {
+            death = true
+        }
+        else {
+            death = false
+        }
+    }
+    else {
+        death = "cancelled"
+    }
+
+    if (death != "cancelled") {
+        planeAnimation = setInterval(PlaneAnim, 16.6666666)
+    }
     console.log("Flying!!")
+
 }
 
 async function GetSosig() { //player obtains a sausage
