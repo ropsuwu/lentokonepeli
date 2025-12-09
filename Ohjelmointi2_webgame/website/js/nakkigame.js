@@ -112,7 +112,7 @@ async function FlytoCountry() { // player flies to country
 
 async function GetSosig() { //player obtains a sausage
     //get sausage and do stuff
-    const nakki = await fetch("http://127.0.0.1:5000/query?query=SELECT sausage FROM country WHERE name='" + currentCountry.feature.properties.name +"'");
+    const nakki = await fetch("http://127.0.0.1:5000/query?query=SELECT sausage FROM country WHERE iso_country='" + currentCountry.feature.properties.iso_a2_eh +"'");
     //console.log(nakki)
     const json = await nakki.json();
 
