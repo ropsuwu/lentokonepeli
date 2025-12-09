@@ -1,0 +1,92 @@
+body{
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: white;
+}
+
+.testi, .testi2{
+    width: 500px;
+    height: 300px;
+    border: 2px solid black;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    background: #fff;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+#napit {
+    display: flex;
+    justify-content: center;
+    letter-spacing: 15px;
+    font-size: 40px;
+    flex-wrap: nowrap;
+    margin-bottom: 10px;
+}
+
+#tulos, #aika {
+    position: absolute;
+    top: 10px;
+    font-size: 20px;
+    padding: 5px 10px;
+    background: rgba(255, 255, 255, 0.6); / läpinäkyvä tausta /
+    border-radius: 5px;
+}
+
+#tulos {
+    left: 10px;
+}
+
+#aika {
+    right: 10px;
+}
+
+
+#loppu{
+    font-size: 40px;
+    color: darkred;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    align-content: center;
+}
+#voitto{
+    font-size: 40px;
+    color: lightblue;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    align-content: center;
+}
+
+#kuvat{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+}
+#nuoliKuvat{
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+}
+
+#kuva2{
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+}
+#game2{
+  display:flex;
+  flex-direction:column;
+}
