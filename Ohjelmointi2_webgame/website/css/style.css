@@ -197,7 +197,17 @@ main::before {
     background-color: white;
     border: 2px solid #ccc;
 }
-#difficulty-select h1, #difficulty-select h2, #settings h1, #settings label, #modifiers h1, #modifiers label {
+#difficulty-select h1, #difficulty-select h2, #settings h1, #settings label, #modifiers h1, #modifiers label,#help h1,#help h2 {
     color: white;
     font-family: "Comic Sans MS";
+        margin: 10px;
+}
+
+#help h2 {
+    font-size: medium;
+    margin: 15px;
+}
+
+.back-btn {
+    margin: 5px;
 }

@@ -32,41 +32,46 @@
             <span class="button-text">Find Sausage</span>
         </div>
     </main>
-<div id="menu-overlay">
-    <div id="mainmenu" class="menu">
-        <h1>Sausage Fest '25</h1>
-        <button id="newgame-btn">New Game</button>
-        <button id="settings-btn">Settings</button>
-        <button id="modifiers-btn">Modifiers</button>
-    </div>
+    <div id="menu-overlay">
+        <div id="mainmenu" class="menu">
+            <h1>Sausage Fest '25</h1>
+            <button id="newgame-btn">New Game</button>
+            <button id="settings-btn">Settings</button>
+            <button id="modifiers-btn">Modifiers</button>
+            <button id="help-btn">Help</button>
+        </div>
 
-    <div id="difficulty-select" class="menu-screen hidden">
-        <h1>Select difficulty</h1>
-        <select id="difficulty">
-            <option value="1">Vegan</option>
-            <option value="2">Bland</option>
-            <option value="3">Deep fried</option>
-        </select>
-        <h2>Enter Starting Country</h2>
-        <input type="text" id="starting-country" placeholder="e.g.Finland, Brazil, Uganda, Urugay, etc.">
-        <button id="startgame-btn">Start Game</button>
-        <button class="back-btn">Back</button>
-    </div>
+        <div id="difficulty-select" class="menu-screen hidden">
+            <h1>Select difficulty</h1>
+            <select id="difficulty">
+                <option value="1">Vegan</option>
+                <option value="2">Bland</option>
+                <option value="3">Deep fried</option>
+            </select>
+            <h2>Enter Starting Country</h2>
+            <input type="text" id="starting-country" placeholder="e.g.Finland, Brazil, Uganda, Urugay, etc.">
+            <button id="startgame-btn">Start Game</button>
+            <button class="back-btn">Back</button>
+        </div>
 
-    <div id="settings" class="menu-screen hidden">
-        <h1>Settings</h1>
-        <label for="volume">Volume:</label>
-        <input type="range" id="volume" min="0" max="100" value="100">
-        <button id="savesettings-btn">Save</button>
-        <button class="back-btn">Back</button>
-    </div>
+        <div id="settings" class="menu-screen hidden">
+            <h1>Settings</h1>
+            <label for="volume">Volume:</label>
+            <input type="range" id="volume">
+            <button class="back-btn">Back</button>
+        </div>
 
-    <div id="modifiers" class="menu-screen hidden">
-        <h1>Modifiers</h1>
-        <button class="back-btn">Back</button>
+        <div id="modifiers" class="menu-screen hidden">
+            <h1>Modifiers</h1>
+            <button class="back-btn">Back</button>
+        </div>
+        <div id="help" class="menu-screen hidden">
+            <h1>Help</h1>
+            <h2>You are flying around the world on your private jet. The Sausage-Challenger. You are trying collect all the sausages while trying not to die to a heart attack. You choose your destination and fly to the country of your choice. There you can try to find a sausage that's exquisite enough for your taste. Every time your death rate increases which will increase the chance of you dying during your flight. </h2>
+            <button class="back-btn">Back</button>
+        </div>
     </div>
-</div>
-    <audio src="audio/bgm.ogg" autoplay></audio>
+    <input type="range" id="volume">
 </div>
 </body>
 </html>
