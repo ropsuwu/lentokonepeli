@@ -23,8 +23,8 @@ function PlaneAnim() {
     }
     else if (inPlaneAnim) {
         //console.log(planeImg.getCenter())
-        let latDif = planeImg.getCenter().lat - targetLatLng.getCenter().lat
-        let lngDif = planeImg.getCenter().lng - targetLatLng.getCenter().lng
+        let latDif = planeImg.getCenter().lat - targetLatLng[0]
+        let lngDif = planeImg.getCenter().lng - targetLatLng[1]
         let totalDif = Math.abs(latDif) + Math.abs(lngDif)
         let planeDir = [latDif / totalDif, lngDif / totalDif]
         let newCenter = [planeImg.getCenter().lat - (planeDir[0] * (curPlaneSpeed / 60)), planeImg.getCenter().lng - (planeDir[1] * (curPlaneSpeed / 60))]
@@ -71,7 +71,7 @@ function PlaneAnim() {
         }
 
 
-        if (Math.abs(newCenter[0] - targetLatLng.getCenter().lat) < 1.5 && Math.abs(newCenter[1] - targetLatLng.getCenter().lng) < 1.5) {
+        if (Math.abs(newCenter[0] - targetLatLng[0]) < 1.5 && Math.abs(newCenter[1] - targetLatLng[1]) < 1.5) {
             //console.log(newCenter[0] - selectedLatLng.getCenter().lat, newCenter[1] - selectedLatLng.getCenter().lng)
             inPlaneAnim=false
             clearInterval(planeAnimation)
@@ -85,9 +85,11 @@ function PlaneAnim() {
 async function FlytoCountry() { // player flies to country
     //this should do stuff on the map and call death chance and other stuff
     currentCountry = selectedCountry
-    const targetAirport = await fetch("http://127.0.0.1:5000/query?query=SELECT a.name, a.latitude_deg, a.longitude_deg, a.ident FROM airport a JOIN country c ON a.iso_country = c.iso_country WHERE a.type = 'large_airport' AND c.name='" + currentCountry.feature.properties.name + "'"); //this doesnt work right now, i will fix it tomorrow
-    const json = await targetAirport.json();
+    const targetAirport = await fetch("http://127.0.0.1:5000/query?query=SELECT a.name, a.latitude_deg, a.longitude_deg, a.ident FROM airport a JOIN country c ON a.iso_country = c.iso_country WHERE a.type = 'large_airport' AND c.name = '" + currentCountry.feature.properties.name + "'")
+    const json = await targetAirport.json()
     console.log(json)
+
+    targetLatLng = [json[0][1], json[0][2]]
     //targetLatLng = selectedLatLng
 
     planeAnimation = setInterval(PlaneAnim, 16.6666666)
