@@ -55,24 +55,15 @@ function PlaneAnim() {
             newLine.addTo(map)
             aPos = bPos
         }
-        console.log(lines.length)
+        //console.log(lines.length)
         if (lines.length > 300) {
             for (let i = 0; lines.length > 300; i++) {
                 map.removeLayer(lines[i])
                 lines.splice(i, 1)
             }
-            console.log(sMercatorLng)
+        }
+            //console.log(sMercatorLng)
             curPlaneSpeed = (planeSpeed / Math.max(2, sMercatorLng * 1)) * 3
-
-            if (!dash) {
-                bPos = planeImg.getCenter()
-                let newLine = L.polyline([aPos, bPos], { color: "#FF0000" })
-                lines.push[newLine]
-                newLine.addTo(map)
-                aPos = bPos
-            } else if (dash) {
-
-            }
             curDashTimer -= 1
             if (curDashTimer <= 0) {
                 dash = !dash
@@ -89,15 +80,16 @@ function PlaneAnim() {
                 clearInterval(planeAnimation)
             } else {
                 //console.log(newCenter[0] - selectedLatLng.getCenter().lat, newCenter[1] - selectedLatLng.getCenter().lng)
-            }
         }
+        
     }
 }
 
 async function FlytoCountry() { // player flies to country
     //this should do stuff on the map and call death chance and other stuff
     currentCountry = selectedCountry
-    const targetAirport = await fetch("http://127.0.0.1:5000/query?query=SELECT a.name, a.latitude_deg, a.longitude_deg, a.ident FROM airport a JOIN country c ON a.iso_country = c.iso_country WHERE a.type = 'large_airport' AND c.name = '" + currentCountry.feature.properties.name + "'")
+    console.log(currentCountry.feature.properties.name)
+    const targetAirport = await fetch("http://127.0.0.1:5000/query?query=SELECT a.name, a.latitude_deg, a.longitude_deg, a.ident FROM airport a JOIN country c ON a.iso_country = c.iso_country WHERE a.iso_country = '" + currentCountry.feature.properties.iso_a2 + "'")
     const json = await targetAirport.json()
     console.log(json)
 
