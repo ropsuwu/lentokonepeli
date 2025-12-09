@@ -31,7 +31,6 @@ main::before {
     margin: 0 auto;
     position: relative;
     width: fit-content;
-    height: 100vh;
 }
 
 #map {
@@ -138,6 +137,7 @@ main::before {
 
 }
 
+/*game menu*/
 .menu {
     display: flex;
     flex-direction: column;
