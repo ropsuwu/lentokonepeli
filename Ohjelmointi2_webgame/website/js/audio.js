@@ -26,6 +26,31 @@ button.addEventListener("click", () => {
   clickSound.play();
 });
 
+/*Sound for flying*/
+const flightSound = new Audio("audio/fly.ogg");
+flightSound.loop = true;
+
+function playFlight() {
+  if (flightSound.paused) {
+    flightSound.volume = typeof currentSfx !== 'undefined' ? currentSfx: 1;
+
+    flightSound.currentTime = 0;
+    flightSound.play().catch(e => console.log("Audio failed to play:", e));
+  }
+}
+
+function stopFlight() {
+  flightSound.pause();
+  flightSound.currentTime = 0;
+}
+
+
+/*
+====================
+Volume Controls
+====================
+ */
+
 /* --- Volume slider for sfx --- */
 let sfxVolume = document.querySelector("#sfx-volume")
 let currentSfx = 1;

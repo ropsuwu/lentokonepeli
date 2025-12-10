@@ -82,6 +82,7 @@ function PlaneAnim() {
         inPlaneAnim = true
         dash = false
         curDashTimer = dashTimer
+        playFlight();
     } else if (inPlaneAnim) {
         //console.log(planeImg.getCenter())
         let latDif = planeImg.getCenter().lat - targetLatLng[0]
@@ -154,7 +155,9 @@ function PlaneAnim() {
             //console.log(newCenter[0] - selectedLatLng.getCenter().lat, newCenter[1] - selectedLatLng.getCenter().lng)
             inPlaneAnim = false
 
-            clearInterval(planeAnimation)
+            clearInterval(planeAnimation);
+
+            stopFlight();
         } else {
             //console.log(newCenter[0] - selectedLatLng.getCenter().lat, newCenter[1] - selectedLatLng.getCenter().lng)
         }
