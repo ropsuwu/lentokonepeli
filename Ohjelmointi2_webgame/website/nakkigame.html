@@ -17,79 +17,87 @@
     <script src="js/audio.js" defer></script>
 </head>
 <body>
-    <div id="game-container">
-        <img id="background" src="images/background.webp" alt="plane in clouds">
-        <main class="main-container">
-            <a class="advert Left" href="https://youtu.be/J-us8coco3Q" target="_blank"></a>
-            <div id="map"></div>
-            <a class="advert Right" href="https://youtu.be/wl-HPIu5kcs" target="_blank"></a>
-            <div class="button-container">
-                <input type="image"
-                       src="images/sausagebutt.webp"
-                       alt="button"
-                       id="button-main">
-                <span class="button-text">Find Sausage</span>
-            </div>
-        </main>
-        <div id="menu-overlay">
-            <div id="mainmenu" class="menu">
-                <h1>Sausage Fest '25</h1>
-                <button id="newgame-btn">New Game</button>
-                <button id="settings-btn">Settings</button>
-                <button id="modifiers-btn">Modifiers</button>
-                <button id="help-btn">Help</button>
-                <button id="highscores-btn">Highscores</button>
-            </div>
-
-            <div id="difficulty-select" class="menu-screen hidden">
-                <h1>Select difficulty</h1>
-                <select id="difficulty">
-                    <option value="1">Vegan</option>
-                    <option value="2">Bland</option>
-                    <option value="3">Deep fried</option>
-                </select>
-                <h2>Enter Starting Country</h2>
-                <input type="text" id="starting-country" placeholder="e.g.Finland, Brazil, Uganda, Urugay, etc.">
-                <button id="startgame-btn">Start Game</button>
-                <button class="back-btn">Back</button>
-            </div>
-
-            <div id="settings" class="menu-screen hidden">
-                <h1>Settings</h1>
-                <label for="volume">Volume:</label>
-                <input type="range" id="volume">
-                <button class="back-btn">Back</button>
-            </div>
-
-            <div id="modifiers" class="menu-screen hidden">
-                <h1>Modifiers</h1>
-                <button class="back-btn">Back</button>
-            </div>
-
-            <div id="help" class="menu-screen hidden">
-                <h1>Help</h1>
-                <h2>You are flying around the world on your private jet. The Sausage-Challenger. You are trying collect all the sausages while trying not to die to a heart attack. You choose your destination and fly to the country of your choice. There you can try to find a sausage that's exquisite enough for your taste. Every sausage eaten will increase the chance of you dying during your flight. </h2>
-                <button class="back-btn">Back</button>
-            </div>
-
-            <div id="gameContainer" class="menu-screen hidden">
-
-            </div>
-
-            <div id="death-screen" class="menu-screen hidden">
-                <h1>You have died!</h1>
-                <h2 id="death-description"></h2>
-                <input type="text" id="score-name" placeholder="Enter name...">
-                <button id="score-btn">Submit score to leaderboard</button>
-            </div>
-
-            <div id="highscoreList" class="menu-screen hidden">
-                <h2>Highscores</h2>
-                <ol id="scoreItems"></ol>
-                <button class="back-btn">Back</button>
-            </div>
+<div id="game-container">
+    <img id="background" src="images/background.webp" alt="plane in clouds">
+    <main class="main-container">
+        <a class="advert Left" href="https://youtu.be/J-us8coco3Q" target="_blank"></a>
+        <div id="map"></div>
+        <a class="advert Right" href="https://youtu.be/wl-HPIu5kcs" target="_blank"></a>
+        <div class="button-container">
+            <input type="image"
+                   src="images/sausagebutt.webp"
+                   alt="button"
+                   id="button-main">
+            <span class="button-text">Find Sausage</span>
         </div>
-        <input type="range" id="volume">
+    </main>
+    <div id="menu-overlay">
+        <div id="mainmenu" class="menu">
+            <h1>Sausage Fest '25</h1>
+            <button id="newgame-btn">New Game</button>
+            <button id="settings-btn">Settings</button>
+            <button id="modifiers-btn">Modifiers</button>
+            <button id="help-btn">Help</button>
+            <button id="highscores-btn">Highscores</button>
+        </div>
+
+        <div id="difficulty-select" class="menu-screen hidden">
+            <h1>Select difficulty</h1>
+            <select id="difficulty">
+                <option value="1">Vegan</option>
+                <option value="2">Bland</option>
+                <option value="3">Deep fried</option>
+            </select>
+            <h2>Enter Starting Country</h2>
+            <input type="text" id="starting-country" placeholder="e.g.Finland, Brazil, Uganda, Urugay, etc.">
+            <button id="startgame-btn">Start Game</button>
+            <button class="back-btn">Back</button>
+        </div>
+
+        <div id="settings" class="menu-screen hidden">
+            <h1>Settings</h1>
+            <label for="volume">Volume:</label>
+            <input type="range" id="volume">
+            <button class="back-btn">Back</button>
+        </div>
+
+        <div id="modifiers" class="menu-screen hidden">
+            <h1>Modifiers</h1>
+            <button class="back-btn">Back</button>
+        </div>
+
+        <div id="help" class="menu-screen hidden">
+            <h1>Help</h1>
+            <h2>You are flying around the world on your private jet. The Sausage-Challenger. You are trying collect all
+                the sausages while trying not to die to a heart attack. You choose your destination and fly to the
+                country of your choice. There you can try to find a sausage that's exquisite enough for your taste.
+                Every sausage eaten will increase the chance of you dying during your flight. </h2>
+            <button class="back-btn">Back</button>
+        </div>
+
+        <div id="gameContainer" class="menu-screen hidden">
+
+        </div>
+
+        <div id="death-screen" class="menu-screen hidden">
+            <h1>You have died!</h1>
+            <h2 id="death-description"></h2>
+            <input type="text" id="score-name" placeholder="Enter name...">
+            <button id="score-btn">Submit score to leaderboard</button>
+        </div>
+
+        <div id="highscoreList" class="menu-screen hidden">
+            <h2>Highscores</h2>
+            <ol id="scoreItems"></ol>
+            <button class="back-btn">Back</button>
+        </div>
+        <div id="congratulations-popup" class="popup hidden">
+            <h1>Congratulations!</h1>
+            <h2 id="congratulations-message"></h2>
+            <button id="continue-btn">Continue</button>
+        </div>
     </div>
+    <input type="range" id="volume">
+</div>
 </body>
 </html>

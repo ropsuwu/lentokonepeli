@@ -66,14 +66,12 @@ async function initializeGameWithCountry(country) {
         if (!sosig) {
             layer.setStyle(nofoundsosig)
             //ei nakkia
-        }
-        else {
+        } else {
             layer.setStyle(sosigStyle)
             //joo nakkia
         }
     })
 }
-
 
 
 function PlaneAnim() {
@@ -199,27 +197,24 @@ async function FlytoCountry() { // player flies to country
 
     let conf
     let chance = (difficultyValue * Math.pow((d) * (sausagesFound.length / 50), 0.8)) - 50
-    console.log(chance + ", " + sausagesFound.length+", "+d)
+    console.log(chance + ", " + sausagesFound.length + ", " + d)
 
 
     if (chance >= 0) {
         //"this should add a confirmation prompt for the player"
         conf = "y"//placeholder
-    }
-    else {
+    } else {
         conf = "y"
     }
-        
+
     if (conf == "y") {
-        if ((Math.random() * 1000)-1 <= chance) {
+        if ((Math.random() * 1000) - 1 <= chance) {
             death = true
             deathTimer = Math.random() * totalDif
-        }
-        else {
+        } else {
             death = false
         }
-    }
-    else {
+    } else {
         death = "cancelled"
     }
 
@@ -231,6 +226,7 @@ async function FlytoCountry() { // player flies to country
 }
 
 let score;
+
 function Death() {
     clearInterval(planeAnimation)
     console.log("player has died")
@@ -242,7 +238,7 @@ function Death() {
     score = Math.floor(((Math.pow(difficultyValue, 2)) * sausagesFound.length * 100) / Math.log10(totalDistanceTravelled))
 
     document.getElementById('death-description').innerHTML = ("While on a flight to " + currentAirportName + ", located in " + currentCountry.feature.properties.name + ". You suffered- and subsequently died from a heart attack, likely caused by your unhealthy eating habits. <br> <br>" +
-    "Your final score was "+score+".")
+        "Your final score was " + score + ".")
 }
 
 async function GetSosig() { //player obtains a sausage
@@ -278,16 +274,28 @@ async function GetSosig() { //player obtains a sausage
     //}
 }
 
-function sosigJudgement(gameWinBool) {
+async function sosigJudgement(gameWinBool) {
     document.getElementById('menu-overlay').style.display = 'none';
     document.getElementById('gameContainer').classList.add('hidden');
+
     if (gameWinBool) {
-        sausagesFound.push(currentCountry)
-        currentCountry.setStyle(noSosigStyle)
-    }
-    else {
-        //wip, should stop minigame retry maybe?
-        currentCountry.setStyle(noSosigStyle)
+        sausagesFound.push(currentCountry);
+        currentCountry.setStyle(noSosigStyle);
+
+        const nakki = await fetch(`http://127.0.0.1:5000/query?query=SELECT sausage FROM country WHERE iso_country='${currentCountry.feature.properties.iso_a2_eh}'`);
+        const json = await nakki.json();
+        const sausageName = json[0][0];
+
+        document.getElementById('menu-overlay').style.display = 'flex';
+        document.getElementById('congratulations-popup').classList.remove('hidden');
+        document.getElementById('congratulations-message').innerHTML = `You found ${sausageName}!`;
+
+        document.getElementById('continue-btn').addEventListener('click', function () {
+            document.getElementById('congratulations-popup').classList.add('hidden');
+            document.getElementById('menu-overlay').style.display = 'none';
+        }, {once: true});
+    } else {
+        currentCountry.setStyle(noSosigStyle);
     }
 }
 
@@ -347,8 +355,7 @@ let GeoJSON = L.geoJSON(globeGeojsonLayer, {style: sosigStyle}).bindPopup(functi
         div.appendChild(button);
 
         return div
-    }
-    else if (layer.options.color == "#a3a3a3"){
+    } else if (layer.options.color == "#a3a3a3") {
         const div = document.createElement("div");
         div.innerHTML = '<b>' + layer.feature.properties.name + '</b>';
 
@@ -439,8 +446,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 let exists = await fetch(`http://127.0.0.1:5000/query?query=SELECT id FROM game WHERE id = ${idCount}`)
                 if (exists.status != 404) {
                     idCount += 1
-                }
-                else {
+                } else {
                     break
                 }
             }
@@ -481,8 +487,8 @@ async function updateHighscoreDisplay() {
 
     scores.forEach((entry) => {
         let li = document.createElement("li");
-        
-        li.textContent = (`|Score: ${entry[0]}`).padEnd(16, " ") + `| Name: ${entry[1]}`.padEnd(16, " ") + `| Sausages: ${entry[2]}`.padEnd(16  , " ") + `| Difficulty: ${entry[3]}`.padEnd(24, " ").substring(0,24) +"|";
+
+        li.textContent = (`|Score: ${entry[0]}`).padEnd(16, " ") + `| Name: ${entry[1]}`.padEnd(16, " ") + `| Sausages: ${entry[2]}`.padEnd(16, " ") + `| Difficulty: ${entry[3]}`.padEnd(24, " ").substring(0, 24) + "|";
         scoreItems.appendChild(li);
     });
 }
