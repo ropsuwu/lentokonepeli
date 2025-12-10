@@ -32,7 +32,7 @@ let pisteet = 0
 let aika = 30
 let active = false
 const voitto = 30
-
+let timer;
 
 const nuoliDiv = document.getElementById("napit")
 const pisteDiv = document.getElementById("tulos")
@@ -72,7 +72,7 @@ function randNuoli() {
 function taulu() {
     nuoliDiv.textContent = nuoli.join(" ")
     pisteDiv.textContent = "Pisteet: " + pisteet;
-    aikaDiv.textContent = "aika: "+aika
+    aikaDiv.textContent = "Aika: "+aika
 }
 
 document.addEventListener("keydown", (e) => {
