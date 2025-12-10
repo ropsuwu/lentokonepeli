@@ -1,3 +1,4 @@
+/* ---Click sound effect --- */
 class Overlap {
   path;
   constructor(path) {
@@ -7,8 +8,9 @@ class Overlap {
   /*Creates an audio object when the button is clicked*/
   play() {
     const audio = new Audio(this.path)
-    audio.play().catch(e => console.error("Audio playback failed", e));
+    audio.volume = currentSfx;
 
+    audio.play().catch(e => console.error("Audio playback failed", e));
     audio.addEventListener("ended", () => {
       /*remove object after playing to prevent possible, although unlikely, memory leak*/
       audio.remove();
@@ -24,24 +26,43 @@ button.addEventListener("click", () => {
   clickSound.play();
 });
 
-/*Volume slider*/
-let audio = new Audio("audio/bgm.ogg");
-let volume = document.querySelector("#volume-slider");
+/* --- Volume slider for sfx --- */
+let sfxVolume = document.querySelector("#sfx-volume")
+let currentSfx = 1;
 
 /*Checks if the volume value is saved to the browser*/
-let savedVolume = localStorage.getItem("bgm_volume");
-if (savedVolume !== null) {
-  audio.volume = savedVolume / 100;
-  volume.value = savedVolume;
+let savedSfx = localStorage.getItem("sfx_volume")
+if (savedSfx !== null) {
+  currentSfx= savedSfx / 100;
+  sfxVolume.value = savedSfx;
 } else {
-  audio.volume = 1;
-  volume.value = 100;
+  currentSfx= 1;
+  sfxVolume.value = 100;
 }
-audio.loop = true
-audio.autoplay = true //User has to allow this first
 
-volume.addEventListener("input", function(e) {
-    audio.volume = e.currentTarget.value / 100;
+sfxVolume.addEventListener("input", function(e) {
+  currentSfx = e.currentTarget.value /100;
+  localStorage.setItem("sfx_volume", e.currentTarget.value);
+});
+
+/* --- Volume slider for bgm --- */
+let music = new Audio("audio/bgm.ogg");
+let musicVolume = document.querySelector("#music-volume");
+
+/*Checks if the volume value is saved to the browser*/
+let savedMusic = localStorage.getItem("bgm_volume");
+if (savedMusic !== null) {
+  music.volume = savedMusic / 100;
+  musicVolume.value = savedMusic;
+} else {
+  music.volume = 1;
+  musicVolume.value = 100;
+}
+music.loop = true
+music.autoplay = true //User has to allow this first
+
+musicVolume.addEventListener("input", function(e) {
+    music.volume = e.currentTarget.value / 100;
     /*saves the audio volume to the browser's storage to keep volume after page refresh*/
     localStorage.setItem("bgm_volume", e.currentTarget.value);
 });
