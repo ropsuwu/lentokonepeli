@@ -26,7 +26,7 @@ button.addEventListener("click", () => {
   clickSound.play();
 });
 
-/*Sound for flying*/
+/* --- Sound for flying --- */
 const flightSound = new Audio("audio/fly.ogg");
 flightSound.loop = true;
 
