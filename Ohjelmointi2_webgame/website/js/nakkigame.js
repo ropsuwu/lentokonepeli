@@ -16,7 +16,8 @@ let sausagesFound = [];
 let difficulty;
 let difficultyValue;
 let difficultyName;
-let death
+let death;
+let deathTimer;
 
 function PlaneAnim() {
     if (!inPlaneAnim) {
@@ -27,26 +28,31 @@ function PlaneAnim() {
         dash = false
         curDashTimer = dashTimer
     } else if (inPlaneAnim) {
-        console.log(planeImg.getCenter())
+        //console.log(planeImg.getCenter())
         let latDif = planeImg.getCenter().lat - targetLatLng[0]
-        console.log(latDif)
-        console.log(targetLatLng)
+        //console.log(latDif)
+        //console.log(targetLatLng)
         let lngDif = planeImg.getCenter().lng - targetLatLng[1]
         let totalDif = Math.abs(latDif) + Math.abs(lngDif)
         if (totalDif <= 0) {
             totalDif = 1
         }
-        console.log(totalDif)
+        //console.log(totalDif)
         let planeDir = [latDif / totalDif, lngDif / totalDif]
         let newCenter = [planeImg.getCenter().lat - (planeDir[0] * (curPlaneSpeed / 60)), planeImg.getCenter().lng - (planeDir[1] * (curPlaneSpeed / 60))]
+        deathTimer -= Math.abs(planeDir[0] * (curPlaneSpeed / 60)) + Math.abs(planeDir[1] * (curPlaneSpeed / 60))
+        //console.log(deathTimer)
+        if (deathTimer <= 0 && death) {
+            Death()
+        }
 
-        console.log(newCenter)
+        //console.log(newCenter)
         let sMercatorLng = (Math.tan((Math.PI / 4) + (((Math.abs(newCenter[0] + planeSize) * Math.PI) / 180) / 2)))
-        console.log(newCenter[0] + ", " + (newCenter[0] * sMercatorLng))
+        //console.log(newCenter[0] + ", " + (newCenter[0] * sMercatorLng))
         let newBounds = L.latLngBounds([newCenter[0] + (planeSize / (sMercatorLng * 1)), newCenter[1] + planeSize], [newCenter[0] - (planeSize / (sMercatorLng * 1)), newCenter[1] - planeSize])
         //console.log(newBounds)
         planeImg.setBounds(newBounds)
-        console.log(sMercatorLng)
+        //console.log(sMercatorLng)
         curPlaneSpeed = (planeSpeed / Math.max(2, sMercatorLng * 1)) * 3
 
         if (!dash) {
@@ -120,8 +126,26 @@ async function FlytoCountry() { // player flies to country
     let lngDif = planeImg.getCenter().lng - targetLatLng[1]
     let totalDif = Math.abs(latDif) + Math.abs(lngDif)
 
+
+    //Harvesine function
+    const R = 6371e3; // metres
+    const φ1 = planeImg.getCenter().lat * Math.PI / 180; // φ, λ in radians
+    const φ2 = targetLatLng[0] * Math.PI / 180;
+    const Δφ = (targetLatLng[0] - planeImg.getCenter().lat) * Math.PI / 180;
+    const Δλ = (targetLatLng[1] - planeImg.getCenter().lng) * Math.PI / 180;
+
+    const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+        Math.cos(φ1) * Math.cos(φ2) *
+        Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+    const d = (R * c) / 1000; // in kilometres
+
+
     let conf
-    let chance = (difficultyValue * Math.pow(totalDif * (sausagesFound.length / 50), 0.8)) - 50
+    let chance = (difficultyValue * Math.pow((d) * (sausagesFound.length / 50), 0.8)) - 50
+    console.log(chance + ", " + sausagesFound.length+", "+d)
+
 
     if (chance >= 0) {
         //"this should add a confirmation prompt for the player"
@@ -132,8 +156,9 @@ async function FlytoCountry() { // player flies to country
     }
         
     if (conf == "y") {
-        if (Math.random() * 1000 <= chance) {
+        if ((Math.random() * 1000)-1 <= chance) {
             death = true
+            deathTimer = Math.random() * totalDif
         }
         else {
             death = false
@@ -146,8 +171,14 @@ async function FlytoCountry() { // player flies to country
     if (death != "cancelled") {
         planeAnimation = setInterval(PlaneAnim, 16.6666666)
     }
-    console.log("Flying!!")
+    //console.log("Flying!!")
 
+}
+
+function Death() {
+    clearInterval(planeAnimation)
+    //death popup should happen here!!!
+    console.log("player has died")
 }
 
 async function GetSosig() { //player obtains a sausage
@@ -332,7 +363,7 @@ function startGameWithSettings() {
 
 async function initializeGameWithCountry(country) {
     console.log('Starting GAME with country:', country);
-    const result = await fetch("http://127.0.0.1:5000/query?query=SELECT a.latitude_deg, a.longitude_deg FROM airport a JOIN country c ON a.iso_country = c.iso_country WHERE c.name = '" + country + "'")
+    const result = await fetch("http://127.0.0.1:5000/query?query=SELECT a.latitude_deg, a.longitude_deg, a.iso_country FROM airport a JOIN country c ON a.iso_country = c.iso_country WHERE c.name = '" + country + "'")
     const json = await result.json()
     currentLatLng = L.latLngBounds([[json[0][0] + 5, json[0][1] + 5], [json[0][0] - 5, json[0][1] - 5]])
     planeImg = L.imageOverlay("images/test.webp", currentLatLng).addTo(map)
@@ -342,6 +373,9 @@ async function initializeGameWithCountry(country) {
     let sosig
     console.log(json2)
     GeoJSON.eachLayer((layer) => {
+        if (json[0][2] == layer.feature.properties.iso_a2_eh) {
+            currentCountry = layer
+        }
         //console.log(layer.feature.properties.iso_a2_eh)
         sosig=true
         for (let i = 0; i < json2.length; i++) {
