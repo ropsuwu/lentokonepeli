@@ -21,6 +21,61 @@ let deathTimer;
 let totalDistanceTravelled;
 let currentAirportName;
 
+async function initializeGameWithCountry(country) {
+    console.log('Starting GAME with country:', country);
+    totalDistanceTravelled = 0
+    if (planeImg != undefined) {
+        map.removeLayer(planeImg)
+    }
+    for (let i = 0; lines.length > 0;) {
+        map.removeLayer(lines[i])
+        lines.splice(i, 1)
+    }
+    lines = [];
+    linesList = [];
+    sausagesFound = [];
+    selectedCountry = null;
+    selectedLatLng = null;
+    targetLatLng = null;
+    currentCountry = null;
+    inPlaneAnim = false;
+    map.closePopup();
+
+
+    const result = await fetch("http://127.0.0.1:5000/query?query=SELECT a.latitude_deg, a.longitude_deg, a.iso_country FROM airport a JOIN country c ON a.iso_country = c.iso_country WHERE a.type = 'large_airport' AND c.name = '" + country + "'")
+    const json = await result.json()
+    currentLatLng = L.latLngBounds([[json[0][0] + 5, json[0][1] + 5], [json[0][0] - 5, json[0][1] - 5]])
+    planeImg = L.imageOverlay("images/test.webp", currentLatLng).addTo(map)
+    const nakki = await fetch("http://127.0.0.1:5000/query?query=SELECT iso_country FROM country WHERE sausage IS NULL");
+    //console.log(nakki)
+    const json2 = await nakki.json();
+    let sosig
+    console.log(json2)
+    GeoJSON.eachLayer((layer) => {
+        if (json[0][2] == layer.feature.properties.iso_a2_eh) {
+            currentCountry = layer
+        }
+        //console.log(layer.feature.properties.iso_a2_eh)
+        sosig = true
+        for (let i = 0; i < json2.length; i++) {
+            if (json2[i] == layer.feature.properties.iso_a2_eh) {
+                sosig = false
+                //ei nakkia
+            }
+        }
+        if (!sosig) {
+            layer.setStyle(nofoundsosig)
+            //ei nakkia
+        }
+        else {
+            layer.setStyle(sosigStyle)
+            //joo nakkia
+        }
+    })
+}
+
+
+
 function PlaneAnim() {
     if (!inPlaneAnim) {
         curPlaneSpeed = planeSpeed
@@ -78,14 +133,7 @@ function PlaneAnim() {
         //console.log(lines.length)
 
         if (lines.length > 300) {
-            for (let i = 0; lines.length > 300; i++) {
-                map.removeLayer(lines[i])
-                lines.splice(i, 1)
-            }
-        }
-
-        if (lines.length > 300) {
-            for (let i = 0; lines.length > 300; i++) {
+            for (let i = 0; lines.length > 300;) {
                 map.removeLayer(lines[i])
                 lines.splice(i, 1)
             }
@@ -182,7 +230,7 @@ async function FlytoCountry() { // player flies to country
 
 }
 
-let score
+let score;
 function Death() {
     clearInterval(planeAnimation)
     console.log("player has died")
@@ -214,7 +262,7 @@ async function GetSosig() { //player obtains a sausage
                 document.getElementById('difficulty-select').classList.add('hidden');
                 document.getElementById('gameContainer').classList.remove('hidden');
 
-                sosigJudgement(true)
+                sosigJudgement(true)//debug, remove and uncomment next line before showcase 
                 //showRandomGame();
 
                 //console.log(json[0][0])
@@ -419,41 +467,7 @@ function startGameWithSettings() {
     initializeGameWithCountry(settings.startingCountry);
 }
 
-async function initializeGameWithCountry(country) {
-    console.log('Starting GAME with country:', country);
-    totalDistanceTravelled = 0
 
-    const result = await fetch("http://127.0.0.1:5000/query?query=SELECT a.latitude_deg, a.longitude_deg, a.iso_country FROM airport a JOIN country c ON a.iso_country = c.iso_country WHERE a.type = 'large_airport' AND c.name = '" + country + "'")
-    const json = await result.json()
-    currentLatLng = L.latLngBounds([[json[0][0] + 5, json[0][1] + 5], [json[0][0] - 5, json[0][1] - 5]])
-    planeImg = L.imageOverlay("images/test.webp", currentLatLng).addTo(map)
-    const nakki = await fetch("http://127.0.0.1:5000/query?query=SELECT iso_country FROM country WHERE sausage IS NULL");
-    //console.log(nakki)
-    const json2 = await nakki.json();
-    let sosig
-    console.log(json2)
-    GeoJSON.eachLayer((layer) => {
-        if (json[0][2] == layer.feature.properties.iso_a2_eh) {
-            currentCountry = layer
-        }
-        //console.log(layer.feature.properties.iso_a2_eh)
-        sosig=true
-        for (let i = 0; i < json2.length; i++) {
-            if (json2[i]==layer.feature.properties.iso_a2_eh) {
-                sosig = false
-                //ei nakkia
-            }
-        }
-        if (!sosig) {
-            layer.setStyle(nofoundsosig)
-            //ei nakkia
-        }
-        else {
-            layer.setStyle(sosigStyle)
-            //joo nakkia
-        }
-    })
-}
 
 function setupBack() {
     const backButtons = document.querySelectorAll('.back-btn');
