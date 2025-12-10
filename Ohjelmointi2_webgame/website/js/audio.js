@@ -30,7 +30,7 @@ audio.volume = 1;
 audio.loop = true;
 audio.autoplay = true;
 
-let volume = document.querySelector("#volume");
+let volume = document.querySelector("#volume-slider");
 volume.addEventListener("input", function(e) {
     audio.volume = e.currentTarget.value / 100;
 });
