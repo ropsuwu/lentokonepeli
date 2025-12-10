@@ -189,15 +189,17 @@ async function GetSosig() { //player obtains a sausage
 
     if (json[0][0] == undefined || json[0][0] == null) {
         console.log("ei nakkia")
-        currentCountry.setStyle(nofoundsosig)
+        //currentCountry.setStyle(nofoundsosig)
         //ei nakkia
     } else {
         if (!inPlaneAnim) {
             if (!sausagesFound.includes(currentCountry)) {
-                console.log(json[0][0])
-                sausagesFound.push(currentCountry)
-                currentCountry.setStyle(noSosigStyle)
-                console.log('Sosig!!')
+                document.getElementById('menu-overlay').style.display = 'flex';
+                document.getElementById('difficulty-select').classList.add('hidden');
+                document.getElementById('gameContainer').classList.remove('hidden');
+                showRandomGame();
+                //console.log(json[0][0])
+                //console.log('Sosig!!')
                 //joo nakkia
             }
         }
@@ -208,6 +210,18 @@ async function GetSosig() { //player obtains a sausage
     //    currentCountry.setStyle(noSosigStyle)
     //    console.log('Sosig!!')
     //}
+}
+
+function sosigJudgement(gameWinBool) {
+    document.getElementById('menu-overlay').style.display = 'none';
+    document.getElementById('gameContainer').classList.add('hidden');
+    if (gameWinBool) {
+        sausagesFound.push(currentCountry)
+        currentCountry.setStyle(noSosigStyle)
+    }
+    else {
+        //wip, should stop minigame retry maybe?
+    }
 }
 
 let map;
@@ -292,6 +306,7 @@ let planeImg;
 //Event listener for the button
 document.getElementById('button-main').addEventListener('click', async (e) => {
     GetSosig();
+
 });
 document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('newgame-btn').addEventListener('click',

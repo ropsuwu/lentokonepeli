@@ -211,3 +211,41 @@ main::before {
 .back-btn {
     margin: 5px;
 }
+
+#gameContainer{
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 20px;
+    background-color: white;
+}
+
+#gameContainer h2 {
+    margin-top: 40px;
+}
+
+.game-box {
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 400px;
+    border-radius: 10px;
+}
+
+#reactionSignal {
+    width: 150px;
+    height: 150px;
+    margin: 20px auto;
+    background-color: gray;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    user-select: none;
+}
+
+#gameContainer input[type="number"] {
+    width: 50px;
+}

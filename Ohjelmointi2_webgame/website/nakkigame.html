@@ -8,6 +8,7 @@
     <title>Nakkipeli</title>
     <link rel="stylesheet" href="css/leaflet.css"/>
     <link rel="stylesheet" href="css/style.css"/>
+    <script src="js/minigames.js" defer></script>
     <script src="js/leaflet/leaflet.js" defer></script>
     <script src="js/leaflet/leaflet.ajax.js" defer></script>
     <script src="js/polyline.encoded.js" defer></script>
@@ -65,10 +66,15 @@
             <h1>Modifiers</h1>
             <button class="back-btn">Back</button>
         </div>
+
         <div id="help" class="menu-screen hidden">
             <h1>Help</h1>
             <h2>You are flying around the world on your private jet. The Sausage-Challenger. You are trying collect all the sausages while trying not to die to a heart attack. You choose your destination and fly to the country of your choice. There you can try to find a sausage that's exquisite enough for your taste. Every time your death rate increases which will increase the chance of you dying during your flight. </h2>
             <button class="back-btn">Back</button>
+        </div>
+
+        <div id="gameContainer" class="menu-screen hidden">
+
         </div>
     </div>
     <input type="range" id="volume">
