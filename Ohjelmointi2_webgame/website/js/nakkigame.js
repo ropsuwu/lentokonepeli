@@ -198,7 +198,7 @@ async function FlytoCountry() { // player flies to country
     totalDistanceTravelled += d
 
     let conf
-    let chance = (difficultyValue * Math.pow((d) * (sausagesFound.length / 50), 0.8)) + 5000
+    let chance = (difficultyValue * Math.pow((d) * (sausagesFound.length / 50), 0.8)) - 50
     console.log(chance + ", " + sausagesFound.length+", "+d)
 
 
@@ -262,8 +262,7 @@ async function GetSosig() { //player obtains a sausage
                 document.getElementById('difficulty-select').classList.add('hidden');
                 document.getElementById('gameContainer').classList.remove('hidden');
 
-                sosigJudgement(true)//debug, remove and uncomment next line before showcase 
-                //showRandomGame();
+                showRandomGame();
 
                 //console.log(json[0][0])
                 //console.log('Sosig!!')
