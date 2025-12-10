@@ -193,11 +193,13 @@ async function GetSosig() { //player obtains a sausage
         //ei nakkia
     } else {
         if (!inPlaneAnim) {
-            console.log(json[0][0])
-            sausagesFound.push(currentCountry)
-            currentCountry.setStyle(noSosigStyle)
-            console.log('Sosig!!')
-            //joo nakkia
+            if (!sausagesFound.includes(currentCountry)) {
+                console.log(json[0][0])
+                sausagesFound.push(currentCountry)
+                currentCountry.setStyle(noSosigStyle)
+                console.log('Sosig!!')
+                //joo nakkia
+            }
         }
     }
 
