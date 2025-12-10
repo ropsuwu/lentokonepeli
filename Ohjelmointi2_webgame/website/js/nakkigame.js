@@ -398,6 +398,12 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('mainmenu').classList.add('hidden');
             document.getElementById('help').classList.remove('hidden');
         });
+    document.getElementById('highscores-btn').addEventListener('click',
+        function () {
+            updateHighscoreDisplay()
+            document.getElementById('mainmenu').classList.add('hidden');
+            document.getElementById('highscoreList').classList.remove('hidden');
+        });
 
     document.getElementById('startgame-btn').addEventListener('click',
         async function () {
@@ -467,7 +473,20 @@ function startGameWithSettings() {
     initializeGameWithCountry(settings.startingCountry);
 }
 
+async function updateHighscoreDisplay() {
+    const scoreItems = document.getElementById("scoreItems");
+    scoreItems.innerHTML = "";
 
+    let scores = await fetch(`http://127.0.0.1:5000/query?query=SELECT high_score, screen_name, sausagenum, difficulty FROM game ORDER BY high_score DESC`)
+    scores = await scores.json()
+
+    scores.forEach((entry) => {
+        let li = document.createElement("li");
+        
+        li.textContent = (`|Score: ${entry[0]}`).padEnd(16, " ") + `| Name: ${entry[1]}`.padEnd(16, " ") + `| Sausages: ${entry[2]}`.padEnd(16  , " ") + `| Difficulty: ${entry[3]}`.padEnd(24, " ").substring(0,24) +"|";
+        scoreItems.appendChild(li);
+    });
+}
 
 function setupBack() {
     const backButtons = document.querySelectorAll('.back-btn');

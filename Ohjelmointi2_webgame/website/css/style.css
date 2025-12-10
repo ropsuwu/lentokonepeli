@@ -219,6 +219,11 @@ main::before {
     background-color: white;
 }
 
+#death-screen {
+    margin: 20px;
+    color: white;
+}
+
 #gameContainer h2 {
     margin-top: 40px;
 }
@@ -248,4 +253,20 @@ main::before {
 
 #gameContainer input[type="number"] {
     width: 50px;
+}
+
+#highscoreList {
+    font-family: 'Lucida Console', monospace;
+    color: white;
+    white-space: break-spaces;
+    text-align: center;
+    background-color: rgba(30,30,30,0.95);
+    overflow: visible;
+}
+
+#scoreItems {
+
+    width: 750px;
+    padding: 50px;
+    text-align: center;
 }
