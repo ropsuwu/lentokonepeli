@@ -26,11 +26,22 @@ button.addEventListener("click", () => {
 
 /*Volume slider*/
 let audio = new Audio("audio/bgm.ogg");
-audio.volume = 1;
-audio.loop = true;
-audio.autoplay = true;
-
 let volume = document.querySelector("#volume-slider");
+
+/*Checks if the volume value is saved to the browser*/
+let savedVolume = localStorage.getItem("bgm_volume");
+if (savedVolume !== null) {
+  audio.volume = savedVolume / 100;
+  volume.value = savedVolume;
+} else {
+  audio.volume = 1;
+  volume.value = 100;
+}
+audio.loop = true
+audio.autoplay = true //User has to allow this first
+
 volume.addEventListener("input", function(e) {
     audio.volume = e.currentTarget.value / 100;
+    /*saves the audio volume to the browser's storage to keep volume after page refresh*/
+    localStorage.setItem("bgm_volume", e.currentTarget.value);
 });
