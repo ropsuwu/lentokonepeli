@@ -51,7 +51,7 @@
                     <div id="tulos">Pisteet: 0</div>
                     <div id="aika">Aika: 30</div>
                     <div id="kuvat">
-                        <img id="nuoliKuvat" src="./kuvat/alku.jpg" alt="alkukuva">
+                        <img id="nuoliKuvat" src="./images/alku.jpg" alt="alkukuva">
                     </div>
                     <div id="napit"></div>
                     <button id="start">Aloita peli</button>
@@ -69,7 +69,7 @@
                     <div id="piste2">Pisteet: 0</div>
                     <div id="aika2">Aika: 30</div>
                     <div id="kuvat">
-                        <img id="kuva2" src="./kuvat/ylos.png">
+                        <img id="kuva2" src="./images/ylos.png">
                     </div>
                     <button id="start2">Aloita peli 2 (W)</button>
                     <div class="testi"></div>
@@ -226,10 +226,10 @@ function initGameLogic() {
         const voitto = 30;
         const nuolet = ["←", "↑", "↓", "→"];
         const nuoliKuvat = {
-            "←": "./kuvat/vasen.jpg",
-            "↑": "./kuvat/ylos.png",
-            "↓": "./kuvat/alas.jpg",
-            "→": "./kuvat/oikea.jpg"
+            "←": "./images/vasen.jpg",
+            "↑": "./images/ylos.png",
+            "↓": "./images/alas.jpg",
+            "→": "./images/oikea.jpg"
         };
 
         function startGame() {
@@ -238,7 +238,7 @@ function initGameLogic() {
             active = true;
             luoNuoli();
             taulu();
-            nuoliKuva.src = "./kuvat/alku.jpg";
+            nuoliKuva.src = "./images/alku.jpg";
             if (timer) clearInterval(timer);
             timer = setInterval(ajastin, 1000);
         }
@@ -268,7 +268,7 @@ function initGameLogic() {
                 const gameContainer = document.getElementById('gameContainer');
                 gameContainer.innerHTML = `
                         <div class="game-box">
-                            <img src="./kuvat/lesgo.jpg" alt="raaah">
+                            <img src="./images/lesgo.jpg" alt="raaah">
                             <p>Voitit!</p>
                             <button id="backToMenu">Jatka</button>
                         </div>
@@ -286,7 +286,7 @@ function initGameLogic() {
             const gameContainer = document.getElementById('gameContainer');
             gameContainer.innerHTML = `
                     <div class="game-box">
-                        <img src="./kuvat/lesgo.jpg" alt="raaah">
+                        <img src="./images/lesgo.jpg" alt="raaah">
                         <p>Nyt loppu lmao</p>
                         <button id="backToMenu">Jatka</button>
                     </div>
@@ -345,10 +345,10 @@ function initGameLogic() {
         let timer2 = null;
         let drop = null;
         const kuvatTasot = [
-            "./kuvat/alas.jpg",
-            "./kuvat/oikea.jpg",
-            "./kuvat/vasen.jpg",
-            "./kuvat/alas.jpg",
+            "./images/alas.jpg",
+            "./images/oikea.jpg",
+            "./images/vasen.jpg",
+            "./images/alas.jpg",
         ];
 
         function startGame2() {
@@ -395,7 +395,7 @@ function initGameLogic() {
             const gameContainer = document.getElementById('gameContainer');
             gameContainer.innerHTML = `
                     <div class="game-box">
-                        <img src="./kuvat/lesgo.jpg" alt="raaah">
+                        <img src="./images/lesgo.jpg" alt="raaah">
                         <p>Voitit pelin!</p>
                         <button id="backToMenu">Jatka</button>
                     </div>
@@ -413,7 +413,7 @@ function initGameLogic() {
             const gameContainer = document.getElementById('gameContainer');
             gameContainer.innerHTML = `
                     <div class="game-box">
-                        <img src="./kuvat/lesgo.jpg" alt="raaah">
+                        <img src="./images/lesgo.jpg" alt="raaah">
                         <p>Hävisit pelin!</p>
                         <button id="backToMenu">Jatka</button>
                     </div>
@@ -439,7 +439,7 @@ function initGameLogic() {
         const gameContainer = document.getElementById('gameContainer');
         gameContainer.innerHTML = `
                     <div class="game-box">
-                        <img src="./kuvat/lesgo.jpg" alt="raaah">
+                        <img src="./images/lesgo.jpg" alt="raaah">
                         <p>Voitit pelin!</p>
                         <button id="backToMenu">Jatka</button>
                     </div>
@@ -454,7 +454,7 @@ function initGameLogic() {
         const gameContainer = document.getElementById('gameContainer');
         gameContainer.innerHTML = `
                     <div class="game-box">
-                        <img src="./kuvat/lesgo.jpg" alt="raaah">
+                        <img src="./images/lesgo.jpg" alt="raaah">
                         <p>Hävisit pelin!</p>
                         <button id="backToMenu">Jatka</button>
                     </div>

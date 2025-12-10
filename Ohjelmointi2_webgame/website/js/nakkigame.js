@@ -18,6 +18,8 @@ let difficultyValue;
 let difficultyName;
 let death;
 let deathTimer;
+let totalDistanceTravelled;
+let currentAirportName;
 
 function PlaneAnim() {
     if (!inPlaneAnim) {
@@ -40,7 +42,10 @@ function PlaneAnim() {
         //console.log(totalDif)
         let planeDir = [latDif / totalDif, lngDif / totalDif]
         let newCenter = [planeImg.getCenter().lat - (planeDir[0] * (curPlaneSpeed / 60)), planeImg.getCenter().lng - (planeDir[1] * (curPlaneSpeed / 60))]
-        deathTimer -= Math.abs(planeDir[0] * (curPlaneSpeed / 60)) + Math.abs(planeDir[1] * (curPlaneSpeed / 60))
+
+        let distanceChange = Math.abs(planeDir[0] * (curPlaneSpeed / 60)) + Math.abs(planeDir[1] * (curPlaneSpeed / 60))
+        deathTimer -= distanceChange
+
         //console.log(deathTimer)
         if (deathTimer <= 0 && death) {
             Death()
@@ -115,10 +120,11 @@ async function FlytoCountry() { // player flies to country
     //this should do stuff on the map and call death chance and other stuff
     currentCountry = selectedCountry
     console.log(currentCountry.feature.properties.name)
-    const targetAirport = await fetch("http://127.0.0.1:5000/query?query=SELECT a.name, a.latitude_deg, a.longitude_deg, a.ident FROM airport a JOIN country c ON a.iso_country = c.iso_country WHERE a.iso_country = '" + currentCountry.feature.properties.iso_a2_eh + "'")
+    const targetAirport = await fetch("http://127.0.0.1:5000/query?query=SELECT a.name, a.latitude_deg, a.longitude_deg, a.ident FROM airport a JOIN country c ON a.iso_country = c.iso_country WHERE a.type = 'large_airport' AND a.iso_country = '" + currentCountry.feature.properties.iso_a2_eh + "'")
     const json = await targetAirport.json()
     console.log(json)
 
+    currentAirportName = json[0][0]
     targetLatLng = [json[0][1], json[0][2]]
     //targetLatLng = selectedLatLng
 
@@ -141,9 +147,10 @@ async function FlytoCountry() { // player flies to country
 
     const d = (R * c) / 1000; // in kilometres
 
+    totalDistanceTravelled += d
 
     let conf
-    let chance = (difficultyValue * Math.pow((d) * (sausagesFound.length / 50), 0.8)) - 50
+    let chance = (difficultyValue * Math.pow((d) * (sausagesFound.length / 50), 0.8)) + 5000
     console.log(chance + ", " + sausagesFound.length+", "+d)
 
 
@@ -175,10 +182,19 @@ async function FlytoCountry() { // player flies to country
 
 }
 
+let score
 function Death() {
     clearInterval(planeAnimation)
-    //death popup should happen here!!!
     console.log("player has died")
+
+    document.getElementById('menu-overlay').style.display = 'flex';
+    document.getElementById('death-screen').classList.remove('hidden');
+
+    console.log(totalDistanceTravelled)
+    score = Math.floor(((Math.pow(difficultyValue, 2)) * sausagesFound.length * 100) / Math.log10(totalDistanceTravelled))
+
+    document.getElementById('death-description').innerHTML = ("While on a flight to " + currentAirportName + ", located in " + currentCountry.feature.properties.name + ". You suffered- and subsequently died from a heart attack, likely caused by your unhealthy eating habits. <br> <br>" +
+    "Your final score was "+score+".")
 }
 
 async function GetSosig() { //player obtains a sausage
@@ -193,11 +209,14 @@ async function GetSosig() { //player obtains a sausage
         //ei nakkia
     } else {
         if (!inPlaneAnim) {
-            if (!sausagesFound.includes(currentCountry)) {
+            if (!sausagesFound.includes(currentCountry) && currentCountry.options.color != "#FF0000") {
                 document.getElementById('menu-overlay').style.display = 'flex';
                 document.getElementById('difficulty-select').classList.add('hidden');
                 document.getElementById('gameContainer').classList.remove('hidden');
-                showRandomGame();
+
+                sosigJudgement(true)
+                //showRandomGame();
+
                 //console.log(json[0][0])
                 //console.log('Sosig!!')
                 //joo nakkia
@@ -221,6 +240,7 @@ function sosigJudgement(gameWinBool) {
     }
     else {
         //wip, should stop minigame retry maybe?
+        currentCountry.setStyle(noSosigStyle)
     }
 }
 
@@ -293,8 +313,8 @@ let GeoJSON = L.geoJSON(globeGeojsonLayer, {style: sosigStyle}).bindPopup(functi
         return div
     }
     //change the color if country doesn't contain a sausage
-    if (sausagesFound.includes(currentCountry)) {
-        return "You have already eaten a sausage in " + layer.feature.properties.name + "."
+    if (sausagesFound.includes(currentCountry) || layer.options.color == "#FF0000") {
+        return "You have already searched for sausages in " + layer.feature.properties.name + "."
     }
     //else if (layer.options.color == "#FF0000") {
     //    return "You have already eaten a sausage in "+layer.feature.properties.name+"."
@@ -355,6 +375,27 @@ document.addEventListener('DOMContentLoaded', function () {
 
             document.getElementById('menu-overlay').style.display = 'none';
         });
+    document.getElementById('score-btn').addEventListener('click',
+        async function () {
+            let idCount = await fetch("http://127.0.0.1:5000/query?query=SELECT COUNT(*) FROM game")
+            idCount = await idCount.json()
+            console.log(idCount)
+            idCount = idCount[0][0] + 1
+            let scoreName = document.getElementById("score-name").value
+            while (true) {
+                let exists = await fetch(`http://127.0.0.1:5000/query?query=SELECT id FROM game WHERE id = ${idCount}`)
+                if (exists.status != 404) {
+                    idCount += 1
+                }
+                else {
+                    break
+                }
+            }
+            await fetch(`http://127.0.0.1:5000/query?query=INSERT INTO game VALUES (${idCount}, '${difficultyName}', ${sausagesFound.length},'${score}', '${scoreName}', '${currentAirportName}, ${currentCountry.feature.properties.name}')`)
+
+            document.getElementById('mainmenu').classList.remove('hidden');
+            document.getElementById('death-screen').classList.add('hidden');
+        });
     setupBack();
 });
 
@@ -362,15 +403,15 @@ function startGameWithSettings() {
     const settings = window.gameSettings;
 
     switch (settings.difficulty) {
-        case 1:
+        case "1":
             difficultyName = "vegan"
             difficultyValue = 0.3
             break
-        case 2:
+        case "2":
             difficultyName = "bland"
             difficultyValue = 1.0
             break
-        case 3:
+        case "3":
             difficultyName = "deep fried"
             difficultyValue = 2.0
             break
@@ -380,7 +421,9 @@ function startGameWithSettings() {
 
 async function initializeGameWithCountry(country) {
     console.log('Starting GAME with country:', country);
-    const result = await fetch("http://127.0.0.1:5000/query?query=SELECT a.latitude_deg, a.longitude_deg, a.iso_country FROM airport a JOIN country c ON a.iso_country = c.iso_country WHERE c.name = '" + country + "'")
+    totalDistanceTravelled = 0
+
+    const result = await fetch("http://127.0.0.1:5000/query?query=SELECT a.latitude_deg, a.longitude_deg, a.iso_country FROM airport a JOIN country c ON a.iso_country = c.iso_country WHERE a.type = 'large_airport' AND c.name = '" + country + "'")
     const json = await result.json()
     currentLatLng = L.latLngBounds([[json[0][0] + 5, json[0][1] + 5], [json[0][0] - 5, json[0][1] - 5]])
     planeImg = L.imageOverlay("images/test.webp", currentLatLng).addTo(map)
