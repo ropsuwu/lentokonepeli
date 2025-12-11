@@ -1,73 +1,73 @@
 ﻿const games = [
     {
         name: "Reaction Game",
-        description: "Klikkaa ympyrää heti, kun se muuttuu vihreäksi!",
+        description: "Click the circle as soon as it turns green!",
         html: `
                 <div class="game-box">
                     <h2>Reaction Game</h2>
-                    <p>Klikkaa ympyrää heti, kun se muuttuu vihreäksi!</p>
-                    <div id="reactionSignal">Odota...</div>
+                    <p>Click the circle as soon as it turns green!</p>
+                    <div id="reactionSignal">Wait...</div>
                     <p id="reactionResult"></p>
-                    <button id="reactionStartBtn">Aloita peli</button>
+                    <button id="reactionStartBtn">Start Game</button>
                 </div>
             `
     },
     {
         name: "Quick Math Game",
-        description: "Ratkaise mahdollisimman monta yksinkertaista yhteenlaskua!",
+        description: "Solve as many simple math equations as possible!",
         html: `
                 <div class="game-box">
                     <h2>Quick Math Game</h2>
-                    <p>Ratkaise mahdollisimman monta yksinkertaista yhteenlaskua!</p>
+                    <p>Solve as many simple math equations as possible!</p>
                     <div id="quickMathQuestion"></div>
                     <input type="number" id="quickMathAnswer" />
-                    <button id="quickMathSubmit">Vastaa</button>
+                    <button id="quickMathSubmit">Answer</button>
                     <p id="quickMathResult"></p>
-                    <button id="quickMathStartBtn">Aloita peli</button>
+                    <button id="quickMathStartBtn">Start Game</button>
                 </div>
             `
     },
     {
         name: "Guessing Game",
-        description: "Rämpytä W nappia mahdollisimman nopeasti",
+        description: "Guess numbers between 1 and 5!",
         html: `
                 <div class="game-box">
                     <h2>Guessing Game</h2>
-                    <p>Arvaa numeroita 1–5 mahdollisimman monta kertaa!</p>
+                    <p>Guess numbers between 1 and 5!</p>
                     <input type="number" id="guessInput" min="1" max="5"/>
-                    <button id="guessSubmit">Arvaa</button>
+                    <button id="guessSubmit">Guess</button>
                     <p id="guessResult"></p>
-                    <button id="guessStartBtn">Aloita peli</button>
+                    <button id="guessStartBtn">Start Game</button>
                 </div>
             `
     },
     {
-        name: "Ryhtm Game",
-        description: "Paina nuolia oikeassa järjestyksessä",
+        name: "Rhyhtm Game",
+        description: "Press the arrows in the right order!",
         html: `
                 <div class="game-box">
                     <h2>Rythm Game</h2>
-                    <p>Paina Nuolia oikeassa järjestyksessä</p>
-                    <div id="tulos">Pisteet: 0</div>
-                    <div id="aika">Aika: 30</div>
+                    <p>Press the arrows in the right order!</p>
+                    <div id="tulos">Points: 0</div>
+                    <div id="aika">Time: 30</div>
                     <div id="kuvat">
                         <img id="nuoliKuvat" src="./images/alku.jpg" alt="alkukuva">
                     </div>
                     <div id="napit"></div>
-                    <button id="start">Aloita peli</button>
+                    <button id="start">Start Game</button>
                     <div class="testi"></div>
                 </div>
             `
     },
     {
-        name: "Rämpytys Game",
-        description: "Rämpytä W nappia mahdollisimman nopeasti",
+        name: "Spam Game",
+        description: "Spam the W-key as fast as possible!",
         html: `
                 <div class="game-box">
                     <h2>Smashing Game</h2>
-                    <p>Rämpytä W nappia mahdollisimman nopeasti</p>
-                    <div id="piste2">Pisteet: 0</div>
-                    <div id="aika2">Aika: 30</div>
+                    <p>Spam the W-key as fast as possible!</p>
+                    <div id="piste2">Points: 0</div>
+                    <div id="aika2">Time: 30</div>
                     <div id="kuvat">
                         <img id="kuva2" src="./images/ylos.png">
                     </div>
@@ -102,26 +102,26 @@ function initGameLogic() {
         function startReactionGame() {
             reactionResult.textContent = "";
             reactionSignal.style.backgroundColor = 'gray';
-            reactionSignal.textContent = 'Odota...';
+            reactionSignal.textContent = 'Wait...';
             const duration = Math.floor(Math.random() * 6) + 15;
             const changeDelay = Math.random() * 2000 + 1000;
             reactionTimeout = setTimeout(() => {
                 reactionSignal.style.backgroundColor = 'green';
-                reactionSignal.textContent = 'Klikkaa!';
+                reactionSignal.textContent = 'Click!';
                 reactionStartTime = Date.now();
             }, changeDelay);
             reactionEndTimeout = setTimeout(() => {
                 if (reactionStartTime === 0) {
-                    reactionResult.textContent = `Hävisit! Et klikannut ajoissa.`;
+                    reactionResult.textContent = `You lost! You didn't click the circle in time.`;
                 } else {
                     const reactionTime = (Date.now() - reactionStartTime) / 1000;
-                    const outcome = reactionTime < 0.35 ? "Voittaja!" : "Häviäjä!";
-                    reactionResult.textContent = `Reaktioaikasi: ${reactionTime.toFixed(3)} sekuntia. ${outcome}`;
-                    if (outcome == "Voittaja!") { win() }
-                    else if (outcome == "Häviäjä!") { end() }
+                    const outcome = reactionTime < 0.35 ? "Winner!" : "Loser!";
+                    reactionResult.textContent = `Reaction time: ${reactionTime.toFixed(3)} sekuntia. ${outcome}`;
+                    if (outcome == "Winner!") { win() }
+                    else if (outcome == "Loser!") { end() }
                 }
                 reactionSignal.style.backgroundColor = 'gray';
-                reactionSignal.textContent = 'Odota...';
+                reactionSignal.textContent = 'Wait...';
                 clearTimeout(reactionTimeout);
             }, duration * 1000);
         }
@@ -154,11 +154,11 @@ function initGameLogic() {
 
         function nextQuickMathQuestion() {
             if (Date.now() > quickMathEndTime) {
-                const outcome = quickMathScore >= 10 ? "Voittaja!" : "Häviäjä!";
-                quickMathResult.textContent = `Pisteesi: ${quickMathScore}. ${outcome}`;
+                const outcome = quickMathScore >= 10 ? "Winner!" : "Loser!";
+                quickMathResult.textContent = `Points: ${quickMathScore}. ${outcome}`;
                 quickMathQuestion.textContent = "";
-                if (outcome == "Voittaja!") { win() }
-                else if (outcome == "Häviäjä!") { end() }
+                if (outcome === "Winner!") { win() }
+                else if (outcome === "Loser!") { end() }
                 return;
             }
             const a = Math.floor(Math.random() * 10) + 1;
@@ -195,10 +195,10 @@ function initGameLogic() {
 
         guessSubmit.addEventListener('click', () => {
             if (Date.now() > guessEndTime) {
-                const outcome = guessWins >= 7 ? "Voittaja!" : "Häviäjä!";
-                guessResult.textContent = `Aikasi loppui! Voitot: ${guessWins}, yritykset: ${guessAttempts}. ${outcome}`;
-                if (outcome == "Voittaja!") { win() }
-                else if (outcome == "Häviäjä!") { end() }
+                const outcome = guessWins >= 7 ? "Winner!" : "Loser!";
+                guessResult.textContent = `Times up! Wins: ${guessWins}, attempts: ${guessAttempts}. ${outcome}`;
+                if (outcome === "Winner!") { win() }
+                else if (outcome === "Loser!") { end() }
                 return;
             }
             const target = Math.floor(Math.random() * 5) + 1;
@@ -396,8 +396,8 @@ function initGameLogic() {
             gameContainer.innerHTML = `
                     <div class="game-box">
                         <img src="./images/lesgo.jpg" alt="raaah">
-                        <p>Voitit pelin!</p>
-                        <button id="backToMenu">Jatka</button>
+                        <p>You Won!</p>
+                        <button id="backToMenu">Continue</button>
                     </div>
                 `;
             document.getElementById('backToMenu').addEventListener('click', () => {
@@ -414,8 +414,8 @@ function initGameLogic() {
             gameContainer.innerHTML = `
                     <div class="game-box">
                         <img src="./images/lesgo.jpg" alt="raaah">
-                        <p>Hävisit pelin!</p>
-                        <button id="backToMenu">Jatka</button>
+                        <p>You Lost!</p>
+                        <button id="backToMenu">Continue</button>
                     </div>
                 `;
             document.getElementById('backToMenu').addEventListener('click', () => {
@@ -440,8 +440,8 @@ function initGameLogic() {
         gameContainer.innerHTML = `
                     <div class="game-box">
                         <img src="./images/lesgo.jpg" alt="raaah">
-                        <p>Voitit pelin!</p>
-                        <button id="backToMenu">Jatka</button>
+                        <p>You Won!</p>
+                        <button id="backToMenu">Continue</button>
                     </div>
                 `;
         document.getElementById('backToMenu').addEventListener('click', () => {
@@ -455,8 +455,8 @@ function initGameLogic() {
         gameContainer.innerHTML = `
                     <div class="game-box">
                         <img src="./images/lesgo.jpg" alt="raaah">
-                        <p>Hävisit pelin!</p>
-                        <button id="backToMenu">Jatka</button>
+                        <p>You Lost!</p>
+                        <button id="backToMenu">Continue</button>
                     </div>
                 `;
         document.getElementById('backToMenu').addEventListener('click', () => {
