@@ -328,15 +328,20 @@ label {
     text-align: center;
     background-color: rgba(30,30,30,0.95);
     overflow: visible;
+    width: 512px;
+    height: 512px;
 }
 
 #scoreItems {
     background-color: rgba(30,30,30,0.95);
-    width: 900px;
+    width: 512px;
     padding: 50px;
     padding-top: 10px;
     padding-bottom: 10px;
     padding-right: 0px;
+    text-align: center;
+    height: 512px;
+    font-size: 10px;
     text-align: center;
 }
 
