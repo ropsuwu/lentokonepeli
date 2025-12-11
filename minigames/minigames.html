@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <title>Mini Games</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; margin: 20px; }
-        h2 { margin-top: 40px; }
-        .game-box { border: 1px solid #ccc; padding: 20px; margin: 20px auto; max-width: 400px; border-radius: 10px; }
-        #reactionSignal { width: 150px; height: 150px; margin: 20px auto; background-color: gray; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: white; font-size: 20px; cursor: pointer; user-select: none; }
+        body { font-family: Arial, sans-serif; text-align: center; margin: 20px; color: white; }
+        h2 { margin-top: 40px;color: white }
+        .game-box { border: 1px solid #ccc; padding: 20px; margin: 20px auto; max-width: 400px; border-radius: 10px;color: white; }
+        #reactionSignal { width: 150px; height: 150px; margin: 20px auto; background-color: gray; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: white; font-size: 20px; cursor: pointer; user-select: none;color: white; }
         input[type="number"] { width: 50px; }
     </style>
 </head>
@@ -83,13 +83,13 @@
             html: `
                 <div class="game-box">
                     <h2>Smashing Game</h2>
-                    <p>Rämpytä W nappia mahdollisimman nopeasti</p>
+                    <p>Press W (on the keyboard) as fast as possible to win!</p>
                     <div id="piste2">Pisteet: 0</div>
                     <div id="aika2">Aika: 30</div>
                     <div id="kuvat">
                         <img id="kuva2" src="./kuvat/ylos.png">
                     </div>
-                    <button id="start2">Aloita peli 2 (W)</button>
+                    <button id="start2">Aloita peli (W)</button>
                     <div class="testi"></div>
                 </div>
             `
@@ -120,17 +120,17 @@
             function startReactionGame() {
                 reactionResult.textContent = "";
                 reactionSignal.style.backgroundColor = 'gray';
-                reactionSignal.textContent = 'Odota...';
+                reactionSignal.textContent = 'Wait...';
                 const duration = Math.floor(Math.random() * 6) + 15;
                 const changeDelay = Math.random() * 2000 + 1000;
                 reactionTimeout = setTimeout(() => {
                     reactionSignal.style.backgroundColor = 'green';
-                    reactionSignal.textContent = 'Klikkaa!';
+                    reactionSignal.textContent = 'CLICK!';
                     reactionStartTime = Date.now();
                 }, changeDelay);
                 reactionEndTimeout = setTimeout(() => {
                     if (reactionStartTime === 0) {
-                        reactionResult.textContent = `Hävisit! Et klikannut ajoissa.`;
+                        reactionResult.textContent = `You lost! Didn't click in time... Bozo.`;
                     } else {
                         const reactionTime = (Date.now() - reactionStartTime) / 1000;
                         const outcome = reactionTime < 0.35 ? "Voittaja!" : "Häviäjä!";
@@ -148,13 +148,13 @@
         const reactionTime = (Date.now() - reactionStartTime) / 1000;
         const outcome = reactionTime < 0.35 ? "Voittaja!" : "Häviäjä!";
         reactionResult.textContent =
-            `Reaktioaikasi: ${reactionTime.toFixed(3)} sekuntia. ${outcome}`;
+            `Your reaction time: ${reactionTime.toFixed(3)} seconds. ${outcome}`;
 
         reactionStartTime = 0;
 
         clearTimeout(reactionEndTimeout);
         reactionSignal.style.backgroundColor = 'gray';
-        reactionSignal.textContent = 'Odota...';
+        reactionSignal.textContent = 'Wait...';
     }
 });
 
@@ -181,7 +181,7 @@
             function nextQuickMathQuestion() {
                 if (Date.now() > quickMathEndTime) {
                     const outcome = quickMathScore >= 10 ? "Voittaja!" : "Häviäjä!";
-                    quickMathResult.textContent = `Pisteesi: ${quickMathScore}. ${outcome}`;
+                    quickMathResult.textContent = `Your points: ${quickMathScore}. ${outcome}`;
                     quickMathQuestion.textContent = "";
                     return;
                 }
@@ -220,14 +220,14 @@
             guessSubmit.addEventListener('click', () => {
                 if (Date.now() > guessEndTime) {
                     const outcome = guessWins >= 7 ? "Voittaja!" : "Häviäjä!";
-                    guessResult.textContent = `Aikasi loppui! Voitot: ${guessWins}, yritykset: ${guessAttempts}. ${outcome}`;
+                    guessResult.textContent = `Time's up! Wons: ${guessWins}, Tries: ${guessAttempts}. ${outcome}`;
                     return;
                 }
                 const target = Math.floor(Math.random() * 5) + 1;
                 const guess = parseInt(guessInput.value);
                 guessAttempts++;
                 if (guess === target) guessWins++;
-                guessResult.textContent = `Voitot: ${guessWins}, Yritykset: ${guessAttempts}`;
+                guessResult.textContent = `Wins: ${guessWins}, Tries: ${guessAttempts}`;
                 guessInput.value = "";
                 guessInput.focus();
             });
@@ -291,8 +291,8 @@
                     gameContainer.innerHTML = `
                         <div class="game-box">
                             <img src="./kuvat/lesgo.jpg" alt="raaah">
-                            <p>Voitit!</p>
-                            <button id="backToMenu">Jatka</button>
+                            <p>You won the minigame!</p>
+                            <button id="backToMenu">Continue</button>
                         </div>
                     `;
                     document.getElementById('backToMenu').addEventListener('click', () => {
@@ -308,8 +308,8 @@
                 gameContainer.innerHTML = `
                     <div class="game-box">
                         <img src="./kuvat/lesgo.jpg" alt="raaah">
-                        <p>Nyt loppu lmao</p>
-                        <button id="backToMenu">Jatka</button>
+                        <p>Yippee</p>
+                        <button id="backToMenu">Continue</button>
                     </div>
                 `;
                 document.getElementById('backToMenu').addEventListener('click', () => {
@@ -416,8 +416,8 @@
                 gameContainer.innerHTML = `
                     <div class="game-box">
                         <img src="./kuvat/lesgo.jpg" alt="raaah">
-                        <p>Voitit pelin!</p>
-                        <button id="backToMenu">Jatka</button>
+                        <p>You won the minigame!</p>
+                        <button id="backToMenu">Continue</button>
                     </div>
                 `;
                 document.getElementById('backToMenu').addEventListener('click', () => {
@@ -433,8 +433,8 @@
                 gameContainer.innerHTML = `
                     <div class="game-box">
                         <img src="./kuvat/lesgo.jpg" alt="raaah">
-                        <p>Hävisit pelin!</p>
-                        <button id="backToMenu">Jatka</button>
+                        <p>You lost the minigame :(</p>
+                        <button id="backToMenu">Continiue</button>
                     </div>
                 `;
                 document.getElementById('backToMenu').addEventListener('click', () => {
