@@ -150,13 +150,9 @@
         reactionResult.textContent =
             `Reaktioaikasi: ${reactionTime.toFixed(3)} sekuntia. ${outcome}`;
 
-        // Estetään tuplaklikit
         reactionStartTime = 0;
 
-        // Lopetetaan pelin automaattinen häviö
         clearTimeout(reactionEndTimeout);
-
-        // Resetoidaan signaali
         reactionSignal.style.backgroundColor = 'gray';
         reactionSignal.textContent = 'Odota...';
     }
