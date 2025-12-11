@@ -400,6 +400,7 @@ function initGameLogic() {
                         <button id="backToMenu">Continue</button>
                     </div>
                 `;
+            playJingle()
             document.getElementById('backToMenu').addEventListener('click', () => {
                 gameContainer.innerHTML = '';
                 success();
@@ -444,6 +445,7 @@ function initGameLogic() {
                         <button id="backToMenu">Continue</button>
                     </div>
                 `;
+        playJingle();
         document.getElementById('backToMenu').addEventListener('click', () => {
             gameContainer.innerHTML = '';
             success();

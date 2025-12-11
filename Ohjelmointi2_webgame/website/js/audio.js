@@ -50,7 +50,7 @@ function stopFlight() {
   flightSound.currentTime = 0;
 }
 
-/* Change the pitch of flight sound depending on speed*/
+/* Change the pitch of flight sound depending on speed (DOES NOT WORK)*/
 function setFlightPitch(speed) {
   let rate = speed / 50;
 
@@ -61,6 +61,19 @@ function setFlightPitch(speed) {
   //console.log(rate)
   flightSound.playbackRate = rate;
 }
+
+/*Minigame win jingle*/
+function playJingle() {
+  console.log("Runs")
+  const jingle = new Audio("audio/jingle.ogg");
+
+    jingle.volume =(typeof currentSfx !== 'undefined') ? currentSfx: 1;
+    console.log("Volume:", jingle.volume)
+
+    jingle.play().catch(e => console.error("Audio failed to play:", e));
+    jingle.currentTime = 0;
+}
+
 
 
 /*
