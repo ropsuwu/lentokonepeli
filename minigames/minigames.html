@@ -143,10 +143,24 @@
             }
 
             reactionSignal.addEventListener('click', () => {
-                if (reactionSignal.style.backgroundColor === 'green') {
-                    reactionStartTime = Date.now();
-                }
-            });
+    if (reactionSignal.style.backgroundColor === 'green' && reactionStartTime > 0) {
+
+        const reactionTime = (Date.now() - reactionStartTime) / 1000;
+        const outcome = reactionTime < 0.35 ? "Voittaja!" : "Häviäjä!";
+        reactionResult.textContent =
+            `Reaktioaikasi: ${reactionTime.toFixed(3)} sekuntia. ${outcome}`;
+
+        // Estetään tuplaklikit
+        reactionStartTime = 0;
+
+        // Lopetetaan pelin automaattinen häviö
+        clearTimeout(reactionEndTimeout);
+
+        // Resetoidaan signaali
+        reactionSignal.style.backgroundColor = 'gray';
+        reactionSignal.textContent = 'Odota...';
+    }
+});
 
             reactionStartBtn.addEventListener('click', startReactionGame);
 
