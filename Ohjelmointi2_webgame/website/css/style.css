@@ -1,3 +1,26 @@
+/* ==============================
+   Global styling
+   ============================== */
+html {
+    font-family: "Comic Sans MS", sans-serif;
+    color: white;
+    user-select: none;
+    box-sizing: border-box;
+}
+
+ *, *::before, *::after {
+box-sizing: inherit;
+}
+
+ body {
+     margin: 0;
+     padding: 0;
+     overflow: hidden;
+ }
+
+ /*  ==============================
+     Main Layout
+     ============================== */
 #background {
     position: fixed;
     top: 0;
@@ -11,8 +34,8 @@
     background-position: center;
 }
 
-/*Add overlay above background to make elements more visible*/
-main::before {
+/* Overlay to improve contrast */
+#main-container::before {
     content: "";
     position: fixed;
     top: 0;
@@ -20,27 +43,45 @@ main::before {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.4);
-    z-index: 0;
+    z-index: 1;
+    pointer-events: none;
 }
 
-.main-container {
+.game-container {
     display: flex;
     justify-content: center;
     align-items: flex-start;
+    flex-direction: row;
     gap: 70px;
     margin: 0 auto;
     position: relative;
     width: fit-content;
+    z-index: 5;
+    margin-top: 5vh;
 }
 
+/*  ==============================
+    Map and Advertisement styling
+    ============================== */
+
+.map-wrapper {
+    position: relative;
+    width: 512px;
+    height: 512px;
+    z-index: 1;
+}
 #map {
     height: 512px;
     width: 512px;
     display: block;
-    z-index: 1;
+    border: 2px solid rgba(0,0,0,0.5);
 }
 
-/*Advertisement styling*/
+.advert-container {
+    position: relative;
+    z-index: 2;
+}
+
 .advert {
     display: block;
     width: 250px;
@@ -50,34 +91,33 @@ main::before {
     background-position: center;
     background-repeat: no-repeat;
     cursor: pointer;
-    z-index: 2;
+    transition: opacity 0.2s;
 }
 
 .advert:hover {
     opacity: 0.9;
 }
 
-.Left {
+.advert.Left {
     background-image: url("../images/leftad.webp")
 }
 
-.Right {
+.advert.Right {
     background-image: url("../images/rightad.webp");
-    background-size: cover;
     background-position: 25% center;
-    background-repeat: no-repeat;
 }
 
-/*Button styling*/
+/*  ==============================
+    The Sausage Button
+    ============================== */
 .button-container {
     position: absolute;
     left: 50%;
     bottom: -80px;
     width: 200px;
     height: 80px;
-    margin: 0;
-    clear: both;
     transform: translateX(-50%);
+    z-index: 2;
 }
 
 #button-main {
@@ -85,26 +125,19 @@ main::before {
     margin: 20px auto 0;
     width: 200px;
     height: 80px;
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
     transform: rotate(3deg);
-    transition: transform 0.2s;
-    z-index: 1;
-    user-select: none;
+    transition: transform 0.2s ease-in-out;
 }
 
-.button-text{
-    position: absolute;
-    top:70%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 25px;
-    -webkit-text-stroke: 1px black;
-    color: white;
-    overflow: visible;
-    text-align: center;
+#button-main img {
     width: 100%;
-    font-family: "Comic Sans MS";
+    height: 100%;
+    object-fit: contain;
     pointer-events: none;
-    user-select: none;
 }
 
 #button-main:hover {
@@ -115,30 +148,36 @@ main::before {
     transform: rotate(15deg) scale(0.98);
 }
 
-#game-container {
-    position: relative;
+.button-text{
+    position: absolute;
+    top:70%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 25px;
     width: 100%;
-    height: 100vh;
-    overflow: hidden;
+    text-align: center;
+    pointer-events: none;
+    text-shadow: 1px 1px 2px black;
 }
 
-
-/*game menu*/
+/*  ==============================
+    Game menus
+    ============================== */
 #menu-overlay {
     position: absolute;
     top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 512px;
-    height: 512px;
+    left: 0;
+    width: 100%;
+    height: 100%;
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
     z-index: 1000;
     background-color: rgba(0,0,0,0.7);
 }
 
-.menu {
+.menu,
+.menu-screen {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -147,20 +186,44 @@ main::before {
     max-width: 500px;
     padding: 20px;
     background-color: rgba(30,30,30,0.9);
-    border-radius: 10px;
+    border-radius: 5px;
     box-shadow: 0 0 20px rgba(0,0,0,0.5);
     color: white;
+    text-align: center;
 }
 
-.menu h1 {
+.hidden {
+    display: none !important;
+}
+
+.menu h1,
+.menu-screen h1{
     font-size: 2.5em;
     margin-bottom: 20px;
     color: white;
-    text-space: 2px 2px 4px rgba(0,0,0,0.5);
-    font-family: "Comic Sans MS";
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
 }
 
-.menu button {
+.menu-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+/*  ==============================
+    Inputs
+    ============================== */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.menu button,
+.menu-screen button {
     padding: 12px 24px;
     font-size: 1.2em;
     margin: 10px;
@@ -170,49 +233,53 @@ main::before {
     background-color: #4caf50;
     color: white;
     transition: background-color 0.3s;
-    font-family: "Comic Sans MS";
 }
 
-.menu button:hover {
+.menu button:hover,
+.menu-screen button:hover {
     background-color: #2f6a33;
 }
 
-.menu select, .menu input[type="text"] {
+.menu select,
+.menu input[type="text"],
+.menu-screen select,
+.menu-screen input[type="text"] {
     padding: 10px;
     font-size: 1em;
-    margin: 10px;
+    margin: 5px 0;
     width: 100%;
     max-width: 300px;
     border-radius: 5px;
-    border: 1px solid #ccc;
-}
-
-.hidden {
-    display: none !important;
-}
-
-
-.menu-screen input,.menu-screen select {
+    border: 2px solid #ccc;
     color: black;
     background-color: white;
-    border: 2px solid #ccc;
-}
-
-#settings {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 }
 
 .settings-slider {
-    padding-top: 20px;
-    accent-color: chocolate;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 0;
+    width: 100%;
 }
 
-#difficulty-select h1, #difficulty-select h2, #settings h1, #settings label, #modifiers h1, #modifiers label,#help h1,#help h2 {
-    color: white;
-    font-family: "Comic Sans MS";
-        margin: 10px;
+.setting-slider input[type="range"] {
+    accent-color: chocolate;
+    width: 80%;
+    margin-top: 10px;
+}
+
+label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+/*  ==============================
+    Screens
+    ============================== */
+#help article {
+    margin-bottom: 20px;
+    line-height: 1.5;
 }
 
 #help h2 {
@@ -220,24 +287,16 @@ main::before {
     margin: 15px;
 }
 
-.back-btn {
-    margin: 5px;
-}
-
 #gameContainer{
     font-family: Arial, sans-serif;
     text-align: center;
     margin: 20px;
-    background-color: white;
-}
-
-#death-screen {
-    margin: 20px;
-    color: white;
+    color: black;
 }
 
 #gameContainer h2 {
     margin-top: 40px;
+    color: black;
 }
 
 .game-box {
@@ -245,7 +304,7 @@ main::before {
     padding: 20px;
     margin: 20px auto;
     max-width: 400px;
-    border-radius: 10px;
+    border-radius: 5px;
 }
 
 #reactionSignal {
@@ -277,13 +336,20 @@ main::before {
 }
 
 #scoreItems {
-
     width: 750px;
     padding: 50px;
     text-align: center;
 }
 
-/* Congratulations Popup */
+.menu-screen input,.menu-screen select {
+    color: black;
+    background-color: white;
+    border: 2px solid #ccc;
+}
+
+/*  ==============================
+    Popup
+    ============================== */
 #congratulations-popup {
     position: absolute;
     top: 50%;
@@ -292,12 +358,11 @@ main::before {
     width: 400px;
     padding: 20px;
     background-color: rgba(30, 30, 30, 0.9);
-    border-radius: 10px;
+    border-radius: 5px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
     color: white;
     text-align: center;
-    z-index: 1001;
-    font-family: "Comic Sans MS";
+    z-index: 2000;
 }
 
 #congratulations-popup h1 {
@@ -319,7 +384,6 @@ main::before {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
-    font-family: "Comic Sans MS";
 }
 
 #congratulations-popup button:hover {
