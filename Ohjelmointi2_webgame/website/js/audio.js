@@ -1,3 +1,9 @@
+/*
+====================
+SFX
+====================
+ */
+
 /* ---Click sound effect --- */
 class Overlap {
   path;
@@ -29,12 +35,12 @@ button.addEventListener("click", () => {
 /* --- Sound for flying --- */
 const flightSound = new Audio("audio/fly.ogg");
 flightSound.loop = true;
+flightSound.preservesPitch = false;
 
 function playFlight() {
   if (flightSound.paused) {
     flightSound.volume = typeof currentSfx !== 'undefined' ? currentSfx: 1;
 
-    flightSound.currentTime = 0;
     flightSound.play().catch(e => console.log("Audio failed to play:", e));
   }
 }
@@ -42,6 +48,18 @@ function playFlight() {
 function stopFlight() {
   flightSound.pause();
   flightSound.currentTime = 0;
+}
+
+/* Change the pitch of flight sound depending on speed*/
+function setFlightPitch(speed) {
+  let rate = speed / 50;
+
+  if (rate < 0.5) rate = 0.5;
+  if (rate > 3.0) rate =3.0;
+
+  //console.log(speed)
+  //console.log(rate)
+  flightSound.playbackRate = rate;
 }
 
 

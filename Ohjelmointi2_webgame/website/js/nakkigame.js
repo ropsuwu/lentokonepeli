@@ -113,6 +113,9 @@ function PlaneAnim() {
         planeImg.setBounds(newBounds)
         //console.log(sMercatorLng)
         curPlaneSpeed = (planeSpeed / Math.max(2, sMercatorLng * 1)) * 3
+        // console.log(curPlaneSpeed)
+        // console.log(typeof SetFlightPitch)
+        setFlightPitch(curPlaneSpeed);
 
         if (!dash) {
             bPos = planeImg.getCenter()
@@ -232,7 +235,7 @@ let score;
 
 function Death() {
     clearInterval(planeAnimation)
-    stopFlight();
+  stopFlight();
     console.log("player has died")
 
     document.getElementById('menu-overlay').style.display = 'flex';
