@@ -331,8 +331,12 @@ label {
 }
 
 #scoreItems {
-    width: 750px;
+    background-color: rgba(30,30,30,0.95);
+    width: 900px;
     padding: 50px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 0px;
     text-align: center;
 }
 
