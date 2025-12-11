@@ -232,6 +232,7 @@ let score;
 
 function Death() {
     clearInterval(planeAnimation)
+    stopFlight();
     console.log("player has died")
 
     document.getElementById('menu-overlay').style.display = 'flex';
