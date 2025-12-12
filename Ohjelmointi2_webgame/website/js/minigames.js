@@ -265,6 +265,7 @@ function initGameLogic() {
                             <button id="backToMenu">Jatka</button>
                         </div>
                     `;
+                playJingle()
                 document.getElementById('backToMenu').addEventListener('click', () => {
                     gameContainer.innerHTML = '';
                     success();
