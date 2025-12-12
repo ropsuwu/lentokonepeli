@@ -212,7 +212,7 @@ function initGameLogic() {
 
         guessStartBtn.addEventListener('click', startGuessingGame);
 
-    } else if (currentGameName === 'Rythm Game') {
+    } else if (currentGameName === 'Rhythm Game') {
         const nuoliDiv = document.getElementById("napit");
         const pisteDiv = document.getElementById("tulos");
         const aikaDiv = document.getElementById("aika");
