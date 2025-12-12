@@ -46,7 +46,7 @@
         description: "Press the arrows in the right order!",
         html: `
                 <div class="game-box">
-                    <h2>Rythm Game</h2>
+                    <h2>Rhythm Game</h2>
                     <p>Press the arrows in the right order!</p>
                     <div id="tulos">Points: 0</div>
                     <div id="aika">Time: 30</div>
