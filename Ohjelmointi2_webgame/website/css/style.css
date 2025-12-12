@@ -328,11 +328,20 @@ label {
     text-align: center;
     background-color: rgba(30,30,30,0.95);
     overflow: visible;
+    width: 512px;
+    height: 512px;
 }
 
 #scoreItems {
-    width: 750px;
+    background-color: rgba(30,30,30,0.95);
+    width: 512px;
     padding: 50px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 0px;
+    text-align: center;
+    height: 512px;
+    font-size: 10px;
     text-align: center;
 }
 
@@ -383,4 +392,11 @@ label {
 
 #congratulations-popup button:hover {
     background-color: #2f6a33;
+}
+.game-box {
+    color: white;
+}
+
+.game-box h2 {
+    color: white;
 }

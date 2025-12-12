@@ -21,7 +21,7 @@ let deathTimer;
 let totalDistanceTravelled;
 let currentAirportName;
 
-async function initializeGameWithCountry(country) {
+async function initializeGameWithCountry(country) { //initializes values for a new game, then colours countries based on if they have a sausage associated with them in the database
     console.log('Starting GAME with country:', country);
     totalDistanceTravelled = 0
     if (planeImg != undefined) {
@@ -40,6 +40,7 @@ async function initializeGameWithCountry(country) {
     currentCountry = null;
     inPlaneAnim = false;
     map.closePopup();
+
 
 
     const result = await fetch("http://127.0.0.1:5000/query?query=SELECT a.latitude_deg, a.longitude_deg, a.iso_country FROM airport a JOIN country c ON a.iso_country = c.iso_country WHERE a.type = 'large_airport' AND c.name = '" + country + "'")
@@ -74,7 +75,7 @@ async function initializeGameWithCountry(country) {
 }
 
 
-function PlaneAnim() {
+function PlaneAnim() { //draws the plane and its trail onto the leaflet map. Also keeps track of when the player will die during a doomed flight, and when the flight has been completed such that regular gameplay can recommence
     if (!inPlaneAnim) {
         curPlaneSpeed = planeSpeed
         aPos = planeImg.getCenter()
@@ -113,8 +114,8 @@ function PlaneAnim() {
         planeImg.setBounds(newBounds)
         //console.log(sMercatorLng)
         curPlaneSpeed = (planeSpeed / Math.max(2, sMercatorLng * 1)) * 3
-        // console.log(curPlaneSpeed)
-        // console.log(typeof SetFlightPitch)
+        //console.log(curPlaneSpeed)
+        //console.log(typeof SetFlightPitch)
         setFlightPitch(curPlaneSpeed);
 
         if (!dash) {
@@ -168,8 +169,7 @@ function PlaneAnim() {
     }
 }
 
-async function FlytoCountry() { // player flies to country
-    //this should do stuff on the map and call death chance and other stuff
+async function FlytoCountry() { // player flies to country, also calculates if the player will die during it
     currentCountry = selectedCountry
     console.log(currentCountry.feature.properties.name)
     const targetAirport = await fetch("http://127.0.0.1:5000/query?query=SELECT a.name, a.latitude_deg, a.longitude_deg, a.ident FROM airport a JOIN country c ON a.iso_country = c.iso_country WHERE a.type = 'large_airport' AND a.iso_country = '" + currentCountry.feature.properties.iso_a2_eh + "'")
@@ -178,7 +178,6 @@ async function FlytoCountry() { // player flies to country
 
     currentAirportName = json[0][0]
     targetLatLng = [json[0][1], json[0][2]]
-    //targetLatLng = selectedLatLng
 
     let latDif = planeImg.getCenter().lat - targetLatLng[0]
     let lngDif = planeImg.getCenter().lng - targetLatLng[1]
@@ -207,7 +206,8 @@ async function FlytoCountry() { // player flies to country
 
 
     if (chance >= 0) {
-        //"this should add a confirmation prompt for the player"
+        //"this should show a confirmation prompt for the player"
+
         conf = "y"//placeholder
     } else {
         conf = "y"
@@ -233,7 +233,7 @@ async function FlytoCountry() { // player flies to country
 
 let score;
 
-function Death() {
+function Death() { //handles player death
     clearInterval(planeAnimation)
   stopFlight();
     console.log("player has died")
@@ -248,16 +248,13 @@ function Death() {
         "Your final score was " + score + ".")
 }
 
-async function GetSosig() { //player obtains a sausage
-    //get sausage and do stuff
+async function GetSosig() { //opens a minigame window if the player wants to get a sausage
     const nakki = await fetch("http://127.0.0.1:5000/query?query=SELECT sausage FROM country WHERE iso_country='" + currentCountry.feature.properties.iso_a2_eh + "'");
     //console.log(nakki)
     const json = await nakki.json();
 
     if (json[0][0] == undefined || json[0][0] == null) {
         console.log("ei nakkia")
-        //currentCountry.setStyle(nofoundsosig)
-        //ei nakkia
     } else {
         if (!inPlaneAnim) {
             if (!sausagesFound.includes(currentCountry) && currentCountry.options.color != "#FF0000") {
@@ -269,19 +266,12 @@ async function GetSosig() { //player obtains a sausage
 
                 //console.log(json[0][0])
                 //console.log('Sosig!!')
-                //joo nakkia
             }
         }
     }
-
-    //console.log("inPlaneAnim is "+inPlaneAnim)
-    //if (!inPlaneAnim) {
-    //    currentCountry.setStyle(noSosigStyle)
-    //    console.log('Sosig!!')
-    //}
 }
 
-async function sosigJudgement(gameWinBool) {
+async function sosigJudgement(gameWinBool) { //called from minigames.js when the player wins or loses in a minigame, gives the player a sausage on success
     document.getElementById('menu-overlay').style.display = 'none';
     document.getElementById('gameContainer').classList.add('hidden');
 
@@ -311,8 +301,8 @@ let map;
 let selectedCountry;
 let selectedLatLng;
 let targetLatLng;
-let currentCountry;//these should be set according to the starting country which is picked
-let currentLatLng; //these should be set according to the starting country which is picked
+let currentCountry;
+let currentLatLng;
 
 map = L.map('map').setView([0, 0], 1); //makes a leaflet map
 
@@ -340,11 +330,11 @@ let nofoundsosig = {
     "opacity": 0.9
 }
 
-let GeoJSON = L.geoJSON(globeGeojsonLayer, {style: sosigStyle}).bindPopup(function (layer) {
+let GeoJSON = L.geoJSON(globeGeojsonLayer, {style: sosigStyle}).bindPopup(function (layer) { //makes every region in the GeoJSON dataset as a leaflet layer show a popup when it is clicked, depending on its state
     if (layer.options.color == "#008000") { //if there is a sausage in the country
         selectedCountry = layer
         //console.log(selectedCountry)
-        selectedLatLng = L.latLngBounds(layer._bounds._northEast, layer._bounds._southWest)// this should call flask to get the latLng of an airport in the country
+        selectedLatLng = L.latLngBounds(layer._bounds._northEast, layer._bounds._southWest)// this is old code and 'selectedLatLng' is unused, maybe remove?
         //console.log(selectedLatLng)
 
 
@@ -362,7 +352,7 @@ let GeoJSON = L.geoJSON(globeGeojsonLayer, {style: sosigStyle}).bindPopup(functi
         div.appendChild(button);
 
         return div
-    } else if (layer.options.color == "#a3a3a3") {
+    } else if (layer.options.color == "#a3a3a3") { //if there was never a sausage in the country
         const div = document.createElement("div");
         div.innerHTML = '<b>' + layer.feature.properties.name + '</b>';
 
@@ -373,13 +363,9 @@ let GeoJSON = L.geoJSON(globeGeojsonLayer, {style: sosigStyle}).bindPopup(functi
 
         return div
     }
-    //change the color if country doesn't contain a sausage
-    if (sausagesFound.includes(currentCountry) || layer.options.color == "#FF0000") {
+    if (sausagesFound.includes(currentCountry) || layer.options.color == "#FF0000") { //if there is no longer a sausage in the country
         return "You have already searched for sausages in " + layer.feature.properties.name + "."
     }
-    //else if (layer.options.color == "#FF0000") {
-    //    return "You have already eaten a sausage in "+layer.feature.properties.name+"."
-    //}
 }).addTo(map);
 
 let planeImg;
@@ -457,7 +443,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     break
                 }
             }
-            await fetch(`http://127.0.0.1:5000/query?query=INSERT INTO game VALUES (${idCount}, '${difficultyName}', ${sausagesFound.length},'${score}', '${scoreName}', '${currentAirportName}, ${currentCountry.feature.properties.name}')`)
+            await fetch(`http://127.0.0.1:5000/query?query=INSERT INTO game VALUES (${idCount}, '${difficultyName}', ${sausagesFound.length},'${score}', '${scoreName}', '${currentAirportName}, ${currentCountry.feature.properties.name}')`) //adds current run to the highscore list
 
             document.getElementById('mainmenu').classList.remove('hidden');
             document.getElementById('death-screen').classList.add('hidden');
@@ -465,7 +451,7 @@ document.addEventListener('DOMContentLoaded', function () {
     setupBack();
 });
 
-function startGameWithSettings() {
+function startGameWithSettings() { //sets values regarding difficulty when starting a game
     const settings = window.gameSettings;
 
     switch (settings.difficulty) {
@@ -485,7 +471,7 @@ function startGameWithSettings() {
     initializeGameWithCountry(settings.startingCountry);
 }
 
-async function updateHighscoreDisplay() {
+async function updateHighscoreDisplay() { //called everytime the player views the visual highscore list and updates it 
     const scoreItems = document.getElementById("scoreItems");
     scoreItems.innerHTML = "";
 
