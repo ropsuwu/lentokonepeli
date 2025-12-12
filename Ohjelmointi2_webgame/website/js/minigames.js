@@ -42,7 +42,7 @@
             `
     },
     {
-        name: "Rhyhtm Game",
+        name: "Rhythm Game",
         description: "Press the arrows in the right order!",
         html: `
                 <div class="game-box">
@@ -110,26 +110,18 @@ function initGameLogic() {
                 reactionSignal.textContent = 'Click!';
                 reactionStartTime = Date.now();
             }, changeDelay);
-            reactionEndTimeout = setTimeout(() => {
-                if (reactionStartTime === 0) {
-                    reactionResult.textContent = `You lost! You didn't click the circle in time.`;
-                } else {
-                    const reactionTime = (Date.now() - reactionStartTime) / 1000;
-                    const outcome = reactionTime < 0.35 ? "Winner!" : "Loser!";
-                    reactionResult.textContent = `Reaction time: ${reactionTime.toFixed(3)} sekuntia. ${outcome}`;
-                    if (outcome == "Winner!") { win() }
-                    else if (outcome == "Loser!") { end() }
-                }
-                reactionSignal.style.backgroundColor = 'gray';
-                reactionSignal.textContent = 'Wait...';
-                clearTimeout(reactionTimeout);
-            }, duration * 1000);
         }
-
         reactionSignal.addEventListener('click', () => {
-            if (reactionSignal.style.backgroundColor === 'green') {
-                reactionStartTime = Date.now();
+          if (reactionSignal.style.backgroundColor === 'green') {
+            clearTimeout(reactionEndTimeout);
+            const reactionTime = (Date.now() - reactionStartTime) / 1000;
+            const outcome = reactionTime < 0.35 ? "Winner!" : "Loser!";
+            if (outcome === "Winner!") {
+              win()
+            } else if (outcome === "Loser!") {
+              end()
             }
+          }
         });
 
         reactionStartBtn.addEventListener('click', startReactionGame);
