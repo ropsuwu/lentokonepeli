@@ -71,8 +71,7 @@
                     <div id="kuvat">
                         <img id="kuva2" src="./images/spam.png">
                     </div>
-                    <button id="start2">Press W (W) as fast as you can!</button>
-                    <div class="testi"></div>
+                    <button id="start2">Press W as fast as you can!</button>
                 </div>
             `
     }
@@ -261,8 +260,8 @@ function initGameLogic() {
                 gameContainer.innerHTML = `
                         <div class="game-box">
                             <img src="./images/lesgo.jpg" alt="raaah">
-                            <p>Voitit!</p>
-                            <button id="backToMenu">Jatka</button>
+                            <p>You Won!</p>
+                            <button id="backToMenu">Continue</button>
                         </div>
                     `;
                 playJingle()
